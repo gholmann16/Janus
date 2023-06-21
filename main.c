@@ -1,5 +1,5 @@
 #include <gtk/gtk.h>
-#include "commands.h"
+#include "global.h"
 #include "menu.h"
 
 int main(int argc, char * argv[]) {
@@ -13,26 +13,21 @@ int main(int argc, char * argv[]) {
     
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     
-    // Menu setup
-    GtkWidget * bar = gtk_menu_bar_new();
-    GtkWidget * menus[5];
-
-    // Create 5 menus for the 5 future buttons
-    for(int x = 0; x < 5; x++) {
-        menus[x] = gtk_menu_new();
-    }
-
-    file_button(bar, menus, window);
-
-    // Text part`
+    // Text part
     GtkWidget * text = gtk_text_view_new();
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
+    GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
-    // Control key listener
-    short control = 0;
-    GtkEventController *event_controller = gtk_event_controller_key_new (window);
-    g_signal_connect (event_controller, "key-pressed", G_CALLBACK (key_press_handler), &control);
-    g_signal_connect (event_controller, "key-released", G_CALLBACK (key_release_handler), &control);
+    struct Document doc;
+    doc.name[0] = '\0';
+    doc.buffer = buffer;
+
+    // Menu setup
+    GtkAccelGroup * accel = gtk_accel_group_new();
+    gtk_window_add_accel_group(GTK_WINDOW(window), accel);
+
+    GtkWidget * bar = gtk_menu_bar_new();
+    file_button(bar, accel, &doc);
 
     // Add two parts to box
     gtk_box_pack_start(GTK_BOX(box), bar, 0, 0, 0);
