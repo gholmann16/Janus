@@ -5,3 +5,8 @@ commands.o:
 	cc commands.c -c `pkg-config --cflags --libs gtk+-3.0`
 menu.o:
 	cc menu.c -c `pkg-config --cflags --libs gtk+-3.0`
+
+appimage: Notes
+	strip Notes
+	mv Notes release/AppRun
+	appimagetool release

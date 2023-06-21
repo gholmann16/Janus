@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Notes
+Comment= Simple gtk notepad
+Exec=AppRun
+Icon=Notes
+Terminal=false
+Categories=Utility;TextEditor;
