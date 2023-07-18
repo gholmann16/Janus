@@ -29,14 +29,9 @@ int open_file(char * filename, struct Document * document) {
     gtk_text_buffer_insert(document->buffer, &start, contents, len);
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     strcpy(document->name, filename);
-    printf("filename = %s\n", filename);
     free(contents);
     
     return 0;
-}
-
-void ctrl_n() {
-    main(0, NULL);
 }
 
 void ctrl_o(GtkWidget * self, struct Document * document) {
@@ -54,6 +49,10 @@ void ctrl_o(GtkWidget * self, struct Document * document) {
     }
 
     gtk_widget_destroy (dialog);
+}
+
+void ctrl_n() {
+    main(0, NULL);
 }
 
 void ctrl_s(GtkWidget * self, struct Document * document) {
@@ -79,4 +78,65 @@ void ctrl_s(GtkWidget * self, struct Document * document) {
     fprintf(f, text);
     fclose(f);
 
+}
+
+int save_as_file(char * filename, struct Document * document) {
+    
+    strcpy(document->name, filename);
+
+    // Collect all text
+    GtkTextIter start;
+    GtkTextIter end;
+
+    gtk_text_buffer_get_start_iter(document->buffer, &start);
+    gtk_text_buffer_get_end_iter(document->buffer, &end);
+
+    char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
+
+    FILE * f = fopen(document->name, "w");
+    fprintf(f, text);
+    fclose(f);
+
+    return 0;
+}
+
+void save_as_command(GtkWidget * self, struct Document * document) {
+    
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(gtk_widget_get_toplevel(self)), action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
+
+    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
+    if (res == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        char * filename = gtk_file_chooser_get_filename (chooser);
+        save_as_file(filename, document);
+        g_free (filename);
+    }
+
+    gtk_widget_destroy (dialog);
+}
+
+void dialog_callback(GtkDialog * self, gint response, struct Document * document) {
+    switch (response) {
+        case 0:
+            gtk_main_quit();
+            break;
+        case 1:
+            return;
+        case 2:
+            save_as_command(GTK_WIDGET(self), document);
+            break;
+    }
+}
+
+void exit_command(GtkWidget * self, struct Document * document) {
+    
+    GtkWidget * close = gtk_message_dialog_new(GTK_WINDOW(gtk_widget_get_toplevel(self)), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "Do you want to save your changes before closing this document?");
+    
+    gtk_dialog_add_buttons(GTK_DIALOG(close), "No", 0, "Cancel", 1, "Yes", 2, NULL);
+    g_signal_connect(close, "response", G_CALLBACK(dialog_callback), document);
+    
+    gtk_dialog_run (GTK_DIALOG (close));
+    gtk_widget_destroy (close);
 }

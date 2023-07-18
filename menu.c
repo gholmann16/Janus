@@ -25,25 +25,16 @@ int file_button(GtkWidget * bar, GtkAccelGroup * accel, struct Document * docume
     g_signal_connect(save, "activate", G_CALLBACK(ctrl_s), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), save);
 
-    /*
     GtkWidget * save_as = gtk_menu_item_new_with_label("Save as...");
-    gtk_menu_shell_append(GTK_MENU(filemenu), save_as);
+    g_signal_connect(save_as, "activate", G_CALLBACK(save_as_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), save_as);
 
     GtkWidget * seperate = gtk_separator_menu_item_new();
-    gtk_menu_shell_append(GTK_MENU(filemenu), seperate);
-
-    GtkWidget * print = gtk_menu_item_new_with_label("Print");
-    gtk_menu_shell_append(GTK_MENU(filemenu), print);
-
-    GtkWidget * print_setup = gtk_menu_item_new_with_label("Print setup...");
-    gtk_menu_shell_append(GTK_MENU(filemenu), print_setup);
-
-    GtkWidget * seperate2 = gtk_separator_menu_item_new();
-    gtk_menu_shell_append(GTK_MENU(filemenu), seperate2);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), seperate);
 
     GtkWidget * exit = gtk_menu_item_new_with_label("Exit");
-    gtk_menu_shell_append(GTK_MENU(filemenu), exit);
-    */
+    g_signal_connect(exit, "activate", G_CALLBACK(exit_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), exit);
 
     gtk_widget_show_all(filemenu);
 
