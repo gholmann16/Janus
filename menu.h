@@ -1,2 +1,2 @@
-// Initiates the file submenu
-int file_button(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document);
+// Initiates the menu bar
+int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document);

@@ -34,7 +34,7 @@ int open_file(char * filename, struct Document * document) {
     return 0;
 }
 
-void ctrl_o(GtkWidget * self, struct Document * document) {
+void open_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     GtkWidget *dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(gtk_widget_get_toplevel(self)), action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
@@ -51,11 +51,11 @@ void ctrl_o(GtkWidget * self, struct Document * document) {
     gtk_widget_destroy (dialog);
 }
 
-void ctrl_n() {
+void new_command() {
     main(0, NULL);
 }
 
-void ctrl_s(GtkWidget * self, struct Document * document) {
+void save_command(GtkWidget * self, struct Document * document) {
 
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
         return;
@@ -132,6 +132,11 @@ void dialog_callback(GtkDialog * self, gint response, struct Document * document
 
 void exit_command(GtkWidget * self, struct Document * document) {
     
+    if (gtk_text_buffer_get_modified(document->buffer) == FALSE) {
+        gtk_main_quit();
+        return;
+    }
+
     GtkWidget * close = gtk_message_dialog_new(GTK_WINDOW(gtk_widget_get_toplevel(self)), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "Do you want to save your changes before closing this document?");
     
     gtk_dialog_add_buttons(GTK_DIALOG(close), "No", 0, "Cancel", 1, "Yes", 2, NULL);

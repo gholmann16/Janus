@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
     gtk_window_add_accel_group(GTK_WINDOW(window), accel);
 
     GtkWidget * bar = gtk_menu_bar_new();
-    file_button(bar, accel, &doc);
+    init_menu(bar, accel, &doc);
 
     // Add two parts to box
     gtk_box_pack_start(GTK_BOX(box), bar, 0, 0, 0);
@@ -37,7 +37,6 @@ int main(int argc, char * argv[]) {
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_widget_show_all (window);
 
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_main ();
 
     return 0;
