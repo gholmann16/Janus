@@ -51,8 +51,14 @@ void open_command(GtkWidget * self, struct Document * document) {
     gtk_widget_destroy (dialog);
 }
 
-void new_command() {
-    main(0, NULL);
+void new_command(void) {
+    GError *err = NULL;
+    char* argv[] = {"/proc/self/exe", NULL};
+    g_spawn_async(NULL, argv, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &err);
+    if (err != NULL) {
+        fprintf (stderr, "Unable to new window: %s\n", err->message);
+        g_error_free (err);
+    }
 }
 
 void save_command(GtkWidget * self, struct Document * document) {
@@ -120,7 +126,8 @@ void save_as_command(GtkWidget * self, struct Document * document) {
 void dialog_callback(GtkDialog * self, gint response, struct Document * document) {
     switch (response) {
         case 0:
-            gtk_main_quit();
+            GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
+            g_application_quit(app);
             break;
         case 1:
             return;
@@ -133,15 +140,21 @@ void dialog_callback(GtkDialog * self, gint response, struct Document * document
 void exit_command(GtkWidget * self, struct Document * document) {
     
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE) {
-        gtk_main_quit();
+        GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
+        g_application_quit(app);
         return;
     }
 
-    GtkWidget * close = gtk_message_dialog_new(GTK_WINDOW(gtk_widget_get_toplevel(self)), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "Do you want to save your changes before closing this document?");
+    GtkWidget * close = gtk_message_dialog_new(document->window, GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "Do you want to save your changes before closing this document?");
     
     gtk_dialog_add_buttons(GTK_DIALOG(close), "No", 0, "Cancel", 1, "Yes", 2, NULL);
     g_signal_connect(close, "response", G_CALLBACK(dialog_callback), document);
     
     gtk_dialog_run (GTK_DIALOG (close));
     gtk_widget_destroy (close);
+}
+
+gboolean delete_event(GtkWidget* self, GdkEvent* event, struct Document * document) {
+    exit_command(self, document);
+    return TRUE;
 }
