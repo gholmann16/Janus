@@ -57,6 +57,23 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(redo, "activate", G_CALLBACK(redo_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), redo);
 
+    GtkWidget * seperate2 = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), seperate2);
+
+    GtkWidget * cut = gtk_menu_item_new_with_label("Cut");
+    gtk_widget_add_accelerator(cut, "activate", accel, GDK_KEY_X, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(cut, "activate", G_CALLBACK(cut_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), cut);
+
+    GtkWidget * copy = gtk_menu_item_new_with_label("Copy");
+    gtk_widget_add_accelerator(copy, "activate", accel, GDK_KEY_C, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(copy, "activate", G_CALLBACK(copy_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), copy);
+
+    GtkWidget * paste = gtk_menu_item_new_with_label("Paste");
+    gtk_widget_add_accelerator(paste, "activate", accel, GDK_KEY_V, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(paste, "activate", G_CALLBACK(paste_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), paste);
 
     /*
     GtkWidget * search = gtk_menu_item_new_with_label("Search");

@@ -6,12 +6,17 @@ commands.o:
 menu.o:
 	cc menu.c -c `pkg-config --cflags gtk+-3.0`
 
-appimage:
-	gcc release/AppRun.c -o release/AppRun
+clean:
+	rm *.o
+
+appimage: commands.o menu.o
+	cc -O3 release/AppRun.c -o release/AppRun
+	cc -O3 main.c `pkg-config --cflags --libs gtksourceview-4` commands.o menu.o -o Notes
+	rm *.o
 	strip release/AppRun
 	strip Notes
 	mkdir -p release/usr/lib
 	mkdir -p release/usr/bin
-	cp Notes release/usr/bin
+	mv Notes release/usr/bin
 	cp /usr/lib/libgtksourceview-4.so.0 release/usr/lib
 	appimagetool --exclude-file AppRun.c release

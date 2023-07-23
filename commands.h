@@ -13,3 +13,9 @@ gboolean delete_event(GtkWidget* self, GdkEvent* event, struct Document * docume
 void undo_command(GtkWidget * self, struct Document * document);
 
 void redo_command(GtkWidget * self, struct Document * document);
+
+void cut_command(GtkWidget * self, struct Document * document);
+
+void copy_command(GtkWidget * self, struct Document * document);
+
+void paste_command(GtkWidget * self, struct Document * document);
