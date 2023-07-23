@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+#include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "menu.h"
 
@@ -11,7 +11,7 @@ void activate(GtkApplication * app, struct Document * document) {
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     
     // Text part
-    GtkWidget * text = gtk_text_view_new();
+    GtkWidget * text = gtk_source_view_new();
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 

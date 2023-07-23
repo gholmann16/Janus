@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+#include <gtksourceview/gtksource.h>
 #include "main.h"
 #include "global.h"
 
@@ -157,4 +157,12 @@ void exit_command(GtkWidget * self, struct Document * document) {
 gboolean delete_event(GtkWidget* self, GdkEvent* event, struct Document * document) {
     exit_command(self, document);
     return TRUE;
+}
+
+void undo_command(GtkWidget * self, struct Document * document) {
+    gtk_source_buffer_undo(GTK_SOURCE_BUFFER(document->buffer));
+}
+
+void redo_command(GtkWidget * self, struct Document * document) {
+    gtk_source_buffer_redo(GTK_SOURCE_BUFFER(document->buffer));
 }

@@ -41,8 +41,6 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
 
     // Edit menu
 
-    /*
-
     GtkWidget * edit = gtk_menu_item_new_with_label("Edit");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), edit);
 
@@ -50,9 +48,17 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit), editmenu);
 
     GtkWidget * undo = gtk_menu_item_new_with_label("Undo");
+    gtk_widget_add_accelerator(undo, "activate", accel, GDK_KEY_Z, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(undo, "activate", G_CALLBACK(undo_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), undo);
 
+    GtkWidget * redo = gtk_menu_item_new_with_label("Redo");
+    gtk_widget_add_accelerator(redo, "activate", accel, GDK_KEY_Y, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(redo, "activate", G_CALLBACK(redo_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), redo);
+
+
+    /*
     GtkWidget * search = gtk_menu_item_new_with_label("Search");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), search);
 
