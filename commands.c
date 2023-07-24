@@ -61,31 +61,6 @@ void new_command(void) {
     }
 }
 
-void save_command(GtkWidget * self, struct Document * document) {
-
-    if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
-        return;
-    
-    // Collect all text
-    GtkTextIter start;
-    GtkTextIter end;
-
-    gtk_text_buffer_get_start_iter(document->buffer, &start);
-    gtk_text_buffer_get_end_iter(document->buffer, &end);
-
-    char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
-    
-    if (document->name[0] == '\0') {
-        printf("You have not opened a file yet. %s\n", document->name);
-        return;
-    }
-    
-    FILE * f = fopen(document->name, "w");
-    fprintf(f, text);
-    fclose(f);
-
-}
-
 int save_as_file(char * filename, struct Document * document) {
     
     strcpy(document->name, filename);
@@ -121,6 +96,32 @@ void save_as_command(GtkWidget * self, struct Document * document) {
     }
 
     gtk_widget_destroy (dialog);
+}
+
+void save_command(GtkWidget * self, struct Document * document) {
+
+    //If I want to save as file whenever someone presses control s, switch these two if statements around
+    if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
+        return;
+
+    if (document->name[0] == '\0') {
+        save_as_command(self, document);
+        return;
+    }
+
+    // Collect all text
+    GtkTextIter start;
+    GtkTextIter end;
+
+    gtk_text_buffer_get_start_iter(document->buffer, &start);
+    gtk_text_buffer_get_end_iter(document->buffer, &end);
+
+    char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
+
+    FILE * f = fopen(document->name, "w");
+    fprintf(f, text);
+    fclose(f);
+
 }
 
 void dialog_callback(GtkDialog * self, gint response, struct Document * document) {
@@ -179,4 +180,19 @@ void copy_command(GtkWidget * self, struct Document * document) {
 
 void paste_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_paste_clipboard(document->buffer, gtk_clipboard_get_default(gdk_display_get_default()), NULL, TRUE);
+}
+
+void delete_command(GtkWidget * self, struct Document * document) {
+    gtk_text_buffer_delete_selection(document->buffer, TRUE, TRUE);
+}
+
+void select_all_command(GtkWidget * self, struct Document * document) {
+
+    GtkTextIter start;
+    GtkTextIter end;
+
+    gtk_text_buffer_get_start_iter(document->buffer, &start);
+    gtk_text_buffer_get_end_iter(document->buffer, &end);
+
+    gtk_text_buffer_select_range(document->buffer, &start, &end);
 }

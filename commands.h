@@ -19,3 +19,7 @@ void cut_command(GtkWidget * self, struct Document * document);
 void copy_command(GtkWidget * self, struct Document * document);
 
 void paste_command(GtkWidget * self, struct Document * document);
+
+void delete_command(GtkWidget * self, struct Document * document);
+
+void select_all_command(GtkWidget * self, struct Document * document);

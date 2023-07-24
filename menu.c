@@ -75,6 +75,18 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(paste, "activate", G_CALLBACK(paste_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), paste);
 
+    GtkWidget * delete = gtk_menu_item_new_with_label("Delete");
+    g_signal_connect(delete, "activate", G_CALLBACK(delete_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), delete);
+
+    GtkWidget * seperate3 = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), seperate3);
+
+    GtkWidget * select_all = gtk_menu_item_new_with_label("Select all");
+    gtk_widget_add_accelerator(select_all, "activate", accel, GDK_KEY_A, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(select_all, "activate", G_CALLBACK(select_all_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), select_all);
+
     /*
     GtkWidget * search = gtk_menu_item_new_with_label("Search");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), search);
