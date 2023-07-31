@@ -15,7 +15,10 @@ void activate(GtkApplication * app, struct Document * document) {
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
+    GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
+    
     document->buffer = buffer;
+    document->context = context;
     document->window = GTK_WINDOW(window);
 
     // Menu setup

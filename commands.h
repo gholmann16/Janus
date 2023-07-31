@@ -23,3 +23,5 @@ void paste_command(GtkWidget * self, struct Document * document);
 void delete_command(GtkWidget * self, struct Document * document);
 
 void select_all_command(GtkWidget * self, struct Document * document);
+
+void search_command(GtkWidget * self, struct Document * document);

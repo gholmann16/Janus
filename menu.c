@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+#include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
 
@@ -87,16 +87,16 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(select_all, "activate", G_CALLBACK(select_all_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), select_all);
 
-    /*
     GtkWidget * search = gtk_menu_item_new_with_label("Search");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), search);
 
     GtkWidget * searchmenu = gtk_menu_new();
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(search), searchmenu);
 
-    GtkWidget * search = gtk_menu_item_new_with_label("Search");
-    gtk_menu_shell_append(GTK_MNEU_SHELL(searchmenu), search);
+    GtkWidget * search_button = gtk_menu_item_new_with_label("Search");
+    gtk_widget_add_accelerator(search_button, "activate", accel, GDK_KEY_F, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(search_button, "activate", G_CALLBACK(search_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_button);
 
-    */
     return 0;
 }

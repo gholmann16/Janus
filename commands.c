@@ -37,7 +37,7 @@ int open_file(char * filename, struct Document * document) {
 void open_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(gtk_widget_get_toplevel(self)), action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Open File", document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -84,7 +84,7 @@ int save_as_file(char * filename, struct Document * document) {
 void save_as_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(gtk_widget_get_toplevel(self)), action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save File", document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -195,4 +195,45 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_get_end_iter(document->buffer, &end);
 
     gtk_text_buffer_select_range(document->buffer, &start, &end);
+}
+
+const gchar * entry_text(GtkWidget * dialog, struct Document * document) {
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GList * content_widgets = gtk_container_get_children(GTK_CONTAINER(content));
+    GtkWidget * box = content_widgets->data;
+    GList * widgets = gtk_container_get_children(GTK_CONTAINER(box));
+    GtkWidget * entry = widgets->next->data;
+    return gtk_entry_get_text(GTK_ENTRY(entry));
+}
+
+void search_callback(GtkWidget * self, gint response, struct Document * document) {
+    if(response) {    
+        gtk_source_search_settings_set_search_text(gtk_source_search_context_get_settings(document->context), entry_text(self, document));
+        
+        GtkTextIter start;
+        gtk_text_buffer_get_start_iter(document->buffer, &start);
+        GtkTextIter match_start;
+        GtkTextIter match_end;
+
+        if(gtk_source_search_context_forward(document->context, &start, &match_start, &match_end, NULL))
+            gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
+    }
+}
+
+void search_command(GtkWidget * self, struct Document * document) {
+    GtkWidget * dialog = gtk_dialog_new_with_buttons("Find", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, "Find", 1, NULL);
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    GtkWidget * entry = gtk_entry_new();
+    GtkWidget * label = gtk_label_new("Find");
+    gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
+    gtk_box_pack_end(GTK_BOX(box), entry, 0, 0, 0);
+
+    gtk_container_add(GTK_CONTAINER(content), box);
+    gtk_widget_show_all(content);
+    
+    g_signal_connect(dialog, "response", G_CALLBACK(search_callback), document);
+    
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
 }

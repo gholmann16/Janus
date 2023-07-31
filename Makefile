@@ -1,18 +1,18 @@
-notes: commands.o menu.o
-	cc main.c -g `pkg-config --cflags --libs gtksourceview-4` commands.o menu.o -o Notes
-	rm *.o
-commands.o:
+notes: commands.o menu.o main.o
+	cc main.o -g `pkg-config --libs gtksourceview-4` commands.o menu.o -o Notes
+main.o: main.c
+	cc main.c -c `pkg-config --cflags gtksourceview-4`
+commands.o: commands.c
 	cc commands.c -c `pkg-config --cflags gtksourceview-4`
-menu.o:
-	cc menu.c -c `pkg-config --cflags gtk+-3.0`
+menu.o: menu.c
+	cc menu.c -c `pkg-config --cflags gtksourceview-4`
 
 clean:
 	rm *.o
 
-appimage: commands.o menu.o
+appimage: commands.o menu.o main.o
 	cc -O3 release/AppRun.c -o release/AppRun
-	cc -O3 main.c `pkg-config --cflags --libs gtksourceview-4` commands.o menu.o -o Notes
-	rm *.o
+	cc -O3 main.o `pkg-config --libs gtksourceview-4` commands.o menu.o -o Notes
 	strip release/AppRun
 	strip Notes
 	mkdir -p release/usr/lib
