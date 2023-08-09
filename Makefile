@@ -19,4 +19,4 @@ appimage: commands.o menu.o main.o
 	mkdir -p release/usr/bin
 	mv Notes release/usr/bin
 	cp /usr/lib/libgtksourceview-4.so.0 release/usr/lib
-	appimagetool --exclude-file AppRun.c release
+	appimagetool release
