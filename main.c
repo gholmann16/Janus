@@ -16,7 +16,9 @@ void activate(GtkApplication * app, struct Document * document) {
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
-    
+    gtk_source_search_context_set_highlight(context, FALSE);
+    gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
+
     document->buffer = buffer;
     document->context = context;
     document->window = GTK_WINDOW(window);

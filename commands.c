@@ -197,43 +197,49 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }
 
-const gchar * entry_text(GtkWidget * dialog, struct Document * document) {
-    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    GList * content_widgets = gtk_container_get_children(GTK_CONTAINER(content));
-    GtkWidget * box = content_widgets->data;
-    GList * widgets = gtk_container_get_children(GTK_CONTAINER(box));
-    GtkWidget * entry = widgets->next->data;
-    return gtk_entry_get_text(GTK_ENTRY(entry));
-}
+void search_command(GtkWidget * self, struct Document * document) {
 
-void search_callback(GtkWidget * self, gint response, struct Document * document) {
-    if(response) {    
-        gtk_source_search_settings_set_search_text(gtk_source_search_context_get_settings(document->context), entry_text(self, document));
-        
-        GtkTextIter start;
-        gtk_text_buffer_get_start_iter(document->buffer, &start);
+    GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
+
+    GtkWidget * dialog = gtk_dialog_new_with_buttons("Find", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, "Find", 1, NULL);
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+    
+    GtkWidget * entry = gtk_entry_new();
+    const gchar * text = gtk_source_search_settings_get_search_text(settings);
+    if (text)
+        gtk_entry_set_text(GTK_ENTRY(entry), text);
+
+    GtkWidget * label = gtk_label_new("Find text:");
+    GtkWidget * bubble = gtk_check_button_new_with_label("Match case");
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
+
+
+    gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
+    gtk_box_pack_end(GTK_BOX(box), entry, 0, 0, 0);
+
+    gtk_container_add(GTK_CONTAINER(content), box);
+    gtk_container_add(GTK_CONTAINER(content), bubble);
+    gtk_widget_show_all(content);
+
+    GtkTextIter start_of_selection;
+    GtkTextIter start;
+    gtk_text_buffer_get_selection_bounds(document->buffer, &start_of_selection, &start);
+    
+    int res = gtk_dialog_run (GTK_DIALOG (dialog));
+
+    gtk_source_search_settings_set_search_text(settings, gtk_entry_get_text(GTK_ENTRY(entry)));
+    gtk_source_search_settings_set_case_sensitive(settings, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(bubble)));
+
+    gtk_widget_destroy (dialog);
+
+    if (res == 1) {        
         GtkTextIter match_start;
         GtkTextIter match_end;
 
         if(gtk_source_search_context_forward(document->context, &start, &match_start, &match_end, NULL))
             gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
     }
-}
 
-void search_command(GtkWidget * self, struct Document * document) {
-    GtkWidget * dialog = gtk_dialog_new_with_buttons("Find", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, "Find", 1, NULL);
-    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    GtkWidget * entry = gtk_entry_new();
-    GtkWidget * label = gtk_label_new("Find");
-    gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
-    gtk_box_pack_end(GTK_BOX(box), entry, 0, 0, 0);
-
-    gtk_container_add(GTK_CONTAINER(content), box);
-    gtk_widget_show_all(content);
-    
-    g_signal_connect(dialog, "response", G_CALLBACK(search_callback), document);
-    
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
 }
