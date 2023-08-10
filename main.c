@@ -7,7 +7,15 @@ void activate(GtkApplication * app, struct Document * document) {
     GtkWidget * window = gtk_application_window_new (app);
     gtk_window_set_title(GTK_WINDOW(window), "Notes");
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
-    
+
+    GError *error = NULL;
+    GdkPixbuf * icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/Notes.png", &error);
+    if (error != NULL) {
+        printf(error->message);
+        g_clear_error (&error);
+    }
+    gtk_window_set_icon(GTK_WINDOW(window), icon);
+
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     
     // Text part

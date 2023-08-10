@@ -98,5 +98,15 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(search_button, "activate", G_CALLBACK(search_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_button);
 
+    GtkWidget * help = gtk_menu_item_new_with_label("Help");
+    gtk_menu_shell_append(GTK_MENU_SHELL(bar), help);
+
+    GtkWidget * helpmenu = gtk_menu_new();
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(help), helpmenu);
+
+    GtkWidget * about_button = gtk_menu_item_new_with_label("About");
+    g_signal_connect(about_button, "activate", G_CALLBACK(about_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(helpmenu), about_button);
+
     return 0;
 }

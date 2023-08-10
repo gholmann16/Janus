@@ -243,3 +243,11 @@ void search_command(GtkWidget * self, struct Document * document) {
     }
 
 }
+
+void about_command(GtkWidget * self, struct Document * document) {
+    GtkWidget * about_dialog = gtk_about_dialog_new();
+    GdkPixbuf * icon = gtk_window_get_icon(document->window);
+    gtk_about_dialog_set_logo(GTK_ABOUT_DIALOG(about_dialog), icon);
+
+    gtk_dialog_run(GTK_DIALOG(about_dialog));
+}
