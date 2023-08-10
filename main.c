@@ -15,12 +15,13 @@ void activate(GtkApplication * app, struct Document * document) {
         g_clear_error (&error);
     }
     gtk_window_set_icon(GTK_WINDOW(window), icon);
-
-    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     
     // Text part
     GtkWidget * text = gtk_source_view_new();
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
+    
+    GtkWidget * view = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
@@ -38,9 +39,12 @@ void activate(GtkApplication * app, struct Document * document) {
     GtkWidget * bar = gtk_menu_bar_new();
     init_menu(bar, accel, document);
 
+    // Boxes
+    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
     // Add two parts to box
     gtk_box_pack_start(GTK_BOX(box), bar, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(box), text, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box), view, 1, 1, 0);
 
     // Pack up app and run
     gtk_container_add(GTK_CONTAINER(window), box);

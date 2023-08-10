@@ -124,20 +124,6 @@ void save_command(GtkWidget * self, struct Document * document) {
 
 }
 
-void dialog_callback(GtkDialog * self, gint response, struct Document * document) {
-    switch (response) {
-        case 0:
-            GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
-            g_application_quit(app);
-            break;
-        case 1:
-            return;
-        case 2:
-            save_as_command(GTK_WIDGET(self), document);
-            break;
-    }
-}
-
 void exit_command(GtkWidget * self, struct Document * document) {
     
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE) {
@@ -146,13 +132,27 @@ void exit_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    GtkWidget * close = gtk_message_dialog_new(document->window, GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "Do you want to save your changes before closing this document?");
-    
-    gtk_dialog_add_buttons(GTK_DIALOG(close), "No", 0, "Cancel", 1, "Yes", 2, NULL);
-    g_signal_connect(close, "response", G_CALLBACK(dialog_callback), document);
-    
-    gtk_dialog_run (GTK_DIALOG (close));
+    GtkWidget * close = gtk_dialog_new_with_buttons("Notes", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
+    GtkWidget * message = gtk_label_new("Would you like to save?");
+
+    gtk_container_add(GTK_CONTAINER(content), message);
+    gtk_widget_show_all(content);
+
+    int res = gtk_dialog_run (GTK_DIALOG (close));
     gtk_widget_destroy (close);
+
+    switch (res) {
+        case 0:
+            GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
+            g_application_quit(app);
+            break;
+        case 1:
+            return;
+        case 2:
+            save_command(GTK_WIDGET(self), document);
+            break;
+    }
 }
 
 gboolean delete_event(GtkWidget* self, GdkEvent* event, struct Document * document) {
@@ -246,8 +246,19 @@ void search_command(GtkWidget * self, struct Document * document) {
 
 void about_command(GtkWidget * self, struct Document * document) {
     GtkWidget * about_dialog = gtk_about_dialog_new();
+    GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);
+
     GdkPixbuf * icon = gtk_window_get_icon(document->window);
-    gtk_about_dialog_set_logo(GTK_ABOUT_DIALOG(about_dialog), icon);
+    gtk_about_dialog_set_logo(about, icon);
+
+    const char * authors[] = {"Gabriel Holmann", NULL};
+    gtk_about_dialog_set_authors(about, authors);
+
+    const char * comments = "Notes is a simple gtk3 notepad intended to be small and efficient.";
+    gtk_about_dialog_set_comments(about, comments);
+
+    const char * website = "https://github.com/gholmann16/Notes";
+    gtk_about_dialog_set_website(about, website);
 
     gtk_dialog_run(GTK_DIALOG(about_dialog));
 }
