@@ -18,6 +18,7 @@ appimage: commands.o menu.o main.o
 	mkdir -p release/usr/lib
 	mkdir -p release/usr/bin
 	mv Notes release/usr/bin
+	cp assets/Notes.png release
 	sed -i -e 's#/usr#././#g' release/usr/bin/Notes
 	cp /usr/lib/libgtksourceview-4.so.0 release/usr/lib
 	appimagetool release
