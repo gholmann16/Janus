@@ -1,6 +1,6 @@
 ![Picture of app](assets/Notes.png)
 
-#Notes
+# Notes
 Simple gtk 3 based notepad. Meant to imitated windows notepad.
 
 Build Dependencies:

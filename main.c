@@ -29,6 +29,7 @@ void activate(GtkApplication * app, struct Document * document) {
     gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
 
     document->buffer = buffer;
+    document->view = view;
     document->context = context;
     document->window = GTK_WINDOW(window);
 

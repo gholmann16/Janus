@@ -98,15 +98,25 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(search_button, "activate", G_CALLBACK(search_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_button);
 
+    GtkWidget * options = gtk_menu_item_new_with_label("Options");
+    gtk_menu_shell_append(GTK_MENU_SHELL(bar), options);
+
+    GtkWidget * optionsmenu = gtk_menu_new();
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(options), optionsmenu);
+
+    GtkWidget * fonts = gtk_menu_item_new_with_label("Font...");
+    g_signal_connect(fonts, "activate", G_CALLBACK(font_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), fonts);
+
     GtkWidget * help = gtk_menu_item_new_with_label("Help");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), help);
 
     GtkWidget * helpmenu = gtk_menu_new();
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help), helpmenu);
 
-    GtkWidget * about_button = gtk_menu_item_new_with_label("About");
-    g_signal_connect(about_button, "activate", G_CALLBACK(about_command), document);
-    gtk_menu_shell_append(GTK_MENU_SHELL(helpmenu), about_button);
+    GtkWidget * about = gtk_menu_item_new_with_label("About");
+    g_signal_connect(about, "activate", G_CALLBACK(about_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(helpmenu), about);
 
     return 0;
 }

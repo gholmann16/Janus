@@ -244,6 +244,22 @@ void search_command(GtkWidget * self, struct Document * document) {
 
 }
 
+void font_callback(GtkFontChooser * self, gchar * selected, struct Document * document) {
+    PangoFontDescription * description = pango_font_description_from_string(selected);
+    // I don't want to use a deprecated feature, but for some reason gtk decided to deprecate literally every command that works with fonts
+    // There is still a way to override them using css, but its messy, and I don't know how consistently it would work with this output
+    gtk_widget_override_font(document->view, description);
+}
+
+void font_command(GtkWidget * self, struct Document * document) {
+    
+    GtkWidget * dialog = gtk_font_chooser_dialog_new("Fonts", document->window);
+    g_signal_connect(dialog, "font-activated", G_CALLBACK(font_callback), document);
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
 void about_command(GtkWidget * self, struct Document * document) {
     GtkWidget * about_dialog = gtk_about_dialog_new();
     GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);

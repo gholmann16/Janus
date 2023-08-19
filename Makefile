@@ -3,7 +3,7 @@ notes: commands.o menu.o main.o
 main.o: main.c
 	cc main.c -c `pkg-config --cflags gtksourceview-4`
 commands.o: commands.c
-	cc commands.c -c `pkg-config --cflags gtksourceview-4`
+	cc commands.c -c `pkg-config --cflags gtksourceview-4` -Wno-deprecated-declarations
 menu.o: menu.c
 	cc menu.c -c `pkg-config --cflags gtksourceview-4`
 
