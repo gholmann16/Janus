@@ -1,11 +1,4 @@
-![Picture of app](assets/Notes.png)
+![Picture of app](assets/screenshot.png)
 
 # Notes
-Simple gtk 3 based notepad. Meant to imitated windows notepad.
-
-Build Dependencies:
-    - Gtk3
-    - GtkSourceView4
-
-App Dependencies:
-    - Gtk3
+Simple gtk 3 based notepad. Meant to imitate windows notepad. Still in alpha
