@@ -197,6 +197,14 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }
 
+void search(struct Document * document, GtkTextIter start) {
+    GtkTextIter match_start;
+    GtkTextIter match_end;
+
+    if(gtk_source_search_context_forward(document->context, &start, &match_start, &match_end, NULL))
+        gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
+}
+
 void search_command(GtkWidget * self, struct Document * document) {
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
@@ -229,18 +237,63 @@ void search_command(GtkWidget * self, struct Document * document) {
     
     int res = gtk_dialog_run (GTK_DIALOG (dialog));
 
-    gtk_source_search_settings_set_search_text(settings, gtk_entry_get_text(GTK_ENTRY(entry)));
-    gtk_source_search_settings_set_case_sensitive(settings, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(bubble)));
-
-    gtk_widget_destroy (dialog);
-
     if (res == 1) {        
-        GtkTextIter match_start;
-        GtkTextIter match_end;
 
-        if(gtk_source_search_context_forward(document->context, &start, &match_start, &match_end, NULL))
-            gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
+        gtk_source_search_settings_set_search_text(settings, gtk_entry_get_text(GTK_ENTRY(entry)));
+        gtk_source_search_settings_set_case_sensitive(settings, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(bubble)));
+
+        gtk_widget_destroy (dialog);
+        search(document, start);
     }
+    else {
+        gtk_widget_destroy (dialog);
+    }
+
+}
+
+void search_next_command(GtkWidget * self, struct Document * document) {
+    
+    GtkTextIter start_of_selection;
+    GtkTextIter start;
+    gtk_text_buffer_get_selection_bounds(document->buffer, &start_of_selection, &start);
+
+    search(document, start);
+}
+
+int lines_in_buffer(GtkTextBuffer * buffer) {
+    int count = 0;
+
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+    count = gtk_text_iter_get_line(&end) + 1;
+    
+    return count;
+}
+
+void go_to_command(GtkWidget * self, struct Document * document) {
+    GtkWidget * dialog = gtk_dialog_new_with_buttons("Go To", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Go To", 0, "Cancel", 1, NULL);
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    GtkWidget * line = gtk_label_new("Line number:");
+    int l = lines_in_buffer(document->buffer);
+
+    GtkWidget * spin = gtk_spin_button_new_with_range(1, l, 1);
+    
+    gtk_container_add(GTK_CONTAINER(content), line);
+    gtk_container_add(GTK_CONTAINER(content), spin);
+    gtk_widget_show_all(content);
+
+    int res = gtk_dialog_run(GTK_DIALOG(dialog));
+    
+    if (res == 0) {
+        GtkTextIter jump;
+        int value = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin)) - 1;
+        gtk_text_buffer_get_iter_at_line(document->buffer, &jump, value);
+        gtk_text_buffer_place_cursor(document->buffer, &jump);
+    }
+
+    gtk_widget_destroy(dialog);
 
 }
 

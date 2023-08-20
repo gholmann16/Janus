@@ -97,6 +97,16 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     gtk_widget_add_accelerator(search_button, "activate", accel, GDK_KEY_F, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(search_button, "activate", G_CALLBACK(search_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_button);
+    
+    GtkWidget * search_next = gtk_menu_item_new_with_label("Search next");
+    gtk_widget_add_accelerator(search_next, "activate", accel, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE);
+    g_signal_connect(search_next, "activate", G_CALLBACK(search_next_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_next);
+
+    GtkWidget * go_to = gtk_menu_item_new_with_label("Go to");
+    gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_G, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(go_to, "activate", G_CALLBACK(go_to_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), go_to);
 
     GtkWidget * options = gtk_menu_item_new_with_label("Options");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), options);
