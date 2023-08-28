@@ -1,5 +1,4 @@
 #include <gtksourceview/gtksource.h>
-#include "main.h"
 #include "global.h"
 
 int open_file(char * filename, struct Document * document) {
@@ -61,10 +60,8 @@ void new_command(void) {
     }
 }
 
-int save_as_file(char * filename, struct Document * document) {
+int save(struct Document * document) {
     
-    strcpy(document->name, filename);
-
     // Collect all text
     GtkTextIter start;
     GtkTextIter end;
@@ -77,6 +74,8 @@ int save_as_file(char * filename, struct Document * document) {
     FILE * f = fopen(document->name, "w");
     fprintf(f, text);
     fclose(f);
+
+    gtk_text_buffer_set_modified(document->buffer, FALSE);
 
     return 0;
 }
@@ -91,7 +90,8 @@ void save_as_command(GtkWidget * self, struct Document * document) {
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         char * filename = gtk_file_chooser_get_filename (chooser);
-        save_as_file(filename, document);
+        strcpy(document->name, filename);
+        save(document);
         g_free (filename);
     }
 
@@ -109,26 +109,58 @@ void save_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    // Collect all text
-    GtkTextIter start;
-    GtkTextIter end;
+    save(document);
 
-    gtk_text_buffer_get_start_iter(document->buffer, &start);
-    gtk_text_buffer_get_end_iter(document->buffer, &end);
+}
 
-    char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
+void draw_page (GtkPrintOperation* self, GtkPrintContext* context, gint page_nr, GtkSourcePrintCompositor *compositor) {
+    gtk_source_print_compositor_draw_page (compositor, context, page_nr);
+}
 
-    FILE * f = fopen(document->name, "w");
-    fprintf(f, text);
-    fclose(f);
+static gboolean paginate (GtkPrintOperation *operation, GtkPrintContext *context, GtkSourcePrintCompositor *compositor) {
+    if (gtk_source_print_compositor_paginate (compositor, context))
+    {
+        gint n_pages;
 
+        n_pages = gtk_source_print_compositor_get_n_pages (compositor);
+        gtk_print_operation_set_n_pages (operation, n_pages);
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+void print_command(GtkWidget * self, struct Document * document) {
+    GtkPrintOperation * print = gtk_print_operation_new();
+    GtkSourcePrintCompositor * compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
+    
+    g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
+    g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
+
+    GtkPrintOperationResult res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL);
+
+    g_object_unref(print);
+    g_object_unref(compositor);
+}
+
+void print_preview_command(GtkWidget * self, struct Document * document) {
+    GtkPrintOperation * print = gtk_print_operation_new();
+    GtkSourcePrintCompositor * compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
+    
+    g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
+    g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
+
+    GtkPrintOperationResult res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL);
+
+    g_object_unref(print);
+    g_object_unref(compositor);
 }
 
 void exit_command(GtkWidget * self, struct Document * document) {
     
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE) {
-        GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
-        g_application_quit(app);
+        gtk_main_quit();
         return;
     }
 
@@ -144,8 +176,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
 
     switch (res) {
         case 0:
-            GApplication * app = G_APPLICATION(gtk_window_get_application(document->window));
-            g_application_quit(app);
+            gtk_main_quit();
             break;
         case 1:
             return;

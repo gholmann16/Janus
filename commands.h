@@ -1,3 +1,5 @@
+int open_file(char * filename, struct Document * document);
+
 void open_command(GtkWidget * self, struct Document * document);
 
 void new_command(void);
@@ -5,6 +7,10 @@ void new_command(void);
 void save_command(GtkWidget * self, struct Document * document);
 
 void save_as_command(GtkWidget * self, struct Document * document);
+
+void print_command(GtkWidget * self, struct Document * document);
+
+void print_preview_command(GtkWidget * self, struct Document * document);
 
 void exit_command(GtkWidget * self, struct Document * document);
 

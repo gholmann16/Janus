@@ -33,11 +33,22 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
 
     GtkWidget * seperate = gtk_separator_menu_item_new();
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), seperate);
+    
+    GtkWidget * print = gtk_menu_item_new_with_label("Print...");
+    gtk_widget_add_accelerator(print, "activate", accel, GDK_KEY_P, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(print, "activate", G_CALLBACK(print_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), print);
+
+    GtkWidget * preview = gtk_menu_item_new_with_label("Print Preview...");
+    g_signal_connect(preview, "activate", G_CALLBACK(print_preview_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), preview);
+
+    GtkWidget * seperate1 = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), seperate1);
 
     GtkWidget * exit = gtk_menu_item_new_with_label("Exit");
     g_signal_connect(exit, "activate", G_CALLBACK(exit_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), exit);
-    g_signal_connect(GTK_WIDGET(document->window), "delete-event", G_CALLBACK(delete_event), document);
 
     // Edit menu
 
