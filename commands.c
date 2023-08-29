@@ -302,6 +302,108 @@ int lines_in_buffer(GtkTextBuffer * buffer) {
     return count;
 }
 
+struct Replace {
+    GtkSourceSearchSettings * settings;
+    GtkEntry * search_entry;
+    GtkEntry * replace_entry;
+    GtkToggleButton * caps;
+    GtkToggleButton * all;
+    struct Document * document;
+};
+
+void search_to_replace(GtkWidget * self, struct Replace * replace) {
+    gtk_source_search_settings_set_search_text(replace->settings, gtk_entry_get_text(replace->search_entry));
+    gtk_source_search_settings_set_case_sensitive(replace->settings, gtk_toggle_button_get_active(replace->caps));
+
+    GtkTextIter start_of_selection;
+    GtkTextIter start;
+    gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start_of_selection, &start);
+
+    search(replace->document, start);
+}
+
+void replace(GtkWidget * self, struct Replace * replace) {
+
+    const char * text = gtk_entry_get_text(replace->replace_entry);
+
+    gtk_source_search_settings_set_search_text(replace->settings, gtk_entry_get_text(replace->search_entry));
+    gtk_source_search_settings_set_case_sensitive(replace->settings, gtk_toggle_button_get_active(replace->caps));
+    
+    if (gtk_toggle_button_get_active(replace->all)) {
+        gtk_source_search_context_replace_all(replace->document->context, text, strlen(text), NULL);
+        return;
+    }
+
+    GtkTextIter start;
+    GtkTextIter end;
+
+    if(!gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start, &end)) {
+        search(replace->document, start);
+        gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start, &end);
+    }
+    gtk_source_search_context_replace(replace->document->context, &start, &end, text, strlen(text), NULL);
+
+}
+
+void replace_command(GtkWidget * self, struct Document * document) {
+    
+    GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
+
+    GtkWidget * dialog = gtk_dialog_new_with_buttons("Replace", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, NULL);
+    GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    // Search
+    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+    GtkWidget * label = gtk_label_new("Search text:");
+    GtkWidget * entry = gtk_entry_new();
+    const gchar * text = gtk_source_search_settings_get_search_text(settings);
+    if (text)
+        gtk_entry_set_text(GTK_ENTRY(entry), text);
+    GtkWidget * search_button = gtk_button_new_with_label("Search");
+
+    gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(box), entry, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(box), search_button, 0, 0, 0);
+    gtk_container_add(GTK_CONTAINER(content), box);
+
+    // Replace
+    GtkWidget * box2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+    GtkWidget * label2 = gtk_label_new("Replace text");
+    GtkWidget * entry2 = gtk_entry_new();
+    GtkWidget * replace_button = gtk_button_new_with_label("Replace");
+
+    gtk_box_pack_start(GTK_BOX(box2), label2, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(box2), entry2, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(box2), replace_button, 0, 0, 0);
+    gtk_container_add(GTK_CONTAINER(content), box2);
+
+    GtkWidget * bubble = gtk_check_button_new_with_label("Match case");
+    GtkWidget * bubble2 = gtk_check_button_new_with_label("Replace all");
+
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
+
+    gtk_container_add(GTK_CONTAINER(content), bubble);
+    gtk_container_add(GTK_CONTAINER(content), bubble2);
+
+    gtk_widget_show_all(content);
+
+    struct Replace rep = {
+        settings,
+        GTK_ENTRY(entry),
+        GTK_ENTRY(entry2),
+        GTK_TOGGLE_BUTTON(bubble),
+        GTK_TOGGLE_BUTTON(bubble2),
+        document
+    };
+
+    g_signal_connect(search_button, "clicked", G_CALLBACK(search_to_replace), &rep);
+    g_signal_connect(replace_button, "clicked", G_CALLBACK(replace), &rep);
+    
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    gtk_widget_destroy (dialog);
+}
+
 void go_to_command(GtkWidget * self, struct Document * document) {
     GtkWidget * dialog = gtk_dialog_new_with_buttons("Go To", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Go To", 0, "Cancel", 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -342,6 +444,15 @@ void font_command(GtkWidget * self, struct Document * document) {
 
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
+}
+
+void wrap_command(GtkWidget * self, struct Document * document) {
+    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(self))) {
+        gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_WORD);
+    }
+    else {
+        gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_NONE);
+    }
 }
 
 void about_command(GtkWidget * self, struct Document * document) {

@@ -114,6 +114,14 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     g_signal_connect(search_next, "activate", G_CALLBACK(search_next_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_next);
 
+    GtkWidget * replace = gtk_menu_item_new_with_label("Replace");
+    gtk_widget_add_accelerator(replace, "activate", accel, GDK_KEY_H, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(replace, "activate", G_CALLBACK(replace_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), replace);
+
+    GtkWidget * seperate4 = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), seperate4);
+
     GtkWidget * go_to = gtk_menu_item_new_with_label("Go to");
     gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_G, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(go_to, "activate", G_CALLBACK(go_to_command), document);
@@ -128,6 +136,11 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     GtkWidget * fonts = gtk_menu_item_new_with_label("Font...");
     g_signal_connect(fonts, "activate", G_CALLBACK(font_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), fonts);
+
+    GtkWidget * wrap = gtk_check_menu_item_new_with_label("Wrap line");
+    g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
+    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wrap), TRUE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
 
     GtkWidget * help = gtk_menu_item_new_with_label("Help");
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), help);
