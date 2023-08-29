@@ -462,8 +462,13 @@ void about_command(GtkWidget * self, struct Document * document) {
     GdkPixbuf * icon = gtk_window_get_icon(document->window);
     gtk_about_dialog_set_logo(about, icon);
 
-    const char * authors[] = {"Gabriel Holmann", NULL};
+    const char * authors[] = {"Gabriel Holmann <gholmann16@gmail.com>", NULL};
     gtk_about_dialog_set_authors(about, authors);
+
+    const char * artists[] = {"Flaticon.com", NULL};
+    gtk_about_dialog_set_artists(about, artists);
+
+    gtk_about_dialog_set_license_type(about, GTK_LICENSE_GPL_3_0);
 
     const char * comments = "Notes is a simple gtk3 notepad intended to be small and efficient.";
     gtk_about_dialog_set_comments(about, comments);
