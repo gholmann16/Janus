@@ -2,33 +2,30 @@
 #include "global.h"
 
 int open_file(char * filename, struct Document * document) {
-   
-    // Delete buffer
-    GtkTextIter start;
-    GtkTextIter end;
-
-    gtk_text_buffer_get_start_iter(document->buffer, &start);
-    gtk_text_buffer_get_end_iter(document->buffer, &end);
-
-    gtk_text_buffer_delete(document->buffer, &start, &end);
     
     // Get file
+    FILE * f = fopen(filename, "r");
     char * contents;
     gsize len;
-    GError * err = NULL;
-    g_file_get_contents(filename, &contents, &len, &err);
 
-    if (err != NULL) {
-        fprintf (stderr, "Unable to read file: %s\n", err->message);
-        g_error_free (err);
-        return 1;
-    }
+    fseek(f, 0L, SEEK_END);
+    len = ftell(f);
     
+    fseek(f, 0L, SEEK_SET);	
+    contents = (char*)calloc(len, sizeof(char));	
+    
+    fread(contents, sizeof(char), len, f);
+    fclose(f);
+
+    char * new = g_convert(contents, len, "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
+
+
     // Insert file
-    gtk_text_buffer_insert(document->buffer, &start, contents, len);
+    gtk_text_buffer_set_text(document->buffer, new, -1);
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     strcpy(document->name, filename);
     free(contents);
+    free(new);
     
     return 0;
 }
