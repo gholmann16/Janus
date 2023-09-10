@@ -1,3 +1,5 @@
+void filename_to_title(struct Document * document);
+
 int open_file(char * filename, struct Document * document);
 
 void open_command(GtkWidget * self, struct Document * document);

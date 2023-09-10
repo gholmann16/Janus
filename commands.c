@@ -1,6 +1,17 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 
+void filename_to_title(struct Document * document) {
+    char title[264] = {0};
+    char * p = document->name;
+    if (strrchr(document->name, '/') != NULL) {
+        p = strrchr(document->name, '/') + 1;
+    }
+    strlcat(title, p, sizeof(title));
+    strlcat(title, " - Notes", sizeof(title));
+    gtk_window_set_title(GTK_WINDOW(document->window), title);
+}
+
 int open_file(char * filename, struct Document * document) {
     
     // Get file
@@ -24,6 +35,7 @@ int open_file(char * filename, struct Document * document) {
     gtk_text_buffer_set_text(document->buffer, new, -1);
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     strcpy(document->name, filename);
+    filename_to_title(document);
     free(contents);
     free(new);
     

@@ -11,7 +11,6 @@ int main(int argc, char * argv[]) {
     gtk_init(NULL, NULL);
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Notes");
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
@@ -64,9 +63,13 @@ int main(int argc, char * argv[]) {
             strlcat(document.name, "/", sizeof(document.name));
         }
         strlcat(document.name, argv[1], sizeof(document.name));
-        open_file(document.name, &document);
+        if (access(document.name, F_OK) == 0) {
+            open_file(document.name, &document);
+            filename_to_title(&document);
+        }
     }
 
+    
     gtk_main();
 
     return 0;
