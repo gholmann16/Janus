@@ -28,16 +28,34 @@ int open_file(char * filename, struct Document * document) {
     fread(contents, sizeof(char), len, f);
     fclose(f);
 
-    char * new = g_convert(contents, len, "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
+    document->ro = FALSE;
 
+    if (g_utf8_validate(contents, len, NULL) == FALSE) {
+        document->ro = TRUE;
+        gsize read;
+        gsize wrote;
+
+        char * new = g_convert(contents, len, "UTF-8", "ISO-8859-15", &read, &wrote, NULL);
+        free(contents);
+        contents = malloc(wrote);
+        for (gsize x = 0; x < wrote; x++) {
+            if(new[x] != 0) {
+                contents[x] = new[x];
+            }
+            else {
+                contents[x] = ' ';
+            }
+        }
+        contents[wrote] = 0;
+        free(new);
+    }
 
     // Insert file
-    gtk_text_buffer_set_text(document->buffer, new, -1);
+    gtk_text_buffer_set_text(document->buffer, contents, -1);
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     strcpy(document->name, filename);
     filename_to_title(document);
     free(contents);
-    free(new);
     
     return 0;
 }
@@ -69,6 +87,13 @@ void new_command(void) {
     }
 }
 
+void read_only_popup(struct Document * document) {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"File is read only", NULL);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+}
+
 int save(struct Document * document) {
     
     // Collect all text
@@ -91,6 +116,11 @@ int save(struct Document * document) {
 
 void save_as_command(GtkWidget * self, struct Document * document) {
     
+    if (document->ro == TRUE) {
+        read_only_popup(document);
+        return;
+    }
+
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
     GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save File", document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
 
@@ -115,6 +145,11 @@ void save_command(GtkWidget * self, struct Document * document) {
 
     if (document->name[0] == '\0') {
         save_as_command(self, document);
+        return;
+    }
+
+    if (document->ro == TRUE) {
+        read_only_popup(document);
         return;
     }
 
