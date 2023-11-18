@@ -521,4 +521,5 @@ void about_command(GtkWidget * self, struct Document * document) {
     gtk_about_dialog_set_website(about, website);
 
     gtk_dialog_run(GTK_DIALOG(about_dialog));
+    gtk_widget_destroy(about_dialog);
 }
