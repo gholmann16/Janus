@@ -48,10 +48,13 @@ int open_file(char * filename, struct Document * document) {
         }
         contents[wrote] = 0;
         free(new);
+        gtk_text_buffer_set_text(document->buffer, contents, -1);
+    }
+    else {
+        gtk_text_buffer_set_text(document->buffer, contents, len);
     }
 
-    // Insert file
-    gtk_text_buffer_set_text(document->buffer, contents, -1);
+    // Update edtior
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     strcpy(document->name, filename);
     filename_to_title(document);

@@ -6,4 +6,4 @@ Exec=Notes %f
 Icon=Notes
 Terminal=false
 MimeType=text/plain
-Categories=Gtk;Utility;TextEditor;
+Categories=GTK;Utility;TextEditor;
