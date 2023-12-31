@@ -16,7 +16,7 @@ int main(int argc, char * argv[]) {
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
     GError *error = NULL;
-    GdkPixbuf * icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/Notes.png", &error);
+    GdkPixbuf * icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
     if (error != NULL) {
         printf(error->message);
         g_clear_error (&error);

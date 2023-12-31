@@ -2,8 +2,8 @@
 Type=Application
 Name=Notes
 Comment=Simple gtk notepad
-Exec=Notes %f
-Icon=Notes
+Exec=notes %f
+Icon=notes
 Terminal=false
 MimeType=text/plain
 Categories=GTK;Utility;TextEditor;
