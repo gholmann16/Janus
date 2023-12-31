@@ -1,18 +1,38 @@
+INC_FLAGS := `pkg-config --cflags gtksourceview-4`
+
+ifeq ($(RELEASE),yes)
+	CFLAGS := -c -O3
+else
+	CFLAGS := -c -g
+endif
+
+ifeq ($(PREFIX),)
+    PREFIX := /usr
+endif
+
 notes: commands.o menu.o main.o
-	cc main.o -g `pkg-config --libs gtksourceview-4` commands.o menu.o -o notes
+	gcc main.o `pkg-config --libs gtksourceview-4` commands.o menu.o -o notes
 main.o: main.c
-	cc main.c -c `pkg-config --cflags gtksourceview-4`
+	cc main.c $(CFLAGS) $(INC_FLAGS)
 commands.o: commands.c
-	cc commands.c -c `pkg-config --cflags gtksourceview-4` -Wno-deprecated-declarations
+	cc commands.c $(CFLAGS) $(INC_FLAGS) -Wno-deprecated-declarations
 menu.o: menu.c
-	cc menu.c -c `pkg-config --cflags gtksourceview-4`
+	cc menu.c $(CFLAGS) $(INC_FLAGS)
 
 clean:
 	rm *.o
 
-appimage: commands.o menu.o main.o
+install: notes
+	strip notes
+	install -d $(PREFIX)/bin/
+	install notes $(PREFIX)/bin/
+	install -d $(PREFIX)/share/pixmaps/
+	install assets/notes.png $(PREFIX)/share/pixmaps/
+	install -d $(PREFIX)/share/applications/
+	install release/notes.desktop $(PREFIX)/share/applications/
+
+appimage: notes
 	cc -O3 release/AppRun.c -o release/AppRun
-	cc -O3 main.o `pkg-config --libs gtksourceview-4` commands.o menu.o -o notes
 	strip release/AppRun
 	strip notes
 	mkdir -p release/usr/lib
