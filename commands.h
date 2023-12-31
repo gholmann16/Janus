@@ -1,4 +1,4 @@
-void filename_to_title(struct Document * document);
+void change_indicator(GtkWidget * self, struct Document * editor);
 
 int open_file(char * filename, struct Document * document);
 

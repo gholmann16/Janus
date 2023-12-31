@@ -12,6 +12,21 @@ void filename_to_title(struct Document * document) {
     gtk_window_set_title(GTK_WINDOW(document->window), title);
 }
 
+void change_indicator(GtkWidget * self, struct Document * document) {
+    printf("Fired\n"); 
+    //Assumes it's the current tab
+    if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
+        const char * current = gtk_window_get_title(document->window);
+        char newtitle [266] = "* ";
+        strlcat(newtitle, current, sizeof(newtitle));
+        gtk_window_set_title(document->window, newtitle);
+    }
+    else {
+        const char * current = gtk_window_get_title(document->window);
+        gtk_window_set_title(document->window, current + 2);
+    }
+}
+
 int open_file(char * filename, struct Document * document) {
     
     // Get file
@@ -48,14 +63,17 @@ int open_file(char * filename, struct Document * document) {
         }
         contents[wrote] = 0;
         free(new);
+        g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
         gtk_text_buffer_set_text(document->buffer, contents, -1);
     }
     else {
-        gtk_text_buffer_set_text(document->buffer, contents, len);
+        g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
+        gtk_text_buffer_set_text(document->buffer, contents, -1);
     }
 
     // Update edtior
     gtk_text_buffer_set_modified(document->buffer, FALSE);
+    g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
     strcpy(document->name, filename);
     filename_to_title(document);
     free(contents);

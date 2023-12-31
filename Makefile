@@ -1,4 +1,4 @@
-notes: commands.o menu.o main.o
+Notes: commands.o menu.o main.o
 	cc main.o -g `pkg-config --libs gtksourceview-4` commands.o menu.o -o Notes
 main.o: main.c
 	cc main.c -c `pkg-config --cflags gtksourceview-4`

@@ -11,6 +11,7 @@ int main(int argc, char * argv[]) {
     gtk_init(NULL, NULL);
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Notes");
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
@@ -29,6 +30,7 @@ int main(int argc, char * argv[]) {
     GtkWidget * view = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
+    g_signal_connect(buffer, "modified-changed", G_CALLBACK(change_indicator), &document);
 
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
     gtk_source_search_context_set_highlight(context, FALSE);
@@ -65,7 +67,6 @@ int main(int argc, char * argv[]) {
         strlcat(document.name, argv[1], sizeof(document.name));
         if (access(document.name, F_OK) == 0) {
             open_file(document.name, &document);
-            filename_to_title(&document);
         }
     }
 
