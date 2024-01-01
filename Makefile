@@ -11,7 +11,7 @@ ifeq ($(PREFIX),)
 endif
 
 notes: commands.o menu.o main.o
-	gcc main.o `pkg-config --libs gtksourceview-4` commands.o menu.o -o notes
+	gcc main.o commands.o menu.o `pkg-config --libs gtksourceview-4` -o notes
 main.o: main.c
 	cc main.c $(CFLAGS) $(INC_FLAGS)
 commands.o: commands.c

@@ -60,13 +60,15 @@ int main(int argc, char * argv[]) {
     gtk_widget_show_all (window);
 
     if (argc > 1) {
-        if (getenv("OWD") != NULL) {
-            strlcat(document.name, getenv("OWD"), sizeof(document.name));
-            strlcat(document.name, "/", sizeof(document.name));
+        if (getenv("OWD") != NULL && argv[1][0] != '/') {
+            strcat(document.name, getenv("OWD"));
+            strcat(document.name, "/");
         }
-        strlcat(document.name, argv[1], sizeof(document.name));
-        if (access(document.name, F_OK) == 0) {
-            open_file(document.name, &document);
+        if (strlen(argv[1]) + strlen(document.name) < 256) {
+            strcat(document.name, argv[1]);
+            if (access(document.name, F_OK) == 0) {
+                open_file(document.name, &document);
+            }
         }
     }
 

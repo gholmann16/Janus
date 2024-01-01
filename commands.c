@@ -7,8 +7,8 @@ void filename_to_title(struct Document * document) {
     if (strrchr(document->name, '/') != NULL) {
         p = strrchr(document->name, '/') + 1;
     }
-    strlcat(title, p, sizeof(title));
-    strlcat(title, " - Notes", sizeof(title));
+    strcat(title, p);
+    strcat(title, " - Notes");
     gtk_window_set_title(GTK_WINDOW(document->window), title);
 }
 
@@ -18,7 +18,7 @@ void change_indicator(GtkWidget * self, struct Document * document) {
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
         const char * current = gtk_window_get_title(document->window);
         char newtitle [266] = "* ";
-        strlcat(newtitle, current, sizeof(newtitle));
+        strcat(newtitle, current);
         gtk_window_set_title(document->window, newtitle);
     }
     else {
