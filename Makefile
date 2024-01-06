@@ -1,13 +1,8 @@
 INC_FLAGS := `pkg-config --cflags gtksourceview-4`
+CFLAGS := -c -g
 
 ifeq ($(RELEASE),yes)
-	CFLAGS := -c -O3
-else
-	CFLAGS := -c -g
-endif
-
-ifeq ($(PREFIX),)
-    PREFIX := /usr
+	CFLAGS := $(CFLAGS) -O3
 endif
 
 notes: commands.o menu.o main.o
@@ -24,12 +19,17 @@ clean:
 
 install: notes
 	strip notes
-	install -d $(PREFIX)/bin/
-	install notes $(PREFIX)/bin/
-	install -d $(PREFIX)/share/pixmaps/
-	install assets/notes.png $(PREFIX)/share/pixmaps/
-	install -d $(PREFIX)/share/applications/
-	install release/notes.desktop $(PREFIX)/share/applications/
+	install -d /usr/bin/
+	install notes /usr/bin/
+	install -d /usr/share/pixmaps/
+	install assets/notes.png /usr/share/pixmaps/
+	install -d /usr/share/applications/
+	install release/notes.desktop /usr/share/applications/
+
+uninstall:
+	rm /usr/bin/notes
+	rm /usr/share/pixmaps/notes.png
+	rm /usr/share/applications/notes.desktop
 
 appimage: notes
 	cc -O3 release/AppRun.c -o release/AppRun
