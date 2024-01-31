@@ -1,6 +1,4 @@
 notes
 *.o
 *.AppImage
-AppRun
-libgtksourceview-4.so.0
-release/notes.png
+appdir

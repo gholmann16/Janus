@@ -22,23 +22,20 @@ install: notes
 	install -d /usr/bin/
 	install notes /usr/bin/
 	install -d /usr/share/pixmaps/
-	install assets/notes.png /usr/share/pixmaps/
+	install data/notes.png /usr/share/pixmaps/
 	install -d /usr/share/applications/
-	install release/notes.desktop /usr/share/applications/
+	install data/notes.desktop /usr/share/applications/
 
 uninstall:
 	rm /usr/bin/notes
 	rm /usr/share/pixmaps/notes.png
 	rm /usr/share/applications/notes.desktop
 
-appimage: notes
-	cc -O3 release/AppRun.c -o release/AppRun
-	strip release/AppRun
-	strip notes
-	mkdir -p release/usr/lib
-	mkdir -p release/usr/bin
-	mv notes release/usr/bin
-	cp assets/notes.png release
-	sed -i -e 's#/usr#././#g' release/usr/bin/notes
-	cp /usr/lib/libgtksourceview-4.so.0 release/usr/lib
-	appimagetool release
+appdir:
+	mkdir appdir
+	cp data/notes.desktop appdir/
+	cp data/notes.png appdir/notes.png
+
+appimage: notes appdir
+	mv notes appdir/AppRun
+	appimagetool appdir
