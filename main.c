@@ -79,6 +79,7 @@ int main(int argc, char * argv[]) {
 
     
     gtk_main();
+    gtk_source_finalize();
 
     return 0;
 }
