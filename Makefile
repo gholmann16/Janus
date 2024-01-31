@@ -11,7 +11,7 @@ menu.o: menu.c
 	cc menu.c $(CFLAGS) $(INC_FLAGS)
 
 clean:
-	rm *.o
+	rm -f *.o
 
 release: CFLAGS += -O3
 release: clean notes
