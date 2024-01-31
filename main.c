@@ -16,7 +16,16 @@ int main(int argc, char * argv[]) {
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
     GError *error = NULL;
-    GdkPixbuf * icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
+    GdkPixbuf * icon;
+    if (getenv("APPDIR")) {
+        char path[PATH_MAX];
+        strcpy(path, getenv("APPDIR"));
+        strcat(path, "/notes.png");
+        icon = gdk_pixbuf_new_from_file(path, &error);
+    }
+    else 
+        icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
+
     if (error != NULL) {
         printf(error->message);
         g_clear_error (&error);
@@ -60,10 +69,6 @@ int main(int argc, char * argv[]) {
     gtk_widget_show_all (window);
 
     if (argc > 1) {
-        if (getenv("OWD") != NULL && argv[1][0] != '/') {
-            strcat(document.name, getenv("OWD"));
-            strcat(document.name, "/");
-        }
         if (strlen(argv[1]) + strlen(document.name) < 256) {
             strcat(document.name, argv[1]);
             if (access(document.name, F_OK) == 0) {

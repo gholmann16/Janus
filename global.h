@@ -4,5 +4,6 @@ struct Document {
     GtkWidget * view;
     GtkWindow * window;
     GtkSourceSearchContext * context;
+    GtkTextIter last;
     int ro;
 };

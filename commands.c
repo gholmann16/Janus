@@ -13,7 +13,6 @@ void filename_to_title(struct Document * document) {
 }
 
 void change_indicator(GtkWidget * self, struct Document * document) {
-    printf("Fired\n"); 
     //Assumes it's the current tab
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
         const char * current = gtk_window_get_title(document->window);
@@ -293,15 +292,35 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }
 
-void search(struct Document * document, GtkTextIter start) {
+void search(struct Document * document) {
+
     GtkTextIter match_start;
     GtkTextIter match_end;
 
-    if(gtk_source_search_context_forward(document->context, &start, &match_start, &match_end, NULL))
+    if(gtk_source_search_context_forward(document->context, &document->last, &match_start, &match_end, NULL)) {
         gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
+        document->last = match_end;
+
+        gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(document->view), &match_end, 0.1, FALSE, 0, 0);
+    }
+}
+
+void search_entry(GtkWidget * entry, struct Document * document) {
+    GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
+    gtk_source_search_settings_set_search_text(settings, gtk_entry_get_text(GTK_ENTRY(entry)));
+
+    search(document);
+}
+
+void match_case(GtkWidget * self, GtkSourceSearchSettings * settings) {
+    gtk_source_search_settings_set_case_sensitive(settings, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(self)));
 }
 
 void search_command(GtkWidget * self, struct Document * document) {
+
+    GtkTextIter last;
+    gtk_text_buffer_get_start_iter(document->buffer, &last);
+    document->last = last;
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
@@ -311,6 +330,7 @@ void search_command(GtkWidget * self, struct Document * document) {
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     
     GtkWidget * entry = gtk_entry_new();
+    g_signal_connect(entry, "activate", G_CALLBACK(search_entry), document);
     const gchar * text = gtk_source_search_settings_get_search_text(settings);
     if (text)
         gtk_entry_set_text(GTK_ENTRY(entry), text);
@@ -318,7 +338,7 @@ void search_command(GtkWidget * self, struct Document * document) {
     GtkWidget * label = gtk_label_new("Find text:");
     GtkWidget * bubble = gtk_check_button_new_with_label("Match case");
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
-
+    g_signal_connect(bubble, "toggled", G_CALLBACK(match_case), settings);
 
     gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
     gtk_box_pack_end(GTK_BOX(box), entry, 0, 0, 0);
@@ -327,74 +347,38 @@ void search_command(GtkWidget * self, struct Document * document) {
     gtk_container_add(GTK_CONTAINER(content), bubble);
     gtk_widget_show_all(content);
 
-    GtkTextIter start_of_selection;
-    GtkTextIter start;
-    gtk_text_buffer_get_selection_bounds(document->buffer, &start_of_selection, &start);
-    
+    gtk_source_search_context_set_highlight(document->context, TRUE);
     int res = gtk_dialog_run (GTK_DIALOG (dialog));
 
-    if (res == 1) {        
+    if (res == 1) 
+        search_entry(entry, document);
 
-        gtk_source_search_settings_set_search_text(settings, gtk_entry_get_text(GTK_ENTRY(entry)));
-        gtk_source_search_settings_set_case_sensitive(settings, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(bubble)));
-
-        gtk_widget_destroy (dialog);
-        search(document, start);
-    }
-    else {
-        gtk_widget_destroy (dialog);
-    }
-
+    gtk_widget_destroy (dialog);
+    gtk_source_search_context_set_highlight(document->context, FALSE);
 }
 
 void search_next_command(GtkWidget * self, struct Document * document) {
-    
-    GtkTextIter start_of_selection;
-    GtkTextIter start;
-    gtk_text_buffer_get_selection_bounds(document->buffer, &start_of_selection, &start);
-
-    search(document, start);
-}
-
-int lines_in_buffer(GtkTextBuffer * buffer) {
-    int count = 0;
-
-    GtkTextIter end;
-    gtk_text_buffer_get_end_iter(buffer, &end);
-
-    count = gtk_text_iter_get_line(&end) + 1;
-    
-    return count;
+    search(document);
 }
 
 struct Replace {
     GtkSourceSearchSettings * settings;
-    GtkEntry * search_entry;
-    GtkEntry * replace_entry;
-    GtkToggleButton * caps;
-    GtkToggleButton * all;
+    GtkWidget * search_entry;
+    GtkWidget * replace_entry;
+    _Bool all;
     struct Document * document;
 };
 
 void search_to_replace(GtkWidget * self, struct Replace * replace) {
-    gtk_source_search_settings_set_search_text(replace->settings, gtk_entry_get_text(replace->search_entry));
-    gtk_source_search_settings_set_case_sensitive(replace->settings, gtk_toggle_button_get_active(replace->caps));
-
-    GtkTextIter start_of_selection;
-    GtkTextIter start;
-    gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start_of_selection, &start);
-
-    search(replace->document, start);
+    search_entry(replace->search_entry, replace->document);
 }
 
 void replace(GtkWidget * self, struct Replace * replace) {
 
-    const char * text = gtk_entry_get_text(replace->replace_entry);
-
-    gtk_source_search_settings_set_search_text(replace->settings, gtk_entry_get_text(replace->search_entry));
-    gtk_source_search_settings_set_case_sensitive(replace->settings, gtk_toggle_button_get_active(replace->caps));
+    const char * text = gtk_entry_get_text(GTK_ENTRY(replace->replace_entry));
+    gtk_source_search_settings_set_search_text(replace->settings, gtk_entry_get_text(GTK_ENTRY(replace->search_entry)));
     
-    if (gtk_toggle_button_get_active(replace->all)) {
+    if (replace->all) {
         gtk_source_search_context_replace_all(replace->document->context, text, strlen(text), NULL);
         return;
     }
@@ -403,15 +387,23 @@ void replace(GtkWidget * self, struct Replace * replace) {
     GtkTextIter end;
 
     if(!gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start, &end)) {
-        search(replace->document, start);
+        search_entry(replace->search_entry, replace->document);
         gtk_text_buffer_get_selection_bounds(replace->document->buffer, &start, &end);
     }
     gtk_source_search_context_replace(replace->document->context, &start, &end, text, strlen(text), NULL);
+    replace->document->last = end;
 
 }
 
+void replace_all (GtkWidget * self, struct Replace * rep) {
+    rep->all = !rep->all;
+}
+
 void replace_command(GtkWidget * self, struct Document * document) {
-    
+   
+    GtkTextIter last;
+    gtk_text_buffer_get_start_iter(document->buffer, &last);
+    document->last = last;
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
     GtkWidget * dialog = gtk_dialog_new_with_buttons("Replace", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, NULL);
@@ -421,6 +413,7 @@ void replace_command(GtkWidget * self, struct Document * document) {
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget * label = gtk_label_new("Search text:");
     GtkWidget * entry = gtk_entry_new();
+    g_signal_connect(entry, "activate", G_CALLBACK(search_entry), document);
     const gchar * text = gtk_source_search_settings_get_search_text(settings);
     if (text)
         gtk_entry_set_text(GTK_ENTRY(entry), text);
@@ -437,8 +430,17 @@ void replace_command(GtkWidget * self, struct Document * document) {
     GtkWidget * entry2 = gtk_entry_new();
     GtkWidget * replace_button = gtk_button_new_with_label("Replace");
 
+    struct Replace rep = {
+        settings,
+        entry,
+        entry2,
+        0,
+        document
+    };
+
     gtk_box_pack_start(GTK_BOX(box2), label2, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(box2), entry2, 0, 0, 0);
+    g_signal_connect(entry2, "activate", G_CALLBACK(replace), &rep);
     gtk_box_pack_start(GTK_BOX(box2), replace_button, 0, 0, 0);
     gtk_container_add(GTK_CONTAINER(content), box2);
 
@@ -446,27 +448,33 @@ void replace_command(GtkWidget * self, struct Document * document) {
     GtkWidget * bubble2 = gtk_check_button_new_with_label("Replace all");
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
+    g_signal_connect(bubble, "toggled", G_CALLBACK(match_case), settings);
+    g_signal_connect(bubble2, "toggled", G_CALLBACK(replace_all), &rep);
 
     gtk_container_add(GTK_CONTAINER(content), bubble);
     gtk_container_add(GTK_CONTAINER(content), bubble2);
 
-    gtk_widget_show_all(content);
-
-    struct Replace rep = {
-        settings,
-        GTK_ENTRY(entry),
-        GTK_ENTRY(entry2),
-        GTK_TOGGLE_BUTTON(bubble),
-        GTK_TOGGLE_BUTTON(bubble2),
-        document
-    };
-
     g_signal_connect(search_button, "clicked", G_CALLBACK(search_to_replace), &rep);
     g_signal_connect(replace_button, "clicked", G_CALLBACK(replace), &rep);
-    
+
+    gtk_widget_show_all(content);
+
+    gtk_source_search_context_set_highlight(document->context, TRUE);
     gtk_dialog_run (GTK_DIALOG (dialog));
 
     gtk_widget_destroy (dialog);
+    gtk_source_search_context_set_highlight(document->context, FALSE);
+}
+
+int lines_in_buffer(GtkTextBuffer * buffer) {
+    int count = 0;
+
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+    count = gtk_text_iter_get_line(&end) + 1;
+    
+    return count;
 }
 
 void go_to_command(GtkWidget * self, struct Document * document) {
@@ -488,7 +496,7 @@ void go_to_command(GtkWidget * self, struct Document * document) {
         GtkTextIter jump;
         int value = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin)) - 1;
         gtk_text_buffer_get_iter_at_line(document->buffer, &jump, value);
-        gtk_text_buffer_place_cursor(document->buffer, &jump);
+        gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(document->view), &jump, 0.0, TRUE, 0.0, 0.15);
     }
 
     gtk_widget_destroy(dialog);
