@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
         icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
 
     if (error != NULL) {
-        printf(error->message);
+        puts(error->message);
         g_clear_error (&error);
     }
     gtk_window_set_icon(GTK_WINDOW(window), icon);

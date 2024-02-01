@@ -1,21 +1,25 @@
-INC_FLAGS := `pkg-config --cflags gtksourceview-4`
-CFLAGS := -c -g
+SOURCES := $(wildcard *.c)
+OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
 
-notes: commands.o menu.o main.o
-	gcc main.o commands.o menu.o `pkg-config --libs gtksourceview-4` -o notes
-main.o: main.c
-	cc main.c $(CFLAGS) $(INC_FLAGS)
-commands.o: commands.c
-	cc commands.c $(CFLAGS) $(INC_FLAGS)
-menu.o: menu.c
-	cc menu.c $(CFLAGS) $(INC_FLAGS)
+CFLAGS := `pkg-config --cflags gtksourceview-4`
+LDLIBS := `pkg-config --libs gtksourceview-4`
+
+debug: CFLAGS += -g -Og
+debug: notes
+
+release: CFLAGS += -O3
+release: notes
+	strip $<
+
+notes: $(OBJECTS)
+	$(CC) $(LDLIBS) $(LDFLAGS) $^ -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@
 
 clean:
 	rm -f *.o
-
-release: CFLAGS += -O3
-release: clean notes
-	strip notes
+distclean: clean
+	rm -f notes
 
 install: release
 	install -Dm755 notes /usr/bin/notes
