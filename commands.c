@@ -42,8 +42,6 @@ int open_file(char * filename, struct Document * document) {
     fread(contents, sizeof(char), len, f);
     fclose(f);
 
-    document->ro = FALSE;
-
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
         document->ro = TRUE;
         gsize read;
@@ -169,6 +167,7 @@ void save_command(GtkWidget * self, struct Document * document) {
     }
 
     if (document->ro == TRUE) {
+        printf("here\n");
         read_only_popup(document);
         return;
     }

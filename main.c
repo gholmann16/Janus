@@ -49,6 +49,7 @@ int main(int argc, char * argv[]) {
     document.view = text;
     document.context = context;
     document.window = GTK_WINDOW(window);
+    document.ro = FALSE;
 
     // Menu setup
     GtkAccelGroup * accel = gtk_accel_group_new();
