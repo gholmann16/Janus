@@ -158,6 +158,7 @@ void save_as_command(GtkWidget * self, struct Document * document) {
         document->path = g_strdup(filename);
         g_free (filename);
         save(document);
+        filename_to_title(document);
     }
 
     gtk_widget_destroy (dialog);
