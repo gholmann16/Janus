@@ -47,6 +47,7 @@ int open_file(char * filename, struct Document * document) {
     fread(contents, sizeof(char), len, f);
     fclose(f);
     
+    gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
         document->ro = TRUE;
@@ -73,6 +74,7 @@ int open_file(char * filename, struct Document * document) {
     }
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
+    gtk_source_buffer_end_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
 
     free(contents);
     free(document->path);
