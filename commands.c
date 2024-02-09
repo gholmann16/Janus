@@ -2,23 +2,28 @@
 #include "global.h"
 
 void filename_to_title(struct Document * document) {
-    char title[264] = {0};
-    char * p = document->name;
-    if (strrchr(document->name, '/') != NULL) {
-        p = strrchr(document->name, '/') + 1;
+    char * append = " - Notes";
+    char * p = document->path;
+    if (strrchr(document->path, '/') != NULL) {
+        p = strrchr(document->path, '/') + 1;
     }
-    strcat(title, p);
-    strcat(title, " - Notes");
+    char * title = malloc(strlen(append) + strlen(p) + 1);
+    strcpy(title, p);
+    strcat(title, append);
     gtk_window_set_title(GTK_WINDOW(document->window), title);
+    free(title);
 }
 
 void change_indicator(GtkWidget * self, struct Document * document) {
     //Assumes it's the current tab
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
         const char * current = gtk_window_get_title(document->window);
-        char newtitle [266] = "* ";
-        strcat(newtitle, current);
-        gtk_window_set_title(document->window, newtitle);
+        char * prepend = "* ";
+        char * title = malloc(strlen(current) + strlen(prepend) + 1);
+        strcpy(title, prepend);
+        strcat(title, current);
+        gtk_window_set_title(document->window, title);
+        free(title);
     }
     else {
         const char * current = gtk_window_get_title(document->window);
@@ -41,7 +46,8 @@ int open_file(char * filename, struct Document * document) {
     
     fread(contents, sizeof(char), len, f);
     fclose(f);
-
+    
+    g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
         document->ro = TRUE;
         gsize read;
@@ -60,20 +66,19 @@ int open_file(char * filename, struct Document * document) {
         }
         contents[wrote] = 0;
         free(new);
-        g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
         gtk_text_buffer_set_text(document->buffer, contents, -1);
     }
     else {
-        g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
         gtk_text_buffer_set_text(document->buffer, contents, -1);
     }
-
-    // Update edtior
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
-    strcpy(document->name, filename);
-    filename_to_title(document);
+
     free(contents);
+    free(document->path);
+
+    document->path = g_strdup(filename);
+    filename_to_title(document);
     
     return 0;
 }
@@ -123,7 +128,7 @@ int save(struct Document * document) {
 
     char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
 
-    FILE * f = fopen(document->name, "w");
+    FILE * f = fopen(document->path, "w");
     fprintf(f, text);
     fclose(f);
 
@@ -147,9 +152,10 @@ void save_as_command(GtkWidget * self, struct Document * document) {
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         char * filename = gtk_file_chooser_get_filename (chooser);
-        strcpy(document->name, filename);
-        save(document);
+        free(document->path);
+        document->path = g_strdup(filename);
         g_free (filename);
+        save(document);
     }
 
     gtk_widget_destroy (dialog);
@@ -161,7 +167,7 @@ void save_command(GtkWidget * self, struct Document * document) {
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
         return;
 
-    if (document->name[0] == '\0') {
+    if (document->path == NULL) {
         save_as_command(self, document);
         return;
     }

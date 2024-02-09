@@ -1,5 +1,5 @@
 struct Document {
-    char name[256];
+    char * path;
     GtkTextBuffer * buffer;
     GtkWidget * view;
     GtkWindow * window;
