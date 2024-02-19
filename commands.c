@@ -45,24 +45,14 @@ void open_file(char * filename, struct Document * document) {
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
-        document->ro = TRUE;
+        document->binary = TRUE;
         gsize read;
         gsize wrote;
 
-        char * new = g_convert(contents, len, "UTF-8", "ISO-8859-15", &read, &wrote, NULL);
-        free(contents);
-        contents = malloc(wrote);
-        for (gsize x = 0; x < wrote; x++) {
-            if(new[x] != 0) {
-                contents[x] = new[x];
-            }
-            else {
-                contents[x] = ' ';
-            }
-        }
-        contents[wrote] = 0;
+        char * new = g_convert(contents, len, "UTF-8", "ISO-8859-1", &read, &wrote, NULL);
+        char * valid = g_utf8_make_valid(new, wrote);
         free(new);
-        gtk_text_buffer_set_text(document->buffer, contents, -1);
+        gtk_text_buffer_set_text(document->buffer, valid, wrote+1);
     }
     else {
         gtk_text_buffer_set_text(document->buffer, contents, -1);
@@ -134,7 +124,7 @@ int save(struct Document * document) {
 
 void save_as_command(GtkWidget * self, struct Document * document) {
     
-    if (document->ro == TRUE) {
+    if (document->binary == TRUE) {
         read_only_popup(document);
         return;
     }
