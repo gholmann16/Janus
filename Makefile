@@ -1,7 +1,7 @@
 SOURCES := $(wildcard *.c)
 OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
 
-CFLAGS := `pkg-config --cflags gtksourceview-4`
+CFLAGS := `pkg-config --cflags gtksourceview-4` -Wall
 LDLIBS := `pkg-config --libs gtksourceview-4`
 
 debug: CFLAGS += -g -Og
@@ -12,7 +12,7 @@ release: notes
 	strip $<
 
 notes: $(OBJECTS)
-	$(CC) $(LDLIBS) $(LDFLAGS) $^ -o $@
+	$(CC) $^ -o $@ $(LDLIBS) $(LDFLAGS) 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@
 

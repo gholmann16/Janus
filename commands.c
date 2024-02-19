@@ -31,21 +31,16 @@ void change_indicator(GtkWidget * self, struct Document * document) {
     }
 }
 
-int open_file(char * filename, struct Document * document) {
+void open_file(char * filename, struct Document * document) {
     
     // Get file
-    FILE * f = fopen(filename, "r");
     char * contents;
     gsize len;
 
-    fseek(f, 0L, SEEK_END);
-    len = ftell(f);
-    
-    fseek(f, 0L, SEEK_SET);	
-    contents = (char*)calloc(len, sizeof(char));	
-    
-    fread(contents, sizeof(char), len, f);
-    fclose(f);
+    if (!g_file_get_contents(filename, &contents, &len, NULL)) {
+        puts("Could not open file");
+        return;
+    }
     
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
@@ -81,8 +76,6 @@ int open_file(char * filename, struct Document * document) {
 
     document->path = g_strdup(filename);
     filename_to_title(document);
-    
-    return 0;
 }
 
 void open_command(GtkWidget * self, struct Document * document) {
@@ -114,7 +107,7 @@ void new_command(void) {
 
 void read_only_popup(struct Document * document) {
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"File is read only", NULL);
+    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "File is read only");
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
 }
@@ -131,7 +124,7 @@ int save(struct Document * document) {
     char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
 
     FILE * f = fopen(document->path, "w");
-    fprintf(f, text);
+    fwrite(text, strlen(text), sizeof(char), f);
     fclose(f);
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
@@ -176,7 +169,6 @@ void save_command(GtkWidget * self, struct Document * document) {
     }
 
     if (document->ro == TRUE) {
-        printf("here\n");
         read_only_popup(document);
         return;
     }
@@ -210,7 +202,8 @@ void print_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
-    GtkPrintOperationResult res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL);
+    if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
+        puts("Failed to preview page.");
 
     g_object_unref(print);
     g_object_unref(compositor);
@@ -223,7 +216,8 @@ void print_preview_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
-    GtkPrintOperationResult res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL);
+    if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
+        puts("Failed to preview page.");
 
     g_object_unref(print);
     g_object_unref(compositor);
