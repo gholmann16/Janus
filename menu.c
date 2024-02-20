@@ -2,7 +2,7 @@
 #include "global.h"
 #include "commands.h"
 
-int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document) {
+void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document) {
 
     // File menu
 
@@ -152,6 +152,4 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     GtkWidget * about = gtk_menu_item_new_with_label("About");
     g_signal_connect(about, "activate", G_CALLBACK(about_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(helpmenu), about);
-
-    return 0;
 }

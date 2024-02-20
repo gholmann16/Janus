@@ -14,21 +14,27 @@ int main(int argc, char * argv[]) {
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
-    GError *error = NULL;
-    GdkPixbuf * icon;
+    GError * error = NULL;
+    GdkPixbuf * icon = NULL;
     if (getenv("APPDIR")) {
-        char path[PATH_MAX];
-        strcpy(path, getenv("APPDIR"));
-        strcat(path, "/notes.png");
-        icon = gdk_pixbuf_new_from_file(path, &error);
+        char path[PATH_MAX + 1];
+        char * iconfile = "/notes.png";
+        if (strlen(getenv("APPDIR")) < PATH_MAX + 1 - sizeof(iconfile)) {
+            strcpy(path, getenv("APPDIR"));
+            strcat(path, "/notes.png");
+            icon = gdk_pixbuf_new_from_file(path, &error);
+        }
+        else
+            puts("APPDIR variable corrupted, this should never happen.");
     }
     else 
         icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
 
     if (error != NULL) {
         puts(error->message);
-        g_clear_error (&error);
+        g_error_free(error);
     }
+
     gtk_window_set_icon(GTK_WINDOW(window), icon);
     
     // Text part

@@ -60,9 +60,11 @@ void open_file(char * filename, struct Document * document) {
 
     char * contents;
     gsize len;
-
-    if (!g_file_get_contents(filename, &contents, &len, NULL)) {
+    GError * error = NULL;
+    g_file_get_contents(filename, &contents, &len, NULL);
+    if (error) {
         warning_popup(document, "Could not open file.");
+        g_error_free(error);
         free(path);
         return;
     }
@@ -145,9 +147,13 @@ void save(struct Document * document) {
 
     char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
 
-    FILE * f = fopen(document->path, "w");
-    fwrite(text, strlen(text), sizeof(char), f);
-    fclose(f);
+    GError * error = NULL;
+    g_file_set_contents(document->path, text, -1, &error);
+    if (error) {
+        warning_popup(document, error->message);
+        g_error_free(error);
+        return;
+    }
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
 
