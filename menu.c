@@ -47,6 +47,7 @@ int init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), seperate1);
 
     GtkWidget * exit = gtk_menu_item_new_with_label("Exit");
+    gtk_widget_add_accelerator(exit, "activate", accel, GDK_KEY_Q, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(exit, "activate", G_CALLBACK(exit_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), exit);
 

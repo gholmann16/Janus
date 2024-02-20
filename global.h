@@ -5,5 +5,5 @@ struct Document {
     GtkWindow * window;
     GtkSourceSearchContext * context;
     GtkTextIter last;
-    gbool binary;
+    gboolean binary;
 };

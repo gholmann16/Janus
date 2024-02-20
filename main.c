@@ -48,7 +48,6 @@ int main(int argc, char * argv[]) {
     document.view = text;
     document.context = context;
     document.window = GTK_WINDOW(window);
-    document.ro = FALSE;
     document.path = NULL;
 
     // Menu setup
@@ -69,21 +68,13 @@ int main(int argc, char * argv[]) {
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_widget_show_all (window);
 
-    if (argc > 1) {
-        if (strlen(argv[1]) < PATH_MAX) {
-            if (access(argv[1], F_OK) == 0) {
-                open_file(argv[1], &document);
-            }
-            else 
-                puts("Could not access file.");
-        }
-        else 
-            puts("Filename is too long.");
-    }
+    if (argc > 1) 
+        open_file(argv[1], &document);
 
-    
     gtk_main();
+
     gtk_source_finalize();
+    free(document.path);
 
     return 0;
 }

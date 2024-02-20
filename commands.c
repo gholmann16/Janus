@@ -31,17 +31,45 @@ void change_indicator(GtkWidget * self, struct Document * document) {
     }
 }
 
+void warning_popup(struct Document * document, char * text) {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+}
+
 void open_file(char * filename, struct Document * document) {
-    
-    // Get file
+
+    char * path = realpath(filename, NULL);
+    if (path == NULL) {
+        warning_popup(document, "Could not resolve path.");
+        return;
+    }
+
+    if (access(path, F_OK != 0)) {
+        warning_popup(document, "File does not exist.");
+        free(path);
+        return;
+    }
+
+    if (access(path, R_OK) != 0) {
+        warning_popup(document, "You do not have access to this file.");
+        free(path);
+        return;
+    }
+
     char * contents;
     gsize len;
 
     if (!g_file_get_contents(filename, &contents, &len, NULL)) {
-        puts("Could not open file");
+        warning_popup(document, "Could not open file.");
+        free(path);
         return;
     }
-    
+
+    free(document->path);
+    document->path = path;
+
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
@@ -49,12 +77,16 @@ void open_file(char * filename, struct Document * document) {
         gsize read;
         gsize wrote;
 
+        // Convert to utf8, and then transform characters such as null to glib approriate characters
+        // Unfortunately this approach does not allow us to edit the text. If only glib support null chracters
         char * new = g_convert(contents, len, "UTF-8", "ISO-8859-1", &read, &wrote, NULL);
         char * valid = g_utf8_make_valid(new, wrote);
+        gtk_text_buffer_set_text(document->buffer, valid, -1);
         free(new);
-        gtk_text_buffer_set_text(document->buffer, valid, wrote+1);
+        free(valid);
     }
     else {
+        document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
     }
     gtk_text_buffer_set_modified(document->buffer, FALSE);
@@ -62,9 +94,6 @@ void open_file(char * filename, struct Document * document) {
     gtk_source_buffer_end_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
 
     free(contents);
-    free(document->path);
-
-    document->path = g_strdup(filename);
     filename_to_title(document);
 }
 
@@ -95,15 +124,18 @@ void new_command(void) {
     }
 }
 
-void read_only_popup(struct Document * document) {
-    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "File is read only");
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-}
+void save(struct Document * document) {
 
-int save(struct Document * document) {
-    
+    if (access(document->path, F_OK != 0)) {
+        warning_popup(document, "File does not exist.");
+        return;
+    }
+
+    if (access(document->path, W_OK) != 0) {
+        warning_popup(document, "File is read only.");
+        return;
+    }
+
     // Collect all text
     GtkTextIter start;
     GtkTextIter end;
@@ -119,13 +151,12 @@ int save(struct Document * document) {
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
 
-    return 0;
 }
 
 void save_as_command(GtkWidget * self, struct Document * document) {
     
     if (document->binary == TRUE) {
-        read_only_popup(document);
+        warning_popup(document, "Notes cannot not modify binary files.");
         return;
     }
 
@@ -158,8 +189,8 @@ void save_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    if (document->ro == TRUE) {
-        read_only_popup(document);
+    if (document->binary == TRUE) {
+        warning_popup(document, "Notes cannot not modify binary files.");
         return;
     }
 
@@ -193,7 +224,7 @@ void print_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
     if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        puts("Failed to preview page.");
+        warning_popup(document, "Failed to print page.");
 
     g_object_unref(print);
     g_object_unref(compositor);
@@ -207,7 +238,7 @@ void print_preview_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
     if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        puts("Failed to preview page.");
+        warning_popup(document, "Failed to preview page.");
 
     g_object_unref(print);
     g_object_unref(compositor);
