@@ -40,28 +40,17 @@ void warning_popup(struct Document * document, char * text) {
 
 void open_file(char * filename, struct Document * document) {
 
-    char * path = realpath(filename, NULL);
+    char * path;
+    path = realpath(filename, NULL);
     if (path == NULL) {
         warning_popup(document, "Could not resolve path.");
-        return;
-    }
-
-    if (access(path, F_OK != 0)) {
-        warning_popup(document, "File does not exist.");
-        free(path);
-        return;
-    }
-
-    if (access(path, R_OK) != 0) {
-        warning_popup(document, "You do not have access to this file.");
-        free(path);
         return;
     }
 
     char * contents;
     gsize len;
     GError * error = NULL;
-    g_file_get_contents(filename, &contents, &len, NULL);
+    g_file_get_contents(path, &contents, &len, NULL);
     if (error) {
         warning_popup(document, "Could not open file.");
         g_error_free(error);
@@ -127,16 +116,6 @@ void new_command(void) {
 }
 
 void save(struct Document * document) {
-
-    if (access(document->path, F_OK != 0)) {
-        warning_popup(document, "File does not exist.");
-        return;
-    }
-
-    if (access(document->path, W_OK) != 0) {
-        warning_popup(document, "File is read only.");
-        return;
-    }
 
     // Collect all text
     GtkTextIter start;
