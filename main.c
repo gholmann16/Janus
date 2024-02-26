@@ -2,41 +2,57 @@
 #include "global.h"
 #include "commands.h"
 #include "menu.h"
+#include <locale.h>
 
 int main(int argc, char * argv[]) {
 
     struct Document document;
 
     gtk_init(NULL, NULL);
+    gtk_source_init();
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Notes");
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
-    GError * error = NULL;
-    GdkPixbuf * icon = NULL;
+    char * isuffix = "/usr/share/pixmaps/notes.png";
+    char * lsuffix = "/usr/share/locale/";
+    char icon_path[512];
+    icon_path[0] = 0;
+    char locale_path[512];
+    locale_path[0] = 0;
+
     if (getenv("APPDIR")) {
-        char path[PATH_MAX + 1];
-        char * iconfile = "/notes.png";
-        if (strlen(getenv("APPDIR")) < PATH_MAX + 1 - sizeof(iconfile)) {
-            strcpy(path, getenv("APPDIR"));
-            strcat(path, "/notes.png");
-            icon = gdk_pixbuf_new_from_file(path, &error);
+        if (strlen(getenv("APPDIR")) < sizeof(icon_path) - strlen(isuffix)) {
+            strcat(icon_path, getenv("APPDIR"));
+            strcat(icon_path, isuffix);
         }
-        else
-            puts("APPDIR variable corrupted, this should never happen.");
+        if (strlen(getenv("APPDIR")) < sizeof(locale_path) - strlen(lsuffix)) {
+            strcat(locale_path, getenv("APPDIR"));
+            strcat(locale_path, lsuffix);
+        }
     }
-    else 
-        icon = gdk_pixbuf_new_from_file("/usr/share/pixmaps/notes.png", &error);
-
-    if (error != NULL) {
-        puts(error->message);
-        g_error_free(error);
+    else {
+        strcat(icon_path, isuffix);
+        strcat(locale_path, lsuffix);
     }
 
-    gtk_window_set_icon(GTK_WINDOW(window), icon);
-    
+    setlocale(LC_ALL, "");
+    bindtextdomain("notes", locale_path);
+    bind_textdomain_codeset("notes", "utf-8");
+    textdomain("notes");
+
+    if (icon_path[0] != 0 && access(icon_path, F_OK) == 0) {
+        GError * error = NULL;
+        GdkPixbuf * icon = gdk_pixbuf_new_from_file(icon_path, &error);
+        if (error != NULL) {
+            puts(error->message);
+            g_error_free(error);
+        }
+        gtk_window_set_icon(GTK_WINDOW(window), icon);
+    }
+
     // Text part
     GtkWidget * text = gtk_source_view_new();
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);

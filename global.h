@@ -7,3 +7,6 @@ struct Document {
     GtkTextIter last;
     gboolean binary;
 };
+
+#include <libintl.h>
+#define _(STRING) gettext(STRING)

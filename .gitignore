@@ -2,3 +2,4 @@ notes
 *.o
 *.AppImage
 appdir
+*.mo

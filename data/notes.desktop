@@ -2,6 +2,7 @@
 Type=Application
 Name=Notes
 Comment=Simple gtk notepad
+Comment[fr]=Bloc-notes GTK simple
 Exec=notes %f
 Icon=notes
 Terminal=false

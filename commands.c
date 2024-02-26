@@ -43,7 +43,7 @@ void open_file(char * filename, struct Document * document) {
     char * path;
     path = realpath(filename, NULL);
     if (path == NULL) {
-        warning_popup(document, "Could not resolve path.");
+        warning_popup(document, _("Could not resolve path."));
         return;
     }
 
@@ -52,7 +52,7 @@ void open_file(char * filename, struct Document * document) {
     GError * error = NULL;
     g_file_get_contents(path, &contents, &len, NULL);
     if (error) {
-        warning_popup(document, "Could not open file.");
+        warning_popup(document, _("Could not open file."));
         g_error_free(error);
         free(path);
         return;
@@ -91,7 +91,7 @@ void open_file(char * filename, struct Document * document) {
 void open_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Open File", document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Open File"), document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -110,8 +110,8 @@ void new_command(void) {
     char* argv[] = {"/proc/self/exe", NULL};
     g_spawn_async(NULL, argv, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &err);
     if (err != NULL) {
-        fprintf (stderr, "Unable to new window: %s\n", err->message);
-        g_error_free (err);
+        puts(err->message);
+        g_error_free(err);
     }
 }
 
@@ -141,12 +141,12 @@ void save(struct Document * document) {
 void save_as_command(GtkWidget * self, struct Document * document) {
     
     if (document->binary == TRUE) {
-        warning_popup(document, "Notes cannot not modify binary files.");
+        warning_popup(document, _("Notes cannot not modify binary files."));
         return;
     }
 
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save File", document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Save File"), document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -175,7 +175,7 @@ void save_command(GtkWidget * self, struct Document * document) {
     }
 
     if (document->binary == TRUE) {
-        warning_popup(document, "Notes cannot not modify binary files.");
+        warning_popup(document, _("Notes cannot not modify binary files."));
         return;
     }
 
@@ -209,7 +209,7 @@ void print_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
     if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        warning_popup(document, "Failed to print page.");
+        warning_popup(document, _("Failed to print page."));
 
     g_object_unref(print);
     g_object_unref(compositor);
@@ -223,7 +223,7 @@ void print_preview_command(GtkWidget * self, struct Document * document) {
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
     if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        warning_popup(document, "Failed to preview page.");
+        warning_popup(document, _("Failed to preview page."));
 
     g_object_unref(print);
     g_object_unref(compositor);
@@ -238,7 +238,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
 
     GtkWidget * close = gtk_dialog_new_with_buttons("Notes", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
-    GtkWidget * message = gtk_label_new("Would you like to save?");
+    GtkWidget * message = gtk_label_new(_("Would you like to save?"));
 
     gtk_container_add(GTK_CONTAINER(content), message);
     gtk_widget_show_all(content);
@@ -332,7 +332,7 @@ void search_command(GtkWidget * self, struct Document * document) {
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
-    GtkWidget * dialog = gtk_dialog_new_with_buttons("Find", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, "Find", 1, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Find"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, _("Find"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
@@ -343,8 +343,8 @@ void search_command(GtkWidget * self, struct Document * document) {
     if (text)
         gtk_entry_set_text(GTK_ENTRY(entry), text);
 
-    GtkWidget * label = gtk_label_new("Find text:");
-    GtkWidget * bubble = gtk_check_button_new_with_label("Match case");
+    GtkWidget * label = gtk_label_new(_("Find text:"));
+    GtkWidget * bubble = gtk_check_button_new_with_label(_("Match case"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
     g_signal_connect(bubble, "toggled", G_CALLBACK(match_case), settings);
 
@@ -414,18 +414,18 @@ void replace_command(GtkWidget * self, struct Document * document) {
     document->last = last;
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
-    GtkWidget * dialog = gtk_dialog_new_with_buttons("Replace", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Cancel", 0, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
     // Search
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    GtkWidget * label = gtk_label_new("Search text:");
+    GtkWidget * label = gtk_label_new(_("Find text:"));
     GtkWidget * entry = gtk_entry_new();
     g_signal_connect(entry, "activate", G_CALLBACK(search_entry), document);
     const gchar * text = gtk_source_search_settings_get_search_text(settings);
     if (text)
         gtk_entry_set_text(GTK_ENTRY(entry), text);
-    GtkWidget * search_button = gtk_button_new_with_label("Search");
+    GtkWidget * search_button = gtk_button_new_with_label(_("Find"));
 
     gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(box), entry, 0, 0, 0);
@@ -434,9 +434,9 @@ void replace_command(GtkWidget * self, struct Document * document) {
 
     // Replace
     GtkWidget * box2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    GtkWidget * label2 = gtk_label_new("Replace text");
+    GtkWidget * label2 = gtk_label_new(_("Replace text"));
     GtkWidget * entry2 = gtk_entry_new();
-    GtkWidget * replace_button = gtk_button_new_with_label("Replace");
+    GtkWidget * replace_button = gtk_button_new_with_label(_("Replace"));
 
     struct Replace rep = {
         settings,
@@ -452,8 +452,8 @@ void replace_command(GtkWidget * self, struct Document * document) {
     gtk_box_pack_start(GTK_BOX(box2), replace_button, 0, 0, 0);
     gtk_container_add(GTK_CONTAINER(content), box2);
 
-    GtkWidget * bubble = gtk_check_button_new_with_label("Match case");
-    GtkWidget * bubble2 = gtk_check_button_new_with_label("Replace all");
+    GtkWidget * bubble = gtk_check_button_new_with_label(_("Match case"));
+    GtkWidget * bubble2 = gtk_check_button_new_with_label(_("Replace all"));
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(bubble), gtk_source_search_settings_get_case_sensitive(settings));
     g_signal_connect(bubble, "toggled", G_CALLBACK(match_case), settings);
@@ -486,10 +486,10 @@ int lines_in_buffer(GtkTextBuffer * buffer) {
 }
 
 void go_to_command(GtkWidget * self, struct Document * document) {
-    GtkWidget * dialog = gtk_dialog_new_with_buttons("Go To", document->window, GTK_DIALOG_DESTROY_WITH_PARENT, "Go To", 0, "Cancel", 1, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go To"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go To"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-    GtkWidget * line = gtk_label_new("Line number:");
+    GtkWidget * line = gtk_label_new(_("Line number:"));
     int l = lines_in_buffer(document->buffer);
 
     GtkWidget * spin = gtk_spin_button_new_with_range(1, l, 1);
@@ -525,7 +525,7 @@ void font_callback(GtkFontChooser * self, gchar * selected, struct Document * do
 
 void font_command(GtkWidget * self, struct Document * document) {
     
-    GtkWidget * dialog = gtk_font_chooser_dialog_new("Fonts", document->window);
+    GtkWidget * dialog = gtk_font_chooser_dialog_new(_("Fonts"), document->window);
     g_signal_connect(dialog, "font-activated", G_CALLBACK(font_callback), document);
 
     gtk_dialog_run(GTK_DIALOG(dialog));
@@ -545,10 +545,12 @@ void about_command(GtkWidget * self, struct Document * document) {
     GtkWidget * about_dialog = gtk_about_dialog_new();
     GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);
 
+    gtk_about_dialog_set_program_name(about, "Notes");
+
     GdkPixbuf * icon = gtk_window_get_icon(document->window);
     gtk_about_dialog_set_logo(about, icon);
 
-    const char * authors[] = {"Gabriel Holmann <gholmann16@gmail.com>", NULL};
+    const char * authors[] = {"Gabriel Holmann <gholmann@neptune.cx>", NULL};
     gtk_about_dialog_set_authors(about, authors);
 
     const char * artists[] = {"Flaticon.com", NULL};
@@ -556,7 +558,7 @@ void about_command(GtkWidget * self, struct Document * document) {
 
     gtk_about_dialog_set_license_type(about, GTK_LICENSE_GPL_3_0);
 
-    const char * comments = "Notes is a simple gtk3 notepad intended to be small and efficient.";
+    const char * comments = _("Notes is a simple gtk3 notepad intended to be small and efficient.");
     gtk_about_dialog_set_comments(about, comments);
 
     const char * website = "https://github.com/gholmann16/Notes";

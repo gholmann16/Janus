@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Notes package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Notes\n"
+"Report-Msgid-Bugs-To: gholmann@neptune.cx\n"
+"POT-Creation-Date: 2024-02-26 17:07-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: commands.c:46
+msgid "Could not resolve path."
+msgstr ""
+
+#: commands.c:55
+msgid "Could not open file."
+msgstr ""
+
+#: commands.c:94
+msgid "Open File"
+msgstr ""
+
+#: commands.c:144 commands.c:178
+msgid "Notes cannot not modify binary files."
+msgstr ""
+
+#: commands.c:149
+msgid "Save File"
+msgstr ""
+
+#: commands.c:212
+msgid "Failed to print page."
+msgstr ""
+
+#: commands.c:226
+msgid "Failed to preview page."
+msgstr ""
+
+#: commands.c:241
+msgid "Would you like to save?"
+msgstr ""
+
+#: commands.c:335 commands.c:428 menu.c:108
+msgid "Find"
+msgstr ""
+
+#: commands.c:335 commands.c:417 commands.c:489
+msgid "Cancel"
+msgstr ""
+
+#: commands.c:346 commands.c:422
+msgid "Find text:"
+msgstr ""
+
+#: commands.c:347 commands.c:455
+msgid "Match case"
+msgstr ""
+
+#: commands.c:417 commands.c:439 menu.c:118
+msgid "Replace"
+msgstr ""
+
+#: commands.c:437
+msgid "Replace text"
+msgstr ""
+
+#: commands.c:456
+msgid "Replace all"
+msgstr ""
+
+#: commands.c:489
+msgid "Go To"
+msgstr ""
+
+#: commands.c:492
+msgid "Line number:"
+msgstr ""
+
+#: commands.c:528
+msgid "Fonts"
+msgstr ""
+
+#: commands.c:559
+msgid "Notes is a simple gtk3 notepad intended to be small and efficient."
+msgstr ""
+
+#: menu.c:9
+msgid "File"
+msgstr ""
+
+#: menu.c:15
+msgid "New"
+msgstr ""
+
+#: menu.c:20
+msgid "Open"
+msgstr ""
+
+#: menu.c:25
+msgid "Save"
+msgstr ""
+
+#: menu.c:30
+msgid "Save as"
+msgstr ""
+
+#: menu.c:37
+msgid "Print"
+msgstr ""
+
+#: menu.c:42
+msgid "Print Preview"
+msgstr ""
+
+#: menu.c:49
+msgid "Exit"
+msgstr ""
+
+#: menu.c:56
+msgid "Edit"
+msgstr ""
+
+#: menu.c:62
+msgid "Undo"
+msgstr ""
+
+#: menu.c:67
+msgid "Redo"
+msgstr ""
+
+#: menu.c:75
+msgid "Cut"
+msgstr ""
+
+#: menu.c:80
+msgid "Copy"
+msgstr ""
+
+#: menu.c:85
+msgid "Paste"
+msgstr ""
+
+#: menu.c:90
+msgid "Delete"
+msgstr ""
+
+#: menu.c:97
+msgid "Select all"
+msgstr ""
+
+#: menu.c:102
+msgid "Search"
+msgstr ""
+
+#: menu.c:113
+msgid "Find next"
+msgstr ""
+
+#: menu.c:126
+msgid "Go to"
+msgstr ""
+
+#: menu.c:131
+msgid "Options"
+msgstr ""
+
+#: menu.c:137
+msgid "Font"
+msgstr ""
+
+#: menu.c:141
+msgid "Wrap line"
+msgstr ""
+
+#: menu.c:146
+msgid "Help"
+msgstr ""
+
+#: menu.c:152
+msgid "About"
+msgstr ""
