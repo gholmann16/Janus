@@ -1,8 +1,7 @@
-SOURCES := $(wildcard *.c)
-OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
+SOURCES := $(wildcard src/*.c)
+OBJECTS := $(patsubst src/%.c, src/%.o, $(SOURCES))
 
 PSOURCES := $(wildcard po/*.po)
-MSOURCES := $(wildcard po/*.mo)
 MOBJECTS := $(patsubst po/%.po, po/%.mo, $(PSOURCES))
 
 CFLAGS := `pkg-config --cflags gtksourceview-4`
@@ -28,15 +27,15 @@ update:
 	rm -f po/*.po~
 
 clean:
-	rm -f *.o
-	rm -f po/*.mo
+	rm -f $(OBJECTS)
+	rm -f $(MOBJECTS)
 	rm -f notes
 
 install: release
 	install -Dm755 notes /usr/bin/notes
 	install -Dm644 data/notes.png /usr/share/pixmaps/notes.png
 	install -Dm644 data/notes.desktop /usr/share/applications/notes.desktop
-	$(foreach object, $(MSOURCES), mkdir -p /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; install -Dm644 $(object) /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
+	$(foreach object, $(MOBJECTS), mkdir -p /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; install -Dm644 $(object) /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
 
 uninstall:
 	rm /usr/bin/notes
@@ -49,7 +48,7 @@ appdir: $(MOBJECTS)
 	mkdir -p appdir/usr/share/pixmaps
 	cp data/notes.png appdir/usr/share/pixmaps/notes.png
 	ln -fs usr/share/pixmaps/notes.png appdir/notes.png
-	$(foreach object, $(MSOURCES), mkdir -p appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; cp $(object) appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
+	$(foreach object, $(MOBJECTS), mkdir -p appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; cp $(object) appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
 
 appimage: release appdir
 	mv notes appdir/AppRun
