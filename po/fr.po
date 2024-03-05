@@ -1,15 +1,15 @@
 # French translations for Notes package.
 # Copyright (C) 2024 THE Notes'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Notes package.
-#  <gholmann@neptune.cx>, 2024.
+#  <gholmann@satyrn.net>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Notes\n"
-"Report-Msgid-Bugs-To: gholmann@neptune.cx\n"
-"POT-Creation-Date: 2024-02-26 17:07-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-04 19:43-0500\n"
 "PO-Revision-Date: 2024-02-26 16:56-0500\n"
-"Last-Translator: gholmann@neptune.cx\n"
+"Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -18,177 +18,177 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: commands.c:46
+#: src/commands.c:46
 msgid "Could not resolve path."
 msgstr "Impossible de résoudre le chemin."
 
-#: commands.c:55
+#: src/commands.c:55
 msgid "Could not open file."
 msgstr "Impossible d'ouvrir le fichier."
 
-#: commands.c:94
+#: src/commands.c:94
 msgid "Open File"
 msgstr "Ouvrir fichier"
 
-#: commands.c:144 commands.c:178
+#: src/commands.c:144 src/commands.c:178
 msgid "Notes cannot not modify binary files."
 msgstr "Notes ne peut pas modifier les fichiers binaires."
 
-#: commands.c:149
+#: src/commands.c:149
 msgid "Save File"
 msgstr "Enregistrer fichier"
 
-#: commands.c:212
+#: src/commands.c:212
 msgid "Failed to print page."
 msgstr "Échec de l'impression de page."
 
-#: commands.c:226
+#: src/commands.c:226
 msgid "Failed to preview page."
 msgstr "Échec de l'aperçu de page."
 
-#: commands.c:241
+#: src/commands.c:241
 msgid "Would you like to save?"
 msgstr "Souhaitez-vous enregistrer?"
 
-#: commands.c:335 commands.c:428 menu.c:108
+#: src/commands.c:335 src/commands.c:428 src/menu.c:108
 msgid "Find"
 msgstr "Trouver"
 
-#: commands.c:335 commands.c:417 commands.c:489
+#: src/commands.c:335 src/commands.c:417 src/commands.c:489
 msgid "Cancel"
 msgstr "Annuler"
 
-#: commands.c:346 commands.c:422
+#: src/commands.c:346 src/commands.c:422
 msgid "Find text:"
 msgstr "Rechercher le texte:"
 
-#: commands.c:347 commands.c:455
+#: src/commands.c:347 src/commands.c:455
 msgid "Match case"
 msgstr "Respecter la casse"
 
-#: commands.c:417 commands.c:439 menu.c:118
+#: src/commands.c:417 src/commands.c:439 src/menu.c:118
 msgid "Replace"
 msgstr "Remplacer"
 
-#: commands.c:437
+#: src/commands.c:437
 msgid "Replace text"
 msgstr "Remplacer le texte"
 
-#: commands.c:456
+#: src/commands.c:456
 msgid "Replace all"
 msgstr "Remplacer tout"
 
-#: commands.c:489
+#: src/commands.c:489
 msgid "Go To"
 msgstr "Aller à"
 
-#: commands.c:492
+#: src/commands.c:492
 msgid "Line number:"
 msgstr "Numéro de ligne:"
 
-#: commands.c:528
+#: src/commands.c:528
 msgid "Fonts"
 msgstr "Polices de caractères"
 
-#: commands.c:559
+#: src/commands.c:561
 msgid "Notes is a simple gtk3 notepad intended to be small and efficient."
 msgstr ""
 "Notes est un simple bloc-notes gtk3 dans le but est d'être minimaliste et "
 "performant."
 
-#: menu.c:9
+#: src/menu.c:9
 msgid "File"
 msgstr "Fichier"
 
-#: menu.c:15
+#: src/menu.c:15
 msgid "New"
 msgstr "Nouveau"
 
-#: menu.c:20
+#: src/menu.c:20
 msgid "Open"
 msgstr "Ouvrir"
 
-#: menu.c:25
+#: src/menu.c:25
 msgid "Save"
 msgstr "Enregistrer"
 
-#: menu.c:30
+#: src/menu.c:30
 msgid "Save as"
 msgstr "Enregistrer sous"
 
-#: menu.c:37
+#: src/menu.c:37
 msgid "Print"
 msgstr "Imprimer"
 
-#: menu.c:42
+#: src/menu.c:42
 msgid "Print Preview"
 msgstr "Aperçu avant impression"
 
-#: menu.c:49
+#: src/menu.c:49
 msgid "Exit"
 msgstr "Quitter"
 
-#: menu.c:56
+#: src/menu.c:56
 msgid "Edit"
 msgstr "Modifier"
 
-#: menu.c:62
+#: src/menu.c:62
 msgid "Undo"
 msgstr "Annuler"
 
-#: menu.c:67
+#: src/menu.c:67
 msgid "Redo"
 msgstr "Refaire"
 
-#: menu.c:75
+#: src/menu.c:75
 msgid "Cut"
 msgstr "Couper"
 
-#: menu.c:80
+#: src/menu.c:80
 msgid "Copy"
 msgstr "Copie"
 
-#: menu.c:85
+#: src/menu.c:85
 msgid "Paste"
 msgstr "Coller"
 
-#: menu.c:90
+#: src/menu.c:90
 msgid "Delete"
 msgstr "Supprimer"
 
-#: menu.c:97
+#: src/menu.c:97
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: menu.c:102
+#: src/menu.c:102
 msgid "Search"
 msgstr "Rechercher"
 
-#: menu.c:113
+#: src/menu.c:113
 msgid "Find next"
 msgstr "Rechercher suivant"
 
-#: menu.c:126
+#: src/menu.c:126
 msgid "Go to"
 msgstr "Aller à"
 
-#: menu.c:131
+#: src/menu.c:131
 msgid "Options"
 msgstr "Options"
 
-#: menu.c:137
+#: src/menu.c:137
 msgid "Font"
 msgstr "Police de caractères"
 
-#: menu.c:141
+#: src/menu.c:141
 msgid "Wrap line"
 msgstr "Renvoi à la ligne"
 
-#: menu.c:146
+#: src/menu.c:146
 msgid "Help"
 msgstr "Aider"
 
-#: menu.c:152
+#: src/menu.c:152
 msgid "About"
 msgstr "À propos"
 

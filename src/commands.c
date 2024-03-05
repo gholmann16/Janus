@@ -550,7 +550,7 @@ void about_command(GtkWidget * self, struct Document * document) {
     GdkPixbuf * icon = gtk_window_get_icon(document->window);
     gtk_about_dialog_set_logo(about, icon);
 
-    const char * authors[] = {"Gabriel Holmann <gholmann@neptune.cx>", NULL};
+    const char * authors[] = {"Gabriel Holmann <gholmann@satyrn.net>", NULL};
     gtk_about_dialog_set_authors(about, authors);
 
     const char * artists[] = {"Flaticon.com", NULL};

@@ -22,7 +22,7 @@ notes: $(OBJECTS) $(MOBJECTS)
 	msgfmt -o $@ $<
 
 update:
-	xgettext *.c --keyword=_ -o po/notes.pot --package-name=Notes --msgid-bugs-address=gholmann@neptune.cx
+	xgettext $(SOURCES) --keyword=_ -o po/notes.pot
 	$(foreach po, $(PSOURCES), msgmerge --update $(po) po/notes.pot;)
 	rm -f po/*.po~
 
