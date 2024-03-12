@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-04 19:44-0500\n"
+"POT-Creation-Date: 2024-03-12 19:29-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgid "Open File"
 msgstr ""
 
 #: src/commands.c:144 src/commands.c:178
-msgid "Notes cannot not modify binary files."
+msgid "Janus cannot not modify binary files."
 msgstr ""
 
 #: src/commands.c:149
@@ -89,8 +89,8 @@ msgstr ""
 msgid "Fonts"
 msgstr ""
 
-#: src/commands.c:561
-msgid "Notes is a simple gtk3 notepad intended to be small and efficient."
+#: src/commands.c:558
+msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 
 #: src/menu.c:9

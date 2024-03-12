@@ -2,7 +2,7 @@
 #include "global.h"
 
 void filename_to_title(struct Document * document) {
-    char * append = " - Notes";
+    char * append = " - Janus";
     char * p = document->path;
     if (strrchr(document->path, '/') != NULL) {
         p = strrchr(document->path, '/') + 1;
@@ -141,7 +141,7 @@ void save(struct Document * document) {
 void save_as_command(GtkWidget * self, struct Document * document) {
     
     if (document->binary == TRUE) {
-        warning_popup(document, _("Notes cannot not modify binary files."));
+        warning_popup(document, _("Janus cannot not modify binary files."));
         return;
     }
 
@@ -175,7 +175,7 @@ void save_command(GtkWidget * self, struct Document * document) {
     }
 
     if (document->binary == TRUE) {
-        warning_popup(document, _("Notes cannot not modify binary files."));
+        warning_popup(document, _("Janus cannot not modify binary files."));
         return;
     }
 
@@ -236,7 +236,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    GtkWidget * close = gtk_dialog_new_with_buttons("Notes", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
+    GtkWidget * close = gtk_dialog_new_with_buttons("Janus", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
     GtkWidget * message = gtk_label_new(_("Would you like to save?"));
 
@@ -545,7 +545,7 @@ void about_command(GtkWidget * self, struct Document * document) {
     GtkWidget * about_dialog = gtk_about_dialog_new();
     GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);
 
-    gtk_about_dialog_set_program_name(about, "Notes");
+    gtk_about_dialog_set_program_name(about, "Janus");
 
     GdkPixbuf * icon = gtk_window_get_icon(document->window);
     gtk_about_dialog_set_logo(about, icon);
@@ -553,15 +553,12 @@ void about_command(GtkWidget * self, struct Document * document) {
     const char * authors[] = {"Gabriel Holmann <gholmann@satyrn.net>", NULL};
     gtk_about_dialog_set_authors(about, authors);
 
-    const char * artists[] = {"Flaticon.com", NULL};
-    gtk_about_dialog_set_artists(about, artists);
-
     gtk_about_dialog_set_license_type(about, GTK_LICENSE_GPL_3_0);
 
-    const char * comments = _("Notes is a simple gtk3 notepad intended to be small and efficient.");
+    const char * comments = _("Janus is a simple Linux notepad intended to be small and efficient.");
     gtk_about_dialog_set_comments(about, comments);
 
-    const char * website = "https://github.com/gholmann16/Notes";
+    const char * website = "https://github.com/gholmann16/Janus";
     gtk_about_dialog_set_website(about, website);
 
     gtk_dialog_run(GTK_DIALOG(about_dialog));

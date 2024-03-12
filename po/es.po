@@ -1,13 +1,13 @@
-# Spanish translations for Notes package.
-# Copyright (C) 2024 THE Notes'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Notes package.
+# Spanish translations for Janus package.
+# Copyright (C) 2024 THE Janus'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Janus package.
 #  <gholmann@satyrn.net>, 2024.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Notes\n"
+"Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-04 19:43-0500\n"
+"POT-Creation-Date: 2024-03-12 19:29-0400\n"
 "PO-Revision-Date: 2024-02-27 13:49-0500\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: Spanish <es@tp.org.es>\n"
@@ -31,8 +31,8 @@ msgid "Open File"
 msgstr "Abrir archivo"
 
 #: src/commands.c:144 src/commands.c:178
-msgid "Notes cannot not modify binary files."
-msgstr "Notes no puede modificar archivos binarios."
+msgid "Janus cannot not modify binary files."
+msgstr "Janus no puede modificar archivos binarios."
 
 #: src/commands.c:149
 msgid "Save File"
@@ -90,11 +90,10 @@ msgstr "Número de línea:"
 msgid "Fonts"
 msgstr "Fuentes"
 
-#: src/commands.c:561
-msgid "Notes is a simple gtk3 notepad intended to be small and efficient."
-msgstr ""
-"Notes es un bloc de notas gtk3 sencillo diseñado para ser pequeño y "
-"eficiente."
+#: src/commands.c:558
+#, fuzzy
+msgid "Janus is a simple Linux notepad intended to be small and efficient."
+msgstr "Janus es un bloc de notas Linux sencillo pensado para ser pequeño y eficiente."
 
 #: src/menu.c:9
 msgid "File"

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Janus
+Comment=Simple Linux notepad
+Comment[fr]=Bloc-notes Linux simple
+Comment[es]=Bloc de notas Linux sencillo
+Exec=janus %f
+Icon=janus
+Terminal=false
+MimeType=text/plain
+Categories=GTK;Utility;TextEditor;

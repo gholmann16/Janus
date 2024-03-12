@@ -12,11 +12,11 @@ int main(int argc, char * argv[]) {
     gtk_source_init();
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Notes");
-    gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
+    gtk_window_set_title(GTK_WINDOW(window), "Janus");
+    gtk_window_set_default_size(GTK_WINDOW(window), 512, 512);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
-    char * isuffix = "/usr/share/pixmaps/notes.png";
+    char * isuffix = "/usr/share/pixmaps/janus.png";
     char * lsuffix = "/usr/share/locale/";
     char icon_path[512];
     icon_path[0] = 0;
@@ -39,9 +39,9 @@ int main(int argc, char * argv[]) {
     }
 
     setlocale(LC_ALL, "");
-    bindtextdomain("notes", locale_path);
-    bind_textdomain_codeset("notes", "utf-8");
-    textdomain("notes");
+    bindtextdomain("janus", locale_path);
+    bind_textdomain_codeset("janus", "utf-8");
+    textdomain("janus");
 
     if (icon_path[0] != 0 && access(icon_path, F_OK) == 0) {
         GError * error = NULL;

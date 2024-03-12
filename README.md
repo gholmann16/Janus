@@ -1,11 +1,14 @@
-# Notes
-Simple native linux notepad. Built using gtk for the ui, and gtksourceview for undo, redo, and printing. Similar keybinds to leafpad/windows notepad.
+# Janus
+Simple native linux notepad. Built using gtk for the ui, and gtksourceview for undo, redo, and printing. Similar keybinds to leafpad/windows notepad. Meant for simple UTF-8 text editing.
 
 ## Build
-To build notes, simply clone the github repository, the run make.
+To build Janus, simply clone the github repository, then run:
+```
+make release
+```
 
 ## Installation
-Availible on the [AUR](https://aur.archlinux.org/packages/notes-gtk) or as an [AppImage](https://github.com/gholmann16/Notes/releases/latest).
+Availible on the [AUR](https://aur.archlinux.org/packages/janus-gtk) or as an [AppImage](https://github.com/gholmann16/Janus/releases/latest).
 
 To install it manually, run:
 ```

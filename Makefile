@@ -8,13 +8,13 @@ CFLAGS := `pkg-config --cflags gtksourceview-4`
 LDLIBS := `pkg-config --libs gtksourceview-4`
 
 debug: CFLAGS += -g -Og -Wall
-debug: notes
+debug: janus
 
 release: CFLAGS += -O3
-release: notes
+release: janus
 	strip $<
 
-notes: $(OBJECTS) $(MOBJECTS)
+janus: $(OBJECTS) $(MOBJECTS)
 	$(CC) $(OBJECTS) -o $@ $(LDLIBS) $(LDFLAGS)
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@
@@ -22,34 +22,34 @@ notes: $(OBJECTS) $(MOBJECTS)
 	msgfmt -o $@ $<
 
 update:
-	xgettext $(SOURCES) --keyword=_ -o po/notes.pot
-	$(foreach po, $(PSOURCES), msgmerge --update $(po) po/notes.pot;)
+	xgettext $(SOURCES) --keyword=_ -o po/janus.pot
+	$(foreach po, $(PSOURCES), msgmerge --update $(po) po/janus.pot;)
 	rm -f po/*.po~
 
 clean:
 	rm -f $(OBJECTS)
 	rm -f $(MOBJECTS)
-	rm -f notes
+	rm -f janus
 
 install: release
-	install -Dm755 notes /usr/bin/notes
-	install -Dm644 data/notes.png /usr/share/pixmaps/notes.png
-	install -Dm644 data/notes.desktop /usr/share/applications/notes.desktop
-	$(foreach object, $(MOBJECTS), mkdir -p /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; install -Dm644 $(object) /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
+	install -Dm755 janus /usr/bin/janus
+	install -Dm644 data/janus.png /usr/share/pixmaps/janus.png
+	install -Dm644 data/janus.desktop /usr/share/applications/janus.desktop
+	$(foreach object, $(MOBJECTS), mkdir -p /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; install -Dm644 $(object) /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
 uninstall:
-	rm /usr/bin/notes
-	rm /usr/share/pixmaps/notes.png
-	rm /usr/share/applications/notes.desktop
+	rm /usr/bin/janus
+	rm /usr/share/pixmaps/janus.png
+	rm /usr/share/applications/janus.desktop
 
 appdir: $(MOBJECTS)
 	mkdir -p appdir
-	cp data/notes.desktop appdir/
+	cp data/janus.desktop appdir/
 	mkdir -p appdir/usr/share/pixmaps
-	cp data/notes.png appdir/usr/share/pixmaps/notes.png
-	ln -fs usr/share/pixmaps/notes.png appdir/notes.png
-	$(foreach object, $(MOBJECTS), mkdir -p appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; cp $(object) appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/notes.mo;)
+	cp data/janus.png appdir/usr/share/pixmaps/janus.png
+	ln -fs usr/share/pixmaps/janus.png appdir/janus.png
+	$(foreach object, $(MOBJECTS), mkdir -p appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; cp $(object) appdir/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
 appimage: release appdir
-	mv notes appdir/AppRun
+	mv janus appdir/AppRun
 	appimagetool appdir
