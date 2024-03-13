@@ -32,15 +32,16 @@ clean:
 	rm -f janus
 
 install: release
-	install -Dm755 janus /usr/bin/janus
-	install -Dm644 data/janus.png /usr/share/pixmaps/janus.png
-	install -Dm644 data/janus.desktop /usr/share/applications/janus.desktop
-	$(foreach object, $(MOBJECTS), mkdir -p /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES; install -Dm644 $(object) /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
+	install -Dm755 janus $(DESTDIR)/usr/bin/janus
+	install -Dm644 data/janus.png $(DESTDIR)/usr/share/pixmaps/janus.png
+	install -Dm644 data/janus.desktop $(DESTDIR)/usr/share/applications/janus.desktop
+	$(foreach object, $(MOBJECTS), install -Dm644 $(object) $(DESTDIR)/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
 uninstall:
 	rm /usr/bin/janus
 	rm /usr/share/pixmaps/janus.png
 	rm /usr/share/applications/janus.desktop
+	$(foreach object, $(MOBJECTS), rm /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
 appdir: $(MOBJECTS)
 	mkdir -p appdir
