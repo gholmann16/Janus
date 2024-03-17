@@ -6,6 +6,8 @@ struct Document {
     GtkSourceSearchContext * context;
     GtkTextIter last;
     gboolean binary;
+    char * font;
+    int fontsize;
 };
 
 #include <libintl.h>

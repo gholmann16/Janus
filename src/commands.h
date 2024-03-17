@@ -40,6 +40,8 @@ void replace_command(GtkWidget * self, struct Document * document);
 
 void go_to_command(GtkWidget * self, struct Document * document);
 
+void set_font(struct Document * document, char * name, int size);
+
 void font_command(GtkWidget * self, struct Document * document);
 
 void wrap_command(GtkWidget * self, struct Document * document);

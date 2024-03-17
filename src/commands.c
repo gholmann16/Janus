@@ -229,10 +229,30 @@ void print_preview_command(GtkWidget * self, struct Document * document) {
     g_object_unref(compositor);
 }
 
+void quit(struct Document * document) {
+    int width;
+    int height;
+    gtk_window_get_size(document->window, &width, &height);
+
+    char append[] = "/janusrc";
+
+    if (strlen(g_get_user_config_dir()) + strlen(append) >= PATH_MAX)
+        return;
+
+    char path[PATH_MAX];
+    strcpy(path, g_get_user_config_dir());
+    strcat(path, append);
+
+    char * config = g_strdup_printf ("[Janus Config]\nheight=%d\nwidth=%d\nfont=%s\nfontsize=%d\n", height, width, document->font, document->fontsize);
+    g_file_set_contents(path, config, -1, NULL);
+
+    gtk_main_quit();
+}
+
 void exit_command(GtkWidget * self, struct Document * document) {
     
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE) {
-        gtk_main_quit();
+        quit(document);
         return;
     }
 
@@ -248,7 +268,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
 
     switch (res) {
         case 0:
-            gtk_main_quit();
+            quit(document);
             break;
         case 1:
             return;
@@ -511,16 +531,22 @@ void go_to_command(GtkWidget * self, struct Document * document) {
 
 }
 
-void font_callback(GtkFontChooser * self, gchar * selected, struct Document * document) {
-    PangoFontDescription * description = pango_font_description_from_string(selected);
+void set_font(struct Document * document, char * name, int size) {
     GtkCssProvider * cssProvider = gtk_css_provider_new();
-    char * css = g_strdup_printf ("textview { font: %dpt %s; }", pango_font_description_get_size (description) / PANGO_SCALE, pango_font_description_get_family (description));
+    char * css = g_strdup_printf ("textview { font: %dpt %s; }", size, name);
+    free(document->font);
+    document->font = g_strdup(name);
+    document->fontsize = size;
     gtk_css_provider_load_from_data (cssProvider, css, -1, NULL);
     GtkStyleContext * context = gtk_widget_get_style_context(document->view);
     gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-    pango_font_description_free(description);
     free(css);
+}
+
+void font_callback(GtkFontChooser * self, gchar * selected, struct Document * document) {
+    PangoFontDescription * description = pango_font_description_from_string(selected);
+    set_font(document, (char *)pango_font_description_get_family(description), pango_font_description_get_size(description) / PANGO_SCALE);
+    pango_font_description_free(description);
 }
 
 void font_command(GtkWidget * self, struct Document * document) {

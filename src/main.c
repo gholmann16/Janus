@@ -1,7 +1,7 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-#include "menu.h"
+#include "init.h"
 #include <locale.h>
 
 int main(int argc, char * argv[]) {
@@ -13,17 +13,16 @@ int main(int argc, char * argv[]) {
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Janus");
-    gtk_window_set_default_size(GTK_WINDOW(window), 512, 512);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
     char * isuffix = "/usr/share/pixmaps/janus.png";
     char * lsuffix = "/usr/share/locale/";
     char icon_path[512];
-    icon_path[0] = 0;
     char locale_path[512];
-    locale_path[0] = 0;
 
     if (getenv("APPDIR")) {
+        icon_path[0] = 0;
+        locale_path[0] = 0;
         if (strlen(getenv("APPDIR")) < sizeof(icon_path) - strlen(isuffix)) {
             strcat(icon_path, getenv("APPDIR"));
             strcat(icon_path, isuffix);
@@ -56,7 +55,7 @@ int main(int argc, char * argv[]) {
     // Text part
     GtkWidget * text = gtk_source_view_new();
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
-    
+
     GtkWidget * view = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
@@ -71,6 +70,11 @@ int main(int argc, char * argv[]) {
     document.context = context;
     document.window = GTK_WINDOW(window);
     document.path = NULL;
+    document.fontsize = 12;
+    document.font = NULL;
+
+    // Preferences setup
+    init_preferences(&document);
 
     // Menu setup
     GtkAccelGroup * accel = gtk_accel_group_new();

@@ -8,7 +8,7 @@ make release
 ```
 
 ## Installation
-Availible on the [AUR](https://aur.archlinux.org/packages/janus-gtk) or as an [AppImage](https://github.com/gholmann16/Janus/releases/latest).
+Availible on the [AUR](https://aur.archlinux.org/packages/janus) or as an [AppImage](https://github.com/gholmann16/Janus/releases/latest).
 
 To install it manually, run:
 ```

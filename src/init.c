@@ -2,6 +2,52 @@
 #include "global.h"
 #include "commands.h"
 
+#define DEFAULT_FONT "Monospace"
+#define DEFAULT_FONTSIZE 12
+#define DEFAULT_WIDTH 512
+#define DEFAULT_HEIGHT 512
+
+void init_preferences(struct Document * document) {
+    char append[] = "/janusrc";
+
+    if (strlen(g_get_user_config_dir()) + strlen(append) >= PATH_MAX)
+        return;
+
+    char path[PATH_MAX];
+    strcpy(path, g_get_user_config_dir());
+    strcat(path, append);
+
+    if (g_file_test(path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR) == FALSE) {
+        gtk_window_set_default_size(document->window, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        set_font(document, DEFAULT_FONT, DEFAULT_FONTSIZE);
+        return;
+    }
+
+    char * contents;
+    g_file_get_contents(path, &contents, NULL, NULL);
+    int height = DEFAULT_HEIGHT, width = DEFAULT_WIDTH;
+
+    if (strstr(contents, "height=") != NULL)
+        height = atoi(strstr(contents, "height=") + strlen("height="));
+    if (strstr(contents, "width=") != NULL)
+        width = atoi(strstr(contents, "width=") + strlen("width="));
+    gtk_window_set_default_size(document->window, width, height);
+
+    int fontsize = DEFAULT_FONTSIZE;
+    if (strstr(contents, "fontsize=") != NULL)
+        fontsize = atoi(strstr(contents, "fontsize=") + strlen("fontsize="));
+
+    if (strstr(contents, "font=") != NULL) {
+        char * font = strstr(contents, "font=") + strlen("font=");
+        char * end = strchr(font, '\n');
+        *end = 0;
+        set_font(document, font, fontsize);
+        *end = '\n';
+    }
+
+    free(contents);
+}
+
 void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document) {
 
     // File menu
