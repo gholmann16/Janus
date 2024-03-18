@@ -33,8 +33,8 @@ int main(int argc, char * argv[]) {
         }
     }
     else {
-        strcat(icon_path, isuffix);
-        strcat(locale_path, lsuffix);
+        strcpy(icon_path, isuffix);
+        strcpy(locale_path, lsuffix);
     }
 
     setlocale(LC_ALL, "");
@@ -54,7 +54,6 @@ int main(int argc, char * argv[]) {
 
     // Text part
     GtkWidget * text = gtk_source_view_new();
-    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
 
     GtkWidget * view = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(view), text);
@@ -72,6 +71,11 @@ int main(int argc, char * argv[]) {
     document.path = NULL;
     document.fontsize = 12;
     document.font = NULL;
+    document.wrap = DEFAULT_WRAP;
+    document.syntax = DEFAULT_SYNTAX;
+
+    if (argc > 1) 
+        open_file(argv[1], &document);
 
     // Preferences setup
     init_preferences(&document);
@@ -93,9 +97,6 @@ int main(int argc, char * argv[]) {
     // Pack up app and run
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_widget_show_all (window);
-
-    if (argc > 1) 
-        open_file(argv[1], &document);
 
     gtk_main();
 

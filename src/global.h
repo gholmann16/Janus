@@ -1,3 +1,7 @@
+#include <stdbool.h>
+#include <libintl.h>
+#define _(STRING) gettext(STRING)
+
 struct Document {
     char * path;
     GtkTextBuffer * buffer;
@@ -8,7 +12,7 @@ struct Document {
     gboolean binary;
     char * font;
     int fontsize;
+    bool wrap;
+    bool syntax;
 };
 
-#include <libintl.h>
-#define _(STRING) gettext(STRING)

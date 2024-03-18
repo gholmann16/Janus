@@ -243,7 +243,7 @@ void quit(struct Document * document) {
     strcpy(path, g_get_user_config_dir());
     strcat(path, append);
 
-    char * config = g_strdup_printf ("[Janus Config]\nheight=%d\nwidth=%d\nfont=%s\nfontsize=%d\n", height, width, document->font, document->fontsize);
+    char * config = g_strdup_printf ("[Janus Config]\nheight=%d\nwidth=%d\nfont=%s\nfontsize=%d\nwrap=%d\nsyntax=%d\n", height, width, document->font, document->fontsize, document->wrap, document->syntax);
     g_file_set_contents(path, config, -1, NULL);
 
     gtk_main_quit();
@@ -561,9 +561,31 @@ void font_command(GtkWidget * self, struct Document * document) {
 void wrap_command(GtkWidget * self, struct Document * document) {
     if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(self))) {
         gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_WORD);
+        document->wrap = TRUE;
     }
     else {
+        document->wrap = FALSE;
         gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_NONE);
+    }
+}
+
+void syntax_command(GtkWidget * self, struct Document * document) {
+    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(self))) {
+        document->syntax = TRUE;
+        GtkTextIter start, end;
+        gtk_text_buffer_get_start_iter(document->buffer, &start);
+        gtk_text_buffer_get_end_iter(document->buffer, &end);
+        char * content = gtk_text_buffer_get_text(document->buffer, &start, &end, FALSE);
+        char * content_type = g_content_type_guess(document->path, (const guchar *)content, strlen(content), NULL);
+        free(content);
+        GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
+        GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
+        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
+        free(content_type);
+    }
+    else {
+        document->syntax = FALSE;
+        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), NULL);
     }
 }
 

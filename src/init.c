@@ -1,11 +1,7 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-
-#define DEFAULT_FONT "Monospace"
-#define DEFAULT_FONTSIZE 12
-#define DEFAULT_WIDTH 512
-#define DEFAULT_HEIGHT 512
+#include "init.h"
 
 void init_preferences(struct Document * document) {
     char append[] = "/janusrc";
@@ -39,12 +35,18 @@ void init_preferences(struct Document * document) {
 
     if (strstr(contents, "font=") != NULL) {
         char * font = strstr(contents, "font=") + strlen("font=");
-        char * end = strchr(font, '\n');
-        *end = 0;
-        set_font(document, font, fontsize);
-        *end = '\n';
+        if (strchr(font, '\n') != NULL) {
+            char * end = strchr(font, '\n');
+            *end = 0;
+            set_font(document, font, fontsize);
+            *end = '\n';
+        }
     }
 
+    if (strstr(contents, "wrap=") != NULL)
+        document->wrap = atoi(strstr(contents, "wrap=") + strlen("wrap="));
+    if (strstr(contents, "syntax=") != NULL)
+        document->syntax = atoi(strstr(contents, "syntax=") + strlen("syntax="));
     free(contents);
 }
 
@@ -186,8 +188,13 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * wrap = gtk_check_menu_item_new_with_label(_("Wrap line"));
     g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
-    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wrap), TRUE);
+    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wrap), document->wrap);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
+
+    GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
+    g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
+    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(syntax), document->syntax);
+    gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), syntax);
 
     GtkWidget * help = gtk_menu_item_new_with_label(_("Help"));
     gtk_menu_shell_append(GTK_MENU_SHELL(bar), help);
