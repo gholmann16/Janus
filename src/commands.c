@@ -33,7 +33,7 @@ void change_indicator(GtkWidget * self, struct Document * document) {
 
 void warning_popup(struct Document * document, char * text) {
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text);
+    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
 }
@@ -594,9 +594,7 @@ void about_command(GtkWidget * self, struct Document * document) {
     GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);
 
     gtk_about_dialog_set_program_name(about, "Janus");
-
-    GdkPixbuf * icon = gtk_window_get_icon(document->window);
-    gtk_about_dialog_set_logo(about, icon);
+    gtk_about_dialog_set_logo_icon_name(about, "janus");
 
     const char * authors[] = {"Gabriel Holmann <gholmann@satyrn.net>", NULL};
     gtk_about_dialog_set_authors(about, authors);

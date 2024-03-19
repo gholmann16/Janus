@@ -15,42 +15,21 @@ int main(int argc, char * argv[]) {
     gtk_window_set_title(GTK_WINDOW(window), "Janus");
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
 
-    char * isuffix = "/usr/share/pixmaps/janus.png";
-    char * lsuffix = "/usr/share/locale/";
-    char icon_path[512];
-    char locale_path[512];
-
-    if (getenv("APPDIR")) {
-        icon_path[0] = 0;
-        locale_path[0] = 0;
-        if (strlen(getenv("APPDIR")) < sizeof(icon_path) - strlen(isuffix)) {
-            strcat(icon_path, getenv("APPDIR"));
-            strcat(icon_path, isuffix);
-        }
-        if (strlen(getenv("APPDIR")) < sizeof(locale_path) - strlen(lsuffix)) {
-            strcat(locale_path, getenv("APPDIR"));
-            strcat(locale_path, lsuffix);
-        }
+    char path[PATH_MAX] = "";
+    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/")) {
+        strcpy(path, getenv("APPDIR"));
+        strcat(path, "/usr/share/icons");
+        gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), path);
+        strcpy(path, getenv("APPDIR"));
     }
-    else {
-        strcpy(icon_path, isuffix);
-        strcpy(locale_path, lsuffix);
-    }
+    strcat(path, "/usr/share/locale/");
 
     setlocale(LC_ALL, "");
-    bindtextdomain("janus", locale_path);
+    bindtextdomain("janus", path);
     bind_textdomain_codeset("janus", "utf-8");
     textdomain("janus");
 
-    if (icon_path[0] != 0 && access(icon_path, F_OK) == 0) {
-        GError * error = NULL;
-        GdkPixbuf * icon = gdk_pixbuf_new_from_file(icon_path, &error);
-        if (error != NULL) {
-            puts(error->message);
-            g_error_free(error);
-        }
-        gtk_window_set_icon(GTK_WINDOW(window), icon);
-    }
+    gtk_window_set_icon_name(GTK_WINDOW(window), "janus");
 
     // Text part
     GtkWidget * text = gtk_source_view_new();

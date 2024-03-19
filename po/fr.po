@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 19:29-0400\n"
+"POT-Creation-Date: 2024-03-18 19:34-0400\n"
 "PO-Revision-Date: 2024-02-26 16:56-0500\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -46,148 +46,153 @@ msgstr "Échec de l'impression de page."
 msgid "Failed to preview page."
 msgstr "Échec de l'aperçu de page."
 
-#: src/commands.c:241
+#: src/commands.c:261
 msgid "Would you like to save?"
 msgstr "Souhaitez-vous enregistrer?"
 
-#: src/commands.c:335 src/commands.c:428 src/menu.c:108
+#: src/commands.c:355 src/commands.c:448 src/init.c:156
 msgid "Find"
 msgstr "Trouver"
 
-#: src/commands.c:335 src/commands.c:417 src/commands.c:489
+#: src/commands.c:355 src/commands.c:437 src/commands.c:509
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/commands.c:346 src/commands.c:422
+#: src/commands.c:366 src/commands.c:442
 msgid "Find text:"
 msgstr "Rechercher le texte:"
 
-#: src/commands.c:347 src/commands.c:455
+#: src/commands.c:367 src/commands.c:475
 msgid "Match case"
 msgstr "Respecter la casse"
 
-#: src/commands.c:417 src/commands.c:439 src/menu.c:118
+#: src/commands.c:437 src/commands.c:459 src/init.c:166
 msgid "Replace"
 msgstr "Remplacer"
 
-#: src/commands.c:437
+#: src/commands.c:457
 msgid "Replace text"
 msgstr "Remplacer le texte"
 
-#: src/commands.c:456
+#: src/commands.c:476
 msgid "Replace all"
 msgstr "Remplacer tout"
 
-#: src/commands.c:489
+#: src/commands.c:509
 msgid "Go To"
 msgstr "Aller à"
 
-#: src/commands.c:492
+#: src/commands.c:512
 msgid "Line number:"
 msgstr "Numéro de ligne:"
 
-#: src/commands.c:528
+#: src/commands.c:554
 msgid "Fonts"
 msgstr "Polices de caractères"
 
-#: src/commands.c:558
+#: src/commands.c:606
 #, fuzzy
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
-msgstr "Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
+msgstr ""
+"Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
 
-#: src/menu.c:9
+#: src/init.c:57
 msgid "File"
 msgstr "Fichier"
 
-#: src/menu.c:15
+#: src/init.c:63
 msgid "New"
 msgstr "Nouveau"
 
-#: src/menu.c:20
+#: src/init.c:68
 msgid "Open"
 msgstr "Ouvrir"
 
-#: src/menu.c:25
+#: src/init.c:73
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/menu.c:30
+#: src/init.c:78
 msgid "Save as"
 msgstr "Enregistrer sous"
 
-#: src/menu.c:37
+#: src/init.c:85
 msgid "Print"
 msgstr "Imprimer"
 
-#: src/menu.c:42
+#: src/init.c:90
 msgid "Print Preview"
 msgstr "Aperçu avant impression"
 
-#: src/menu.c:49
+#: src/init.c:97
 msgid "Exit"
 msgstr "Quitter"
 
-#: src/menu.c:56
+#: src/init.c:104
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/menu.c:62
+#: src/init.c:110
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/menu.c:67
+#: src/init.c:115
 msgid "Redo"
 msgstr "Refaire"
 
-#: src/menu.c:75
+#: src/init.c:123
 msgid "Cut"
 msgstr "Couper"
 
-#: src/menu.c:80
+#: src/init.c:128
 msgid "Copy"
 msgstr "Copie"
 
-#: src/menu.c:85
+#: src/init.c:133
 msgid "Paste"
 msgstr "Coller"
 
-#: src/menu.c:90
+#: src/init.c:138
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/menu.c:97
+#: src/init.c:145
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: src/menu.c:102
+#: src/init.c:150
 msgid "Search"
 msgstr "Rechercher"
 
-#: src/menu.c:113
+#: src/init.c:161
 msgid "Find next"
 msgstr "Rechercher suivant"
 
-#: src/menu.c:126
+#: src/init.c:174
 msgid "Go to"
 msgstr "Aller à"
 
-#: src/menu.c:131
+#: src/init.c:179
 msgid "Options"
 msgstr "Options"
 
-#: src/menu.c:137
+#: src/init.c:185
 msgid "Font"
 msgstr "Police de caractères"
 
-#: src/menu.c:141
+#: src/init.c:189
 msgid "Wrap line"
 msgstr "Renvoi à la ligne"
 
-#: src/menu.c:146
+#: src/init.c:194
+msgid "Syntax highlighting"
+msgstr "Surligner syntaxe"
+
+#: src/init.c:199
 msgid "Help"
 msgstr "Aider"
 
-#: src/menu.c:152
+#: src/init.c:205
 msgid "About"
 msgstr "À propos"
 

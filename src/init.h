@@ -1,4 +1,4 @@
-#define DEFAULT_FONT "Monospace"
+#define DEFAULT_FONT "Sans"
 #define DEFAULT_FONTSIZE 12
 #define DEFAULT_WIDTH 512
 #define DEFAULT_HEIGHT 512
