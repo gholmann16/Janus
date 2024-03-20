@@ -1,5 +1,12 @@
 # Janus
-Simple native linux notepad. Built using gtk for the ui, and gtksourceview for undo, redo, and printing. Similar keybinds to leafpad/windows notepad. Meant for simple UTF-8 text editing.
+Simple native linux notepad meant for simple UTF-8 text editing. 
+
+## Features
+- Binary view only mode
+- (Optional) syntax highlighting
+- Undo/redo capabilities
+- Printing documents
+- Similar keybinds to other text editors
 
 ## Build
 To build Janus, simply clone the github repository, then run:
