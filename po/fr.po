@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-18 19:34-0400\n"
+"POT-Creation-Date: 2024-03-26 18:42-0400\n"
 "PO-Revision-Date: 2024-02-26 16:56-0500\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -18,181 +18,137 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: src/commands.c:46
 msgid "Could not resolve path."
 msgstr "Impossible de résoudre le chemin."
 
-#: src/commands.c:55
 msgid "Could not open file."
 msgstr "Impossible d'ouvrir le fichier."
 
-#: src/commands.c:94
 msgid "Open File"
 msgstr "Ouvrir fichier"
 
-#: src/commands.c:144 src/commands.c:178
 msgid "Janus cannot not modify binary files."
 msgstr "Janus ne peut pas modifier les fichiers binaires."
 
-#: src/commands.c:149
 msgid "Save File"
 msgstr "Enregistrer fichier"
 
-#: src/commands.c:212
 msgid "Failed to print page."
 msgstr "Échec de l'impression de page."
 
-#: src/commands.c:226
 msgid "Failed to preview page."
 msgstr "Échec de l'aperçu de page."
 
-#: src/commands.c:261
 msgid "Would you like to save?"
 msgstr "Souhaitez-vous enregistrer?"
 
-#: src/commands.c:355 src/commands.c:448 src/init.c:156
 msgid "Find"
 msgstr "Trouver"
 
-#: src/commands.c:355 src/commands.c:437 src/commands.c:509
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/commands.c:366 src/commands.c:442
 msgid "Find text:"
 msgstr "Rechercher le texte:"
 
-#: src/commands.c:367 src/commands.c:475
 msgid "Match case"
 msgstr "Respecter la casse"
 
-#: src/commands.c:437 src/commands.c:459 src/init.c:166
 msgid "Replace"
 msgstr "Remplacer"
 
-#: src/commands.c:457
 msgid "Replace text"
 msgstr "Remplacer le texte"
 
-#: src/commands.c:476
 msgid "Replace all"
 msgstr "Remplacer tout"
 
-#: src/commands.c:509
 msgid "Go To"
 msgstr "Aller à"
 
-#: src/commands.c:512
 msgid "Line number:"
 msgstr "Numéro de ligne:"
 
-#: src/commands.c:554
 msgid "Fonts"
 msgstr "Polices de caractères"
 
-#: src/commands.c:606
 #, fuzzy
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 "Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
 
-#: src/init.c:57
 msgid "File"
 msgstr "Fichier"
 
-#: src/init.c:63
 msgid "New"
 msgstr "Nouveau"
 
-#: src/init.c:68
 msgid "Open"
 msgstr "Ouvrir"
 
-#: src/init.c:73
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/init.c:78
 msgid "Save as"
 msgstr "Enregistrer sous"
 
-#: src/init.c:85
 msgid "Print"
 msgstr "Imprimer"
 
-#: src/init.c:90
 msgid "Print Preview"
 msgstr "Aperçu avant impression"
 
-#: src/init.c:97
 msgid "Exit"
 msgstr "Quitter"
 
-#: src/init.c:104
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/init.c:110
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/init.c:115
 msgid "Redo"
 msgstr "Refaire"
 
-#: src/init.c:123
 msgid "Cut"
 msgstr "Couper"
 
-#: src/init.c:128
 msgid "Copy"
 msgstr "Copie"
 
-#: src/init.c:133
 msgid "Paste"
 msgstr "Coller"
 
-#: src/init.c:138
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/init.c:145
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: src/init.c:150
 msgid "Search"
 msgstr "Rechercher"
 
-#: src/init.c:161
 msgid "Find next"
 msgstr "Rechercher suivant"
 
-#: src/init.c:174
 msgid "Go to"
 msgstr "Aller à"
 
-#: src/init.c:179
 msgid "Options"
 msgstr "Options"
 
-#: src/init.c:185
 msgid "Font"
 msgstr "Police de caractères"
 
-#: src/init.c:189
 msgid "Wrap line"
 msgstr "Renvoi à la ligne"
 
-#: src/init.c:194
 msgid "Syntax highlighting"
 msgstr "Surligner syntaxe"
 
-#: src/init.c:199
 msgid "Help"
 msgstr "Aider"
 
-#: src/init.c:205
 msgid "About"
 msgstr "À propos"
 

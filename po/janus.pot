@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-18 19:34-0400\n"
+"POT-Creation-Date: 2024-03-26 18:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,178 +17,134 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/commands.c:46
 msgid "Could not resolve path."
 msgstr ""
 
-#: src/commands.c:55
 msgid "Could not open file."
 msgstr ""
 
-#: src/commands.c:94
 msgid "Open File"
 msgstr ""
 
-#: src/commands.c:144 src/commands.c:178
 msgid "Janus cannot not modify binary files."
 msgstr ""
 
-#: src/commands.c:149
 msgid "Save File"
 msgstr ""
 
-#: src/commands.c:212
 msgid "Failed to print page."
 msgstr ""
 
-#: src/commands.c:226
 msgid "Failed to preview page."
 msgstr ""
 
-#: src/commands.c:261
 msgid "Would you like to save?"
 msgstr ""
 
-#: src/commands.c:355 src/commands.c:448 src/init.c:156
 msgid "Find"
 msgstr ""
 
-#: src/commands.c:355 src/commands.c:437 src/commands.c:509
 msgid "Cancel"
 msgstr ""
 
-#: src/commands.c:366 src/commands.c:442
 msgid "Find text:"
 msgstr ""
 
-#: src/commands.c:367 src/commands.c:475
 msgid "Match case"
 msgstr ""
 
-#: src/commands.c:437 src/commands.c:459 src/init.c:166
 msgid "Replace"
 msgstr ""
 
-#: src/commands.c:457
 msgid "Replace text"
 msgstr ""
 
-#: src/commands.c:476
 msgid "Replace all"
 msgstr ""
 
-#: src/commands.c:509
 msgid "Go To"
 msgstr ""
 
-#: src/commands.c:512
 msgid "Line number:"
 msgstr ""
 
-#: src/commands.c:554
 msgid "Fonts"
 msgstr ""
 
-#: src/commands.c:606
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 
-#: src/init.c:57
 msgid "File"
 msgstr ""
 
-#: src/init.c:63
 msgid "New"
 msgstr ""
 
-#: src/init.c:68
 msgid "Open"
 msgstr ""
 
-#: src/init.c:73
 msgid "Save"
 msgstr ""
 
-#: src/init.c:78
 msgid "Save as"
 msgstr ""
 
-#: src/init.c:85
 msgid "Print"
 msgstr ""
 
-#: src/init.c:90
 msgid "Print Preview"
 msgstr ""
 
-#: src/init.c:97
 msgid "Exit"
 msgstr ""
 
-#: src/init.c:104
 msgid "Edit"
 msgstr ""
 
-#: src/init.c:110
 msgid "Undo"
 msgstr ""
 
-#: src/init.c:115
 msgid "Redo"
 msgstr ""
 
-#: src/init.c:123
 msgid "Cut"
 msgstr ""
 
-#: src/init.c:128
 msgid "Copy"
 msgstr ""
 
-#: src/init.c:133
 msgid "Paste"
 msgstr ""
 
-#: src/init.c:138
 msgid "Delete"
 msgstr ""
 
-#: src/init.c:145
 msgid "Select all"
 msgstr ""
 
-#: src/init.c:150
 msgid "Search"
 msgstr ""
 
-#: src/init.c:161
 msgid "Find next"
 msgstr ""
 
-#: src/init.c:174
 msgid "Go to"
 msgstr ""
 
-#: src/init.c:179
 msgid "Options"
 msgstr ""
 
-#: src/init.c:185
 msgid "Font"
 msgstr ""
 
-#: src/init.c:189
 msgid "Wrap line"
 msgstr ""
 
-#: src/init.c:194
 msgid "Syntax highlighting"
 msgstr ""
 
-#: src/init.c:199
 msgid "Help"
 msgstr ""
 
-#: src/init.c:205
 msgid "About"
 msgstr ""

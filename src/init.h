@@ -5,6 +5,9 @@
 #define DEFAULT_WRAP TRUE
 #define DEFAULT_SYNTAX FALSE
 
+// Initiate i18n and icon
+void init_app(GtkWindow * window);
+
 // Initiate preferences from janusrc
 void init_preferences(struct Document * document);
 

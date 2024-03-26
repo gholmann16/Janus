@@ -21,14 +21,17 @@ janus: $(OBJECTS) $(MOBJECTS)
 %.mo: %.po
 	msgfmt -o $@ $<
 
-update:
-	xgettext $(SOURCES) --keyword=_ -o po/janus.pot
-	$(foreach po, $(PSOURCES), msgmerge --update $(po) po/janus.pot;)
-	rm -f po/*.po~
+update: $(PSOURCES)
+$(PSOURCES): $(SOURCES)
+	xgettext $(SOURCES) --keyword=_ --no-location -o po/temp.pot
+	msgmerge --no-location --update --backup=off po/janus.pot po/temp.pot
+	rm po/temp.pot
+	$(foreach po, $(PSOURCES), msgmerge --no-location --update --backup=off $(po) po/janus.pot;)
+
+.PHONY: update
 
 clean:
 	rm -f $(OBJECTS)
-	rm -f $(MOBJECTS)
 	rm -f janus
 
 install: release

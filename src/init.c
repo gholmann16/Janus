@@ -3,6 +3,24 @@
 #include "commands.h"
 #include "init.h"
 
+void init_app(GtkWindow * window) {
+    char path[PATH_MAX] = "";
+    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/")) {
+        strcpy(path, getenv("APPDIR"));
+        strcat(path, "/usr/share/icons");
+        gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), path);
+        strcpy(path, getenv("APPDIR"));
+    }
+    strcat(path, "/usr/share/locale/");
+
+    setlocale(LC_ALL, "");
+    bindtextdomain("janus", path);
+    bind_textdomain_codeset("janus", "utf-8");
+    textdomain("janus");
+
+    gtk_window_set_icon_name(window, "janus");
+}
+
 void init_preferences(struct Document * document) {
     char append[] = "/janusrc";
 
