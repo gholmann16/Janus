@@ -1,7 +1,7 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-#include "init.h"
+#include "start.h"
 
 void init_app(GtkWindow * window) {
     char path[PATH_MAX] = "";

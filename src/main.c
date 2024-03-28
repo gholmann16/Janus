@@ -1,7 +1,7 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-#include "init.h"
+#include "start.h"
 #include <locale.h>
 
 int main(int argc, char * argv[]) {

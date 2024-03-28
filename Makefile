@@ -21,8 +21,7 @@ janus: $(OBJECTS) $(MOBJECTS)
 %.mo: %.po
 	msgfmt -o $@ $<
 
-update: $(PSOURCES)
-$(PSOURCES): $(SOURCES)
+update: $(SOURCES)
 	xgettext $(SOURCES) --keyword=_ --no-location -o po/temp.pot
 	msgmerge --no-location --update --backup=off po/janus.pot po/temp.pot
 	rm po/temp.pot

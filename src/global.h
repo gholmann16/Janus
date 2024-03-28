@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <libintl.h>
 #define _(STRING) gettext(STRING)
 
@@ -9,10 +8,9 @@ struct Document {
     GtkWindow * window;
     GtkSourceSearchContext * context;
     GtkTextIter last;
-    gboolean binary;
+    _Bool binary;
     char * font;
     int fontsize;
-    bool wrap;
-    bool syntax;
+    _Bool wrap;
+    _Bool syntax;
 };
-
