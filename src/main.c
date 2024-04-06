@@ -63,6 +63,7 @@ int main(int argc, char * argv[]) {
 
     gtk_source_finalize();
     free(document.path);
+    free(document.font);
 
     return 0;
 }

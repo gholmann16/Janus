@@ -559,14 +559,8 @@ void font_command(GtkWidget * self, struct Document * document) {
 }
 
 void wrap_command(GtkWidget * self, struct Document * document) {
-    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(self))) {
-        gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_WORD);
-        document->wrap = TRUE;
-    }
-    else {
-        document->wrap = FALSE;
-        gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), GTK_WRAP_NONE);
-    }
+    document->wrap = !document->wrap;
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), document->wrap ? GTK_WRAP_WORD : GTK_WRAP_NONE);
 }
 
 void syntax_command(GtkWidget * self, struct Document * document) {
