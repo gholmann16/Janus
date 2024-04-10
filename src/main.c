@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
 
     struct Document document = {
         .buffer = buffer,
-        .view = view,
+        .view = text,
         .context = context,
         .window = GTK_WINDOW(window),
         .fontsize = 12,

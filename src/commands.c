@@ -118,7 +118,7 @@ void open_file(char * filename, struct Document * document) {
 void open_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Open File"), document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Open File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Open"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -203,7 +203,7 @@ void save(struct Document * document) {
 void save_as_command(GtkWidget * self, struct Document * document) {
 
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Save File"), document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Save File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Save"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT)
@@ -616,8 +616,8 @@ void wrap_command(GtkWidget * self, struct Document * document) {
 }
 
 void syntax_command(GtkWidget * self, struct Document * document) {
-    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(self))) {
-        document->syntax = TRUE;
+    document->syntax = !document->syntax;
+    if (document->syntax) {
         GtkTextIter start, end;
         gtk_text_buffer_get_start_iter(document->buffer, &start);
         gtk_text_buffer_get_end_iter(document->buffer, &end);
@@ -630,7 +630,6 @@ void syntax_command(GtkWidget * self, struct Document * document) {
         free(content_type);
     }
     else {
-        document->syntax = FALSE;
         gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), NULL);
     }
 }

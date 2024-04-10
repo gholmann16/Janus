@@ -61,10 +61,11 @@ void init_preferences(struct Document * document) {
         }
     }
 
+    // Set to opposite so the callback doesn't ruin it
     if (strstr(contents, "wrap=") != NULL)
-        document->wrap = atoi(strstr(contents, "wrap=") + strlen("wrap="));
+        document->wrap = !atoi(strstr(contents, "wrap=") + strlen("wrap="));
     if (strstr(contents, "syntax=") != NULL)
-        document->syntax = atoi(strstr(contents, "syntax=") + strlen("syntax="));
+        document->syntax = !atoi(strstr(contents, "syntax=") + strlen("syntax="));
     free(contents);
 }
 
@@ -206,12 +207,15 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * wrap = gtk_check_menu_item_new_with_label(_("Wrap line"));
     g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
-    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wrap), document->wrap);
+    gtk_widget_activate(wrap);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
+
+    GtkWidget * seperate5 = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), seperate5);
 
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
-    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(syntax), document->syntax);
+    gtk_widget_activate(syntax);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), syntax);
 
     GtkWidget * help = gtk_menu_item_new_with_label(_("Help"));
