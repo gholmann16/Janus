@@ -1,5 +1,6 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
+#include "config.h"
 
 void filename_to_title(struct Document * document) {
     char * append = " - Janus";
@@ -175,7 +176,7 @@ void save(struct Document * document) {
                         iter++;
                         break;
                     default:
-                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+OOOO and U+00FF with excpetion U+2400"));
+                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with excpetion U+2400"));
                         free(text);
                         return;
                 }
@@ -282,21 +283,36 @@ void print_preview_command(GtkWidget * self, struct Document * document) {
 }
 
 void quit(struct Document * document) {
-    int width;
-    int height;
+    GKeyFile * config = g_key_file_new();
+
+    int width, height;
     gtk_window_get_size(document->window, &width, &height);
+    g_key_file_set_integer(config, GROUP_KEY, "width", width);
+    g_key_file_set_integer(config, GROUP_KEY, "height", height);
 
-    char append[] = "/janusrc";
+    g_key_file_set_string(config, GROUP_KEY, "font", document->font);
+    g_key_file_set_integer(config, GROUP_KEY, "fontsize", document->fontsize);
 
-    if (strlen(g_get_user_config_dir()) + strlen(append) >= PATH_MAX)
-        return;
+    g_key_file_set_boolean(config, GROUP_KEY, "wrap", document->wrap);
+    g_key_file_set_boolean(config, GROUP_KEY, "syntax", document->syntax);
 
     char path[PATH_MAX];
-    strcpy(path, g_get_user_config_dir());
-    strcat(path, append);
+    strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
+    strcat(path, CONFIG_FILE);
 
-    char * config = g_strdup_printf ("[Janus Config]\nheight=%d\nwidth=%d\nfont=%s\nfontsize=%d\nwrap=%d\nsyntax=%d\n", height, width, document->font, document->fontsize, document->wrap, document->syntax);
-    g_file_set_contents(path, config, -1, NULL);
+    GError * error = NULL;
+    char * data = g_key_file_to_data(config, NULL, &error);
+    if (error) {
+        puts(error->message);
+        g_error_free(error);
+        gtk_main_quit();
+    }
+
+    g_file_set_contents(path, data, -1, &error);
+    if (error) {
+        puts(error->message);
+        g_error_free(error);
+    }
 
     gtk_main_quit();
 }
@@ -629,9 +645,8 @@ void syntax_command(GtkWidget * self, struct Document * document) {
         gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
         free(content_type);
     }
-    else {
+    else
         gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), NULL);
-    }
 }
 
 void about_command(GtkWidget * self, struct Document * document) {

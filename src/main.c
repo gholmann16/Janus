@@ -1,8 +1,9 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-#include "start.h"
+#include "menu.h"
 #include <locale.h>
+#include "config.h"
 
 int main(int argc, char * argv[]) {
 
@@ -37,12 +38,51 @@ int main(int argc, char * argv[]) {
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
     g_signal_connect(buffer, "modified-changed", G_CALLBACK(change_indicator), &document);
 
+    // Open file
     if (argc > 1) 
         open_file(argv[1], &document);
 
     // Preferences setup
-    init_app(GTK_WINDOW(window));
-    init_preferences(&document);
+    char path[PATH_MAX] = "";
+    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/")) {
+        strcpy(path, getenv("APPDIR"));
+        strcat(path, "/usr/share/icons");
+        gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), path);
+        strcpy(path, getenv("APPDIR"));
+    }
+    strcat(path, "/usr/share/locale/");
+
+    setlocale(LC_ALL, "");
+    bindtextdomain("janus", path);
+    bind_textdomain_codeset("janus", "utf-8");
+    textdomain("janus");
+
+    gtk_window_set_icon_name(GTK_WINDOW(window), "janus");
+
+    strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
+    strcat(path, CONFIG_FILE);
+
+    GError * error = NULL;
+    GKeyFile * config = g_key_file_new();
+    if (!g_key_file_load_from_file (config, path, G_KEY_FILE_NONE, &error)) {
+        puts(error->message);
+        g_error_free(error);
+        gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        set_font(&document, DEFAULT_FONT, DEFAULT_FONTSIZE);
+    }
+    else {
+        int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
+        int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
+        gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
+
+        int fontsize = g_key_file_get_integer(config, GROUP_KEY, "fontsize", NULL);
+        char * font = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
+        set_font(&document, font ? font : DEFAULT_FONT, fontsize ? fontsize : DEFAULT_FONTSIZE);
+
+        // Set to opposite so the callback doesn't ruin it
+        document.wrap = g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL);
+        document.syntax = g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL);
+    }
 
     // Menu setup
     GtkAccelGroup * accel = gtk_accel_group_new();

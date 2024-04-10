@@ -1,73 +1,6 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "commands.h"
-#include "start.h"
-
-void init_app(GtkWindow * window) {
-    char path[PATH_MAX] = "";
-    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/")) {
-        strcpy(path, getenv("APPDIR"));
-        strcat(path, "/usr/share/icons");
-        gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), path);
-        strcpy(path, getenv("APPDIR"));
-    }
-    strcat(path, "/usr/share/locale/");
-
-    setlocale(LC_ALL, "");
-    bindtextdomain("janus", path);
-    bind_textdomain_codeset("janus", "utf-8");
-    textdomain("janus");
-
-    gtk_window_set_icon_name(window, "janus");
-}
-
-void init_preferences(struct Document * document) {
-    char append[] = "/janusrc";
-
-    if (strlen(g_get_user_config_dir()) + strlen(append) >= PATH_MAX)
-        return;
-
-    char path[PATH_MAX];
-    strcpy(path, g_get_user_config_dir());
-    strcat(path, append);
-
-    if (g_file_test(path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR) == FALSE) {
-        gtk_window_set_default_size(document->window, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        set_font(document, DEFAULT_FONT, DEFAULT_FONTSIZE);
-        return;
-    }
-
-    char * contents;
-    g_file_get_contents(path, &contents, NULL, NULL);
-    int height = DEFAULT_HEIGHT, width = DEFAULT_WIDTH;
-
-    if (strstr(contents, "height=") != NULL)
-        height = atoi(strstr(contents, "height=") + strlen("height="));
-    if (strstr(contents, "width=") != NULL)
-        width = atoi(strstr(contents, "width=") + strlen("width="));
-    gtk_window_set_default_size(document->window, width, height);
-
-    int fontsize = DEFAULT_FONTSIZE;
-    if (strstr(contents, "fontsize=") != NULL)
-        fontsize = atoi(strstr(contents, "fontsize=") + strlen("fontsize="));
-
-    if (strstr(contents, "font=") != NULL) {
-        char * font = strstr(contents, "font=") + strlen("font=");
-        if (strchr(font, '\n') != NULL) {
-            char * end = strchr(font, '\n');
-            *end = 0;
-            set_font(document, font, fontsize);
-            *end = '\n';
-        }
-    }
-
-    // Set to opposite so the callback doesn't ruin it
-    if (strstr(contents, "wrap=") != NULL)
-        document->wrap = !atoi(strstr(contents, "wrap=") + strlen("wrap="));
-    if (strstr(contents, "syntax=") != NULL)
-        document->syntax = !atoi(strstr(contents, "syntax=") + strlen("syntax="));
-    free(contents);
-}
 
 void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * document) {
 
@@ -207,7 +140,10 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * wrap = gtk_check_menu_item_new_with_label(_("Wrap line"));
     g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
-    gtk_widget_activate(wrap);
+    if (document->wrap) {
+        document->wrap = FALSE;
+        gtk_widget_activate(wrap);
+    }
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
 
     GtkWidget * seperate5 = gtk_separator_menu_item_new();
@@ -215,7 +151,10 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
-    gtk_widget_activate(syntax);
+    if (document->syntax) {
+        document->syntax = FALSE;
+        gtk_widget_activate(syntax);
+    }
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), syntax);
 
     GtkWidget * help = gtk_menu_item_new_with_label(_("Help"));
