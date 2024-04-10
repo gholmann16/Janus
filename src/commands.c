@@ -100,7 +100,6 @@ void open_file(char * filename, struct Document * document) {
             }
         }
         binary_string[iter] = 0;
-        printf("%d vs %d vs %d\n", iter, newsize, len);
         gtk_text_buffer_set_text(document->buffer, binary_string, -1);
         free(binary_string);
     }
@@ -152,10 +151,45 @@ void save(struct Document * document) {
     gtk_text_buffer_get_start_iter(document->buffer, &start);
     gtk_text_buffer_get_end_iter(document->buffer, &end);
 
-    char * text = gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
+    unsigned char * text = (unsigned char *)gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
+    size_t len = -1;
+
+    if (document->binary) {
+        size_t iter = 0;
+        len++;
+        while(text[iter]) {
+            if (text[iter] > 127) {
+                switch (text[iter]) {
+                    case 0xE2:
+                        if (text[iter+1] == 0x90 && text[iter+2] == 0x80) {
+                            text[len] = 0;
+                            iter+=2;
+                            break;
+                        }
+                    case 0xC2:
+                        text[len] = text[iter+1];
+                        iter++;
+                        break;
+                    case 0xC3:
+                        text[len] = text[iter+1] + 64;
+                        iter++;
+                        break;
+                    default:
+                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+OOOO and U+00FF with excpetion U+2400"));
+                        free(text);
+                        return;
+                }
+            }
+            else
+                text[len] = text[iter];
+            iter++;
+            len++;
+        }
+        text[len] = 0;
+    }
 
     GError * error = NULL;
-    g_file_set_contents(document->path, text, -1, &error);
+    g_file_set_contents(document->path, (char *)text, len, &error);
     if (error) {
         warning_popup(document, error->message);
         g_error_free(error);
@@ -167,11 +201,6 @@ void save(struct Document * document) {
 }
 
 void save_as_command(GtkWidget * self, struct Document * document) {
-    
-    if (document->binary == TRUE) {
-        warning_popup(document, _("Janus cannot not modify binary files."));
-        return;
-    }
 
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
     GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Save File"), document->window, action, ("_Cancel"), GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
@@ -199,11 +228,6 @@ void save_command(GtkWidget * self, struct Document * document) {
 
     if (document->path == NULL) {
         save_as_command(self, document);
-        return;
-    }
-
-    if (document->binary == TRUE) {
-        warning_popup(document, _("Janus cannot not modify binary files."));
         return;
     }
 
