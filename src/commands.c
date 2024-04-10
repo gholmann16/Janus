@@ -65,16 +65,44 @@ void open_file(char * filename, struct Document * document) {
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
         document->binary = TRUE;
-        gsize read;
-        gsize wrote;
 
         // Convert to utf8, and then transform characters such as null to glib approriate characters
-        // Unfortunately this approach does not allow us to edit the text. If only glib support null chracters
-        char * new = g_convert(contents, len, "UTF-8", "ISO-8859-1", &read, &wrote, NULL);
-        char * valid = g_utf8_make_valid(new, wrote);
-        gtk_text_buffer_set_text(document->buffer, valid, -1);
-        free(new);
-        free(valid);
+        // Ascii characters map normally with the exception of NUL (thanks glib)
+        // Characters above 127 map to the unicode U+xxxx counterpart for simplicity wihtout choosing any codepage
+        size_t newsize = len;
+        for (size_t i = 0; i < len; i++) {
+            if (!contents[i]) {
+                newsize += 2;
+            }
+            else if (contents[i] < 0) {
+                newsize += 1;
+            }
+        }
+
+        char * binary_string = malloc(newsize + 1);
+        size_t iter = 0;
+
+        for (size_t i = 0; i < len; i++) {
+            if (contents[i] > 0) {
+                binary_string[iter] = contents[i];
+                iter += 1;
+            }
+            else if (contents[i] < 0){
+                binary_string[iter+0] = 0xC0 + (2 * (contents[i] & 0x80 && TRUE)) + (1 * (contents[i] & 0x40 && TRUE));
+                binary_string[iter+1] = 0x80 + (unsigned char)contents[i] % 64;
+                iter += 2;
+            }
+            else {
+                binary_string[iter+0] = 0xE2;
+                binary_string[iter+1] = 0x90;
+                binary_string[iter+2] = 0x80;
+                iter += 3;
+            }
+        }
+        binary_string[iter] = 0;
+        printf("%d vs %d vs %d\n", iter, newsize, len);
+        gtk_text_buffer_set_text(document->buffer, binary_string, -1);
+        free(binary_string);
     }
     else {
         document->binary = FALSE;
