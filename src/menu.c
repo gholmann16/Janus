@@ -28,6 +28,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), save);
 
     GtkWidget * save_as = gtk_menu_item_new_with_label(_("Save as"));
+    gtk_widget_add_accelerator(save_as, "activate", accel, GDK_KEY_S, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(save_as, "activate", G_CALLBACK(save_as_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), save_as);
 
@@ -40,6 +41,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), print);
 
     GtkWidget * preview = gtk_menu_item_new_with_label(_("Print Preview"));
+    gtk_widget_add_accelerator(preview, "activate", accel, GDK_KEY_P, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(preview, "activate", G_CALLBACK(print_preview_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), preview);
 
@@ -88,6 +90,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), paste);
 
     GtkWidget * delete = gtk_menu_item_new_with_label(_("Delete"));
+    gtk_widget_add_accelerator(delete, "activate", accel, GDK_KEY_Delete, 0, GTK_ACCEL_VISIBLE);
     g_signal_connect(delete, "activate", G_CALLBACK(delete_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(editmenu), delete);
 
@@ -111,7 +114,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_button);
     
     GtkWidget * search_next = gtk_menu_item_new_with_label(_("Find next"));
-    gtk_widget_add_accelerator(search_next, "activate", accel, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(search_next, "activate", accel, GDK_KEY_G, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(search_next, "activate", G_CALLBACK(search_next_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_next);
 
@@ -124,7 +127,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), seperate4);
 
     GtkWidget * go_to = gtk_menu_item_new_with_label(_("Go to"));
-    gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_G, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_J, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(go_to, "activate", G_CALLBACK(go_to_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), go_to);
 
@@ -150,6 +153,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), seperate5);
 
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
+    gtk_widget_add_accelerator(syntax, "activate", accel, GDK_KEY_H, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
     if (document->syntax) {
         document->syntax = FALSE;
