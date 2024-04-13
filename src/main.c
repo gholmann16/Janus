@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
         .view = text,
         .context = context,
         .window = GTK_WINDOW(window),
-        .fontsize = 12,
+        .font = g_strdup(DEFAULT_FONT),
         .wrap = DEFAULT_WRAP,
         .syntax = DEFAULT_SYNTAX
     };
@@ -68,21 +68,24 @@ int main(int argc, char * argv[]) {
         puts(error->message);
         g_error_free(error);
         gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        set_font(&document, DEFAULT_FONT, DEFAULT_FONTSIZE);
     }
     else {
         int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
         int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
         gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
 
-        int fontsize = g_key_file_get_integer(config, GROUP_KEY, "fontsize", NULL);
-        char * font = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
-        set_font(&document, font ? font : DEFAULT_FONT, fontsize ? fontsize : DEFAULT_FONTSIZE);
+        char * font_desc = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
+        if (font_desc) {
+            free(document.font);
+            document.font = font_desc;
+        }
 
         // Set to opposite so the callback doesn't ruin it
         document.wrap = g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL);
         document.syntax = g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL);
     }
+
+    set_font(&document);
 
     // Menu setup
     GtkAccelGroup * accel = gtk_accel_group_new();

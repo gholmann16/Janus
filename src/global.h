@@ -10,7 +10,6 @@ struct Document {
     GtkTextIter last;
     _Bool binary;
     char * font;
-    int fontsize;
     _Bool wrap;
     _Bool syntax;
 };
