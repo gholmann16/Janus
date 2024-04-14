@@ -69,7 +69,7 @@ void open_file(char * filename, struct Document * document) {
 
         // Convert to utf8, and then transform characters such as null to glib approriate characters
         // Ascii characters map normally with the exception of NUL (thanks glib)
-        // Characters above 127 map to the unicode U+xxxx counterpart for simplicity wihtout choosing any codepage
+        // Characters above 127 map to the unicode U+xxxx counterpart for simplicity without choosing any codepage
         size_t newsize = len;
         for (size_t i = 0; i < len; i++) {
             if (!contents[i]) {
@@ -107,6 +107,19 @@ void open_file(char * filename, struct Document * document) {
     else {
         document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
+        
+        GtkTextIter start, end;
+        gtk_text_buffer_get_start_iter(document->buffer, &start);
+        gtk_text_buffer_get_end_iter(document->buffer, &end);
+        char * content = gtk_text_buffer_get_text(document->buffer, &start, &end, FALSE);
+        char * content_type = g_content_type_guess(document->path, (const guchar *)content, strlen(content), NULL);
+        free(content);
+
+        GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
+        GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
+        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
+        free(content_type);
+        gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);
     }
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
@@ -744,20 +757,7 @@ void wrap_command(GtkWidget * self, struct Document * document) {
 
 void syntax_command(GtkWidget * self, struct Document * document) {
     document->syntax = !document->syntax;
-    if (document->syntax) {
-        GtkTextIter start, end;
-        gtk_text_buffer_get_start_iter(document->buffer, &start);
-        gtk_text_buffer_get_end_iter(document->buffer, &end);
-        char * content = gtk_text_buffer_get_text(document->buffer, &start, &end, FALSE);
-        char * content_type = g_content_type_guess(document->path, (const guchar *)content, strlen(content), NULL);
-        free(content);
-        GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
-        GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
-        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
-        free(content_type);
-    }
-    else
-        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), NULL);
+    gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);
 }
 
 void about_command(GtkWidget * self, struct Document * document) {
