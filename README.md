@@ -1,27 +1,38 @@
 # Janus
-Janus is a simple native linux notepad meant for text editing. It supports advanced undo and redo, printing, similar keybinds to most other text editors. Janus also includes French and Spanish translations.
+Simple native linux notepad meant for text editing. Supports UTF-8 and binary data. 
 
-## Screenshot
-![Picture of app](data/screenshot.png)
+## Features
+- Undo/redo
+- Similar keyinds to other text editors
+- Spanish/French Translations
+- Printing capabilities
+- Optional syntax highlighting
+- Binary editing
 
-## Installation
-- [Arch Linux](https://aur.archlinux.org/packages/janus)
-- [Debian](https://github.com/gholmann16/Janus/releases/latest)
-- [AppImage](https://github.com/gholmann16/Janus/releases/latest).
+## Building
 
-
-To build and install run:
+To build and install locally run:
 ```
 make release
 sudo make install
 ```
+
 Janus depends on the following libraries for both building and running:
 - Gtk3
 - Gtksourceview4
 
-## Advanced Features
+## Installation
 
-Janus stands out among most text editors due to its simple design yet advanced capability. Advanced features include syntax highlighting, using GtkSourceView, and binary modification capabilities. To edit binaries, simply open them in Janus, then use Control + Shift + U to enter in new characters (From 0x01 to 0xFF). To enter a null character use U+2400. Once you save the file, Janus will convert these raw characters into hex data.
+- [Arch Linux](https://aur.archlinux.org/packages/janus)
+- [Debian](https://github.com/gholmann16/Janus/releases/latest)
+- [AppImage](https://github.com/gholmann16/Janus/releases/latest).
+
+## Screenshot
+![Picture of app](data/screenshot.png)
+
+## Binary modification
+
+Unlike most other simple text editors, binary editing is supported directly, rather than dealing with a codepage. When opened, Janus will display nondisplayable bytes as there unicode equivalent: for example 0xe3 will map to U+00e3. To edit binaries, simply open them in Janus, then use Control + Shift + U to enter in new characters (From 0x01 to 0xFF). To enter a null character use U+2400. Once you save the file, Janus will convert these raw characters into hex data.
 
 ## Binary mode demo
 ![Gif showcasing binary editing in Janus](data/demo.gif)

@@ -174,12 +174,6 @@ void save(struct Document * document) {
         while(text[iter]) {
             if (text[iter] > 127) {
                 switch (text[iter]) {
-                    case 0xE2:
-                        if (text[iter+1] == 0x90 && text[iter+2] == 0x80) {
-                            text[len] = 0;
-                            iter+=2;
-                            break;
-                        }
                     case 0xC2:
                         text[len] = text[iter+1];
                         iter++;
@@ -188,6 +182,12 @@ void save(struct Document * document) {
                         text[len] = text[iter+1] + 64;
                         iter++;
                         break;
+                    case 0xE2:
+                        if (text[iter+1] == 0x90 && text[iter+2] == 0x80) {
+                            text[len] = 0;
+                            iter+=2;
+                            break;
+                        }
                     default:
                         warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with excpetion U+2400"));
                         free(text);
