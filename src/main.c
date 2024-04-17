@@ -19,7 +19,7 @@ int main(int argc, char * argv[]) {
     gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
-    // Initiate serach functionality
+    // Initiate search functionality
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
     gtk_source_search_context_set_highlight(context, FALSE);
     gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
