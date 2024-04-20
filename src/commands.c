@@ -659,6 +659,7 @@ void set_font(struct Document * document) {
                 strcat(css, "normal");
                 break;
             default:
+                ;
                 char newweight[4] = "000";
                 newweight[0] = pango_font_description_get_weight(description)/100 + 0x30;
                 strcat(css, newweight);

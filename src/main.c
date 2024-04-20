@@ -44,12 +44,8 @@ int main(int argc, char * argv[]) {
 
     // Preferences setup
     char path[PATH_MAX] = "";
-    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/")) {
+    if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/"))
         strcpy(path, getenv("APPDIR"));
-        strcat(path, "/usr/share/icons");
-        gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), path);
-        strcpy(path, getenv("APPDIR"));
-    }
     strcat(path, "/usr/share/locale/");
 
     setlocale(LC_ALL, "");

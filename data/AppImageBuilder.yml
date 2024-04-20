@@ -1,0 +1,40 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+AppDir:
+  path: /home/gholm/Desktop/Janus/AppDir
+  app_info:
+    id: janus
+    name: Janus
+    icon: janus
+    version: 0.9.5
+    exec: usr/bin/janus
+    exec_args: $@
+  apt:
+    arch:
+    - amd64
+    allow_unauthenticated: true
+    sources:
+    - sourceline: deb http://deb.debian.org/debian buster main
+    - sourceline: deb http://deb.debian.org/debian buster-updates main
+    include:
+    - libgtksourceview-4-0
+    - libgtksourceview-4-common
+    exclude:
+    - libgtk-3-0
+    - libglib2.0-0
+    - libgdk-pixbuf2.0-0
+    - libfribidi0
+    - libcairo2
+    - libatk1.0-0
+    - libc6
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libxml2
+  files:
+    exclude:
+    - usr/share/man
+    - usr/share/doc
+AppImage:
+  arch: x86_64
+  update-information: gh-releases-zsync|gholmann16|janus|latest|Janus-*x86_64.AppImage.zsync
+  sign-key: None

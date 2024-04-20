@@ -1,5 +1,8 @@
 janus
 *.o
 *.AppImage
-appdir
+AppDir
+lib
 *.mo
+appimage-build
+*.zsync

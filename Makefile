@@ -31,6 +31,7 @@ update: $(SOURCES)
 
 clean:
 	rm -f $(OBJECTS)
+	rm -f $(MOBJECTS)
 	rm -f janus
 
 install: release
@@ -45,12 +46,6 @@ uninstall:
 	rm /usr/share/applications/janus.desktop
 	$(foreach object, $(MOBJECTS), rm /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
-appdir: $(MOBJECTS)
-	mkdir -p appdir
-	cp data/janus.desktop appdir/
-	ln -fs usr/bin/janus appdir/AppRun
-	ln -fs usr/share/icons/hicolor/256x256/apps/janus.png appdir/janus.png
-
-appimage: DESTDIR += appdir
-appimage: appdir install
-	appimagetool appdir
+appimage: DESTDIR += AppDir
+appimage: install
+	appimage-builder --recipe data/AppImageBuilder.yml
