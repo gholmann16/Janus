@@ -46,6 +46,13 @@ uninstall:
 	rm /usr/share/applications/janus.desktop
 	$(foreach object, $(MOBJECTS), rm /usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
-appimage: DESTDIR += AppDir
+appimage: DESTDIR += build/AppDir
 appimage: install
-	appimage-builder --recipe data/AppImageBuilder.yml
+	cd build; appimage-builder --recipe ../data/AppImageBuilder.yml
+
+deb: DESTDIR += build/janus-notepad_0.9.5-1
+deb: install
+	install -Dm644 data/control $(DESTDIR)/DEBIAN/control
+	sudo chown root:root -R $(DESTDIR)
+	dpkg -b $(DESTDIR)
+	sudo chown $(id -u):$(id -g) -R $(DESTDIR) 

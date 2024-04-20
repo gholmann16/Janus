@@ -1,0 +1,9 @@
+Package: janus-notepad
+Version: 0.9.5-1
+Section: base
+Priority: optional
+Architecture: amd64
+Conflicts: janus
+Depends: libgtk-3-0, libgtksourceview-4-0
+Maintainer: Gabriel Holmann <gholmann@satyrn.net>
+Description: Simple linux notepad.
