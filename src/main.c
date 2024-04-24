@@ -58,10 +58,13 @@ int main(int argc, char * argv[]) {
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
     strcat(path, CONFIG_FILE);
 
+
     GError * error = NULL;
     GKeyFile * config = g_key_file_new();
-    if (!g_key_file_load_from_file (config, path, G_KEY_FILE_NONE, &error)) {
-        puts(error->message);
+    if (access(path, F_OK))
+        gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    else if (!g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) {
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
         gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }

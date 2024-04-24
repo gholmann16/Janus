@@ -140,19 +140,19 @@ void open_command(GtkWidget * self, struct Document * document) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         char * filename = gtk_file_chooser_get_filename (chooser);
         open_file(filename, document);
-        g_free (filename);
+        free(filename);
     }
 
     gtk_widget_destroy (dialog);
 }
 
 void new_command(void) {
-    GError *err = NULL;
-    char* argv[] = {"/proc/self/exe", NULL};
-    g_spawn_async(NULL, argv, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &err);
-    if (err != NULL) {
-        puts(err->message);
-        g_error_free(err);
+    GError * error = NULL;
+    char * argv[] = {"/proc/self/exe", NULL};
+    g_spawn_async(NULL, argv, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_error_free(error);
     }
 }
 
@@ -226,7 +226,7 @@ void save_as_command(GtkWidget * self, struct Document * document) {
         char * filename = gtk_file_chooser_get_filename (chooser);
         free(document->path);
         document->path = g_strdup(filename);
-        g_free (filename);
+        free(filename);
         save(document);
         filename_to_title(document);
     }
@@ -315,14 +315,14 @@ void quit(struct Document * document) {
     GError * error = NULL;
     char * data = g_key_file_to_data(config, NULL, &error);
     if (error) {
-        puts(error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
         gtk_main_quit();
     }
 
     g_file_set_contents(path, data, -1, &error);
     if (error) {
-        puts(error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
     }
 
@@ -709,8 +709,8 @@ void set_font(struct Document * document) {
 
     if (mask & PANGO_FONT_MASK_FAMILY) {
         strcat(css, "\tfont-family: \"");
-        g_strlcat(css, pango_font_description_get_family(description), 1024);
-        g_strlcat(css, "\";\n", 1024);
+        g_strlcat(css, pango_font_description_get_family(description), sizeof(css));
+        g_strlcat(css, "\";\n", sizeof(css));
     }
 
     g_strlcat(css, "}\n", 1024);
@@ -719,7 +719,7 @@ void set_font(struct Document * document) {
     GError * error = NULL;
     gtk_css_provider_load_from_data (cssProvider, css, -1, &error);
     if (error) {
-        puts(error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
     }
     else {
