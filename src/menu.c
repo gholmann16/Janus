@@ -118,6 +118,11 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     g_signal_connect(search_next, "activate", G_CALLBACK(search_next_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_next);
 
+    GtkWidget * search_previous = gtk_menu_item_new_with_label(_("Find previous"));
+    gtk_widget_add_accelerator(search_previous, "activate", accel, GDK_KEY_G, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
+    g_signal_connect(search_previous, "activate", G_CALLBACK(search_previous_command), document);
+    gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), search_previous);
+
     GtkWidget * replace = gtk_menu_item_new_with_label(_("Replace"));
     gtk_widget_add_accelerator(replace, "activate", accel, GDK_KEY_H, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(replace, "activate", G_CALLBACK(replace_command), document);

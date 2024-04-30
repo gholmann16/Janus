@@ -3,13 +3,14 @@
 
 struct Document {
     char * path;
+    char * font;
     GtkTextBuffer * buffer;
     GtkWidget * view;
     GtkWindow * window;
+    GtkTextMark * search_start;
+    GtkTextMark * search_end;
     GtkSourceSearchContext * context;
-    GtkTextIter last;
     _Bool binary;
-    char * font;
     _Bool wrap;
     _Bool syntax;
 };

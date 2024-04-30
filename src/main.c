@@ -23,13 +23,17 @@ int main(int argc, char * argv[]) {
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
     gtk_source_search_context_set_highlight(context, FALSE);
     gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
 
     struct Document document = {
+        .font = g_strdup(DEFAULT_FONT),
         .buffer = buffer,
         .view = text,
         .context = context,
         .window = GTK_WINDOW(window),
-        .font = g_strdup(DEFAULT_FONT),
+        .search_start = gtk_text_buffer_create_mark(buffer, NULL, &start, FALSE),
+        .search_end = gtk_text_buffer_create_mark(buffer, NULL, &end, FALSE),
         .wrap = DEFAULT_WRAP,
         .syntax = DEFAULT_SYNTAX
     };

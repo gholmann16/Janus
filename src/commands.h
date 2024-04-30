@@ -36,6 +36,8 @@ void search_command(GtkWidget * self, struct Document * document);
 
 void search_next_command(GtkWidget * self, struct Document * document);
 
+void search_previous_command(GtkWidget * self, struct Document * document);
+
 void replace_command(GtkWidget * self, struct Document * document);
 
 void go_to_command(GtkWidget * self, struct Document * document);
