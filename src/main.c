@@ -1,7 +1,8 @@
 #include <gtksourceview/gtksource.h>
+#include <gdk/gdkkeysyms.h>
 #include "global.h"
 #include "commands.h"
-#include "menu.h"
+#include "init.h"
 #include <locale.h>
 #include "config.h"
 
@@ -19,21 +20,11 @@ int main(int argc, char * argv[]) {
     gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
 
-    // Initiate search functionality
-    GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(buffer), NULL);
-    gtk_source_search_context_set_highlight(context, FALSE);
-    gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
-    GtkTextIter start, end;
-    gtk_text_buffer_get_bounds(buffer, &start, &end);
-
     struct Document document = {
         .font = g_strdup(DEFAULT_FONT),
         .buffer = buffer,
         .view = text,
-        .context = context,
         .window = GTK_WINDOW(window),
-        .search_start = gtk_text_buffer_create_mark(buffer, NULL, &start, FALSE),
-        .search_end = gtk_text_buffer_create_mark(buffer, NULL, &end, FALSE),
         .wrap = DEFAULT_WRAP,
         .syntax = DEFAULT_SYNTAX
     };
@@ -61,7 +52,6 @@ int main(int argc, char * argv[]) {
 
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
     strcat(path, CONFIG_FILE);
-
 
     GError * error = NULL;
     GKeyFile * config = g_key_file_new();
@@ -95,6 +85,9 @@ int main(int argc, char * argv[]) {
     gtk_window_add_accel_group(GTK_WINDOW(window), accel);
     GtkWidget * bar = gtk_menu_bar_new();
     init_menu(bar, accel, &document);
+
+    // Search setup
+    search_init(&document);
 
     // Boxes
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
