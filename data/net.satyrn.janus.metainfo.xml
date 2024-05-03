@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.satyrn.janus</id>
+  
+  <name>Janus</name>
+  <summary>Simple Linux notepad</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LGPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Simple native Linux notepad meant for text editing. Supports UTF-8 and binary data.
+    </p>
+  </description>
+
+  <url type="homepage">https://github.com/gholmann16/janus</url>
+
+  <launchable type="desktop-id">janus.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/gholmann16/Janus/blob/main/data/screenshot.png</image>
+    </screenshot>
+  </screenshots>
+</component>

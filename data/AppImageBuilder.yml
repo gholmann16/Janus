@@ -6,7 +6,7 @@ AppDir:
     id: janus
     name: Janus
     icon: janus
-    version: 0.9.5
+    version: 1.0.0
     exec: usr/bin/janus
     exec_args: $@
   apt:

@@ -2,3 +2,5 @@ janus
 *.o
 *.mo
 build
+version.h
+AppImageBuilder.yml

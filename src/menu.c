@@ -132,7 +132,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), seperate4);
 
     GtkWidget * go_to = gtk_menu_item_new_with_label(_("Go to"));
-    gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_J, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(go_to, "activate", accel, GDK_KEY_L, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(go_to, "activate", G_CALLBACK(go_to_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(searchmenu), go_to);
 

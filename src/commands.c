@@ -1,6 +1,7 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "config.h"
+#include "version.h"
 
 void filename_to_title(struct Document * document) {
     char * append = " - Janus";
@@ -601,6 +602,8 @@ void about_command(GtkWidget * self, struct Document * document) {
 
     const char * comments = _("Janus is a simple Linux notepad intended to be small and efficient.");
     gtk_about_dialog_set_comments(about, comments);
+
+    gtk_about_dialog_set_version(about, VERSION_NUMBER);
 
     const char * website = "https://github.com/gholmann16/Janus";
     gtk_about_dialog_set_website(about, website);
