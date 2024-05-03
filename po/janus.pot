@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 14:06-0400\n"
+"POT-Creation-Date: 2024-05-03 14:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
-"between U+0000 and U+00FF with excpetion U+2400"
+"between U+0000 and U+00FF with exception U+2400."
 msgstr ""
 
 msgid "Save File"
@@ -43,28 +43,10 @@ msgstr ""
 msgid "Would you like to save?"
 msgstr ""
 
-msgid "Find"
+msgid "Go to"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
-
-msgid "Find text:"
-msgstr ""
-
-msgid "Match case"
-msgstr ""
-
-msgid "Replace"
-msgstr ""
-
-msgid "Replace text"
-msgstr ""
-
-msgid "Replace all"
-msgstr ""
-
-msgid "Go To"
 msgstr ""
 
 msgid "Line number:"
@@ -127,10 +109,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Find"
+msgstr ""
+
 msgid "Find next"
 msgstr ""
 
-msgid "Go to"
+msgid "Find previous"
+msgstr ""
+
+msgid "Replace"
 msgstr ""
 
 msgid "Options"
@@ -149,4 +137,16 @@ msgid "Help"
 msgstr ""
 
 msgid "About"
+msgstr ""
+
+msgid "Find text:"
+msgstr ""
+
+msgid "Match case"
+msgstr ""
+
+msgid "Replace text"
+msgstr ""
+
+msgid "Replace all"
 msgstr ""

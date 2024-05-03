@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 14:06-0400\n"
-"PO-Revision-Date: 2024-04-13 14:09-0400\n"
+"POT-Creation-Date: 2024-05-03 14:12-0400\n"
+"PO-Revision-Date: 2024-05-03 14:04-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
@@ -27,9 +27,10 @@ msgstr "Impossible d'ouvrir le fichier."
 msgid "Open File"
 msgstr "Ouvrir fichier"
 
+#, fuzzy
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
-"between U+0000 and U+00FF with excpetion U+2400"
+"between U+0000 and U+00FF with exception U+2400."
 msgstr ""
 "Le fichier contient des caractères non binaires. Assurez-vous que tous les "
 "caractères insérés se trouvent entre U+0000 et U+00FF, à l'exception de "
@@ -47,29 +48,11 @@ msgstr "Échec de l'aperçu de page."
 msgid "Would you like to save?"
 msgstr "Souhaitez-vous enregistrer?"
 
-msgid "Find"
-msgstr "Trouver"
+msgid "Go to"
+msgstr "Aller à"
 
 msgid "Cancel"
 msgstr "Annuler"
-
-msgid "Find text:"
-msgstr "Rechercher le texte:"
-
-msgid "Match case"
-msgstr "Respecter la casse"
-
-msgid "Replace"
-msgstr "Remplacer"
-
-msgid "Replace text"
-msgstr "Remplacer le texte"
-
-msgid "Replace all"
-msgstr "Remplacer tout"
-
-msgid "Go To"
-msgstr "Aller à"
 
 msgid "Line number:"
 msgstr "Numéro de ligne:"
@@ -132,11 +115,17 @@ msgstr "Tout sélectionner"
 msgid "Search"
 msgstr "Rechercher"
 
+msgid "Find"
+msgstr "Trouver"
+
 msgid "Find next"
 msgstr "Rechercher suivant"
 
-msgid "Go to"
-msgstr "Aller à"
+msgid "Find previous"
+msgstr "Rechercher précédent"
+
+msgid "Replace"
+msgstr "Remplacer"
 
 msgid "Options"
 msgstr "Options"
@@ -155,6 +144,21 @@ msgstr "Aider"
 
 msgid "About"
 msgstr "À propos"
+
+msgid "Find text:"
+msgstr "Rechercher le texte:"
+
+msgid "Match case"
+msgstr "Respecter la casse"
+
+msgid "Replace text"
+msgstr "Remplacer le texte"
+
+msgid "Replace all"
+msgstr "Remplacer tout"
+
+#~ msgid "Go To"
+#~ msgstr "Aller à"
 
 #~ msgid "Janus cannot not modify binary files."
 #~ msgstr "Janus ne peut pas modifier les fichiers binaires."

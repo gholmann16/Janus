@@ -190,7 +190,7 @@ void save(struct Document * document) {
                             break;
                         }
                     default:
-                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with excpetion U+2400"));
+                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with exception U+2400."));
                         free(text);
                         return;
                 }
@@ -413,7 +413,7 @@ int lines_in_buffer(GtkTextBuffer * buffer) {
 }
 
 void go_to_command(GtkWidget * self, struct Document * document) {
-    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go To"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go To"), 0, _("Cancel"), 1, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
     GtkWidget * line = gtk_label_new(_("Line number:"));

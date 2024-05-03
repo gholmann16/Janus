@@ -44,7 +44,7 @@ install: release
 	install -Dm755 janus $(DESTDIR)/usr/bin/janus
 	install -Dm644 data/janus.png $(DESTDIR)/usr/share/icons/hicolor/256x256/apps/janus.png
 	install -Dm644 data/janus.desktop $(DESTDIR)/usr/share/applications/janus.desktop
-	install -Dm644 data/net.satyrn.janus.metainfo.xml $(DESTDIR)/usr/share/metainfo/net.satyrn.janus.metainfo.xml
+	install -Dm644 data/metainfo.xml $(DESTDIR)/usr/share/metainfo/net.satyrn.janus.metainfo.xml
 	$(foreach object, $(MOBJECTS), install -Dm644 $(object) $(DESTDIR)/usr/share/locale/$(notdir $(basename $(object)))/LC_MESSAGES/janus.mo;)
 
 uninstall:

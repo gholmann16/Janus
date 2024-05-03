@@ -4,7 +4,7 @@ Simple native linux notepad meant for text editing. Supports UTF-8 and binary da
 ## Features
 - Undo/redo
 - Similar keyinds to other text editors
-- Spanish/French Translations
+- Spanish/French/German Translations
 - Printing capabilities
 - Optional syntax highlighting
 - Binary editing
