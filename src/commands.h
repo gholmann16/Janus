@@ -48,6 +48,8 @@ void font_command(GtkWidget * self, struct Document * document);
 
 void wrap_command(GtkWidget * self, struct Document * document);
 
+void line_number_command(GtkWidget * self, struct Document * document);
+
 void syntax_command(GtkWidget * self, struct Document * document);
 
 void about_command(GtkWidget * self, struct Document * document);

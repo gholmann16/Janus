@@ -583,6 +583,11 @@ void wrap_command(GtkWidget * self, struct Document * document) {
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), document->wrap ? GTK_WRAP_WORD : GTK_WRAP_NONE);
 }
 
+void line_number_command(GtkWidget * self, struct Document * document) {
+    document->line_numbers = !document->line_numbers;
+    gtk_source_view_set_show_line_numbers(GTK_SOURCE_VIEW(document->view), document->line_numbers);
+}
+
 void syntax_command(GtkWidget * self, struct Document * document) {
     document->syntax = !document->syntax;
     gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);

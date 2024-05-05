@@ -157,8 +157,15 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     GtkWidget * seperate5 = gtk_separator_menu_item_new();
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), seperate5);
 
+    GtkWidget * line_numbers = gtk_check_menu_item_new_with_label(_("Line numbers"));
+    g_signal_connect(line_numbers, "activate", G_CALLBACK(line_number_command), document);
+    if (document->line_numbers) {
+        document->line_numbers = FALSE;
+        gtk_widget_activate(line_numbers);
+    }
+    gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), line_numbers);
+
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
-    gtk_widget_add_accelerator(syntax, "activate", accel, GDK_KEY_H, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
     if (document->syntax) {
         document->syntax = FALSE;

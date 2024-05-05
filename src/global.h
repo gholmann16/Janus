@@ -12,5 +12,6 @@ struct Document {
     GtkSourceSearchContext * context;
     _Bool binary;
     _Bool wrap;
+    _Bool line_numbers;
     _Bool syntax;
 };

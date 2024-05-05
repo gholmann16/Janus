@@ -26,6 +26,7 @@ int main(int argc, char * argv[]) {
         .view = text,
         .window = GTK_WINDOW(window),
         .wrap = DEFAULT_WRAP,
+        .line_numbers = DEFAULT_LINE_NUMBERS,
         .syntax = DEFAULT_SYNTAX
     };
 
@@ -73,7 +74,7 @@ int main(int argc, char * argv[]) {
             document.font = font_desc;
         }
 
-        // Set to opposite so the callback doesn't ruin it
+        document.line_numbers = g_key_file_get_boolean(config, GROUP_KEY, "line_numbers", NULL);        
         document.wrap = g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL);
         document.syntax = g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL);
     }

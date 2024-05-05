@@ -25,7 +25,7 @@ Janus depends on the following libraries for both building and running:
 
 - [Arch Linux](https://aur.archlinux.org/packages/janus)
 - [Debian](https://github.com/gholmann16/Janus/releases/latest)
-- [AppImage](https://github.com/gholmann16/Janus/releases/latest).
+- [AppImage](https://github.com/gholmann16/Janus/releases/latest)
 
 ## Screenshot
 ![Picture of app](data/screenshot.png)
