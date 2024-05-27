@@ -25,6 +25,7 @@ int main(int argc, char * argv[]) {
         .buffer = buffer,
         .view = text,
         .window = GTK_WINDOW(window),
+        .last = gtk_source_region_new(buffer),
         .wrap = DEFAULT_WRAP,
         .line_numbers = DEFAULT_LINE_NUMBERS,
         .syntax = DEFAULT_SYNTAX

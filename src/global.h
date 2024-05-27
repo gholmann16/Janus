@@ -7,8 +7,7 @@ struct Document {
     GtkTextBuffer * buffer;
     GtkWidget * view;
     GtkWindow * window;
-    GtkTextMark * search_start;
-    GtkTextMark * search_end;
+    GtkSourceRegion * last;
     GtkSourceSearchContext * context;
     _Bool binary;
     _Bool wrap;

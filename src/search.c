@@ -13,12 +13,7 @@ void search_init(struct Document * document) {
     GtkSourceSearchContext * context = gtk_source_search_context_new (GTK_SOURCE_BUFFER(document->buffer), NULL);
     gtk_source_search_context_set_highlight(context, FALSE);
     gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
-    GtkTextIter start, end;
-    gtk_text_buffer_get_bounds(document->buffer, &start, &end);
-
     document->context = context;
-    document->search_start = gtk_text_buffer_create_mark(document->buffer, NULL, &start, FALSE);
-    document->search_end = gtk_text_buffer_create_mark(document->buffer, NULL, &end, FALSE);
 }
 
 enum SearchPattern {
@@ -36,26 +31,25 @@ struct SearchModel {
 
 void search(struct Document * document, enum SearchPattern pat) {
 
-    GtkTextIter match_start;
-    GtkTextIter match_end;
-    GtkTextIter last_search;
+    GtkTextIter match_start, match_end, last_start, last_end, last_search;
+    gtk_source_region_get_bounds(document->last, &last_start, &last_end);
 
     gboolean (* search_function)(GtkSourceSearchContext *search, const GtkTextIter *iter, GtkTextIter *match_start, GtkTextIter *match_end, gboolean *has_wrapped_around);
 
     if (pat == SEARCH_FORWARD) {
         search_function = &gtk_source_search_context_forward;
-        gtk_text_buffer_get_iter_at_mark(document->buffer, &last_search, document->search_end);
+        last_search = last_end;
     }
     else {
         search_function = &gtk_source_search_context_backward;
-        gtk_text_buffer_get_iter_at_mark(document->buffer, &last_search, document->search_start);
+        last_search = last_end;
     }
 
     if ((*search_function)(document->context, &last_search, &match_start, &match_end, NULL)) {
         gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
 
-        gtk_text_buffer_move_mark(document->buffer, document->search_start, &match_start);
-        gtk_text_buffer_move_mark(document->buffer, document->search_end, &match_end);
+        gtk_source_region_subtract_subregion(document->last, &last_start, &last_end);
+        gtk_source_region_add_subregion(document->last, &match_start, &match_end);
 
         gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(document->view), &match_end, 0.1, FALSE, 0, 0);
     }
@@ -109,7 +103,7 @@ void search_command(GtkWidget * self, struct Document * document) {
     gtk_source_search_context_set_highlight(document->context, TRUE);
     int res = gtk_dialog_run (GTK_DIALOG (dialog));
 
-    if (res == 1) 
+    if (res == 1)
         search(document, SEARCH_FORWARD);
 
     gtk_widget_destroy (dialog);
@@ -135,18 +129,15 @@ void replace(struct SearchModel * model, enum SearchPattern direction) {
         return;
     }
 
-    GtkTextIter start;
-    GtkTextIter end;
-    gtk_text_buffer_get_iter_at_mark(model->document->buffer, &start, model->document->search_start);
-    gtk_text_buffer_get_iter_at_mark(model->document->buffer, &end, model->document->search_end);
-
-    if (strcmp(gtk_text_buffer_get_text(model->document->buffer, &start, &end, FALSE), search_text)) {
+    gchar * text = gtk_source_region_to_string(model->document->last);
+    if (text || strcmp(text, search_text)) {
+        g_free(text);
         search(model->document, direction);
-        gtk_text_buffer_get_iter_at_mark(model->document->buffer, &start, model->document->search_start);
-        gtk_text_buffer_get_iter_at_mark(model->document->buffer, &end, model->document->search_end);
+        
+        GtkTextIter start, end;
+        gtk_source_region_get_bounds(model->document->last, &start, &end);
+        gtk_source_search_context_replace(model->document->context, &start, &end, replace_text, strlen(replace_text), NULL);
     }
-
-    gtk_source_search_context_replace(model->document->context, &start, &end, replace_text, strlen(replace_text), NULL);
 
     search(model->document, direction);
 }
