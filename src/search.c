@@ -75,6 +75,8 @@ void search_command(GtkWidget * self, struct Document * document) {
 
     GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Find"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, _("Find"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_box_set_spacing(GTK_BOX(content), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(content), 10);
 
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);   
     GtkWidget * label = gtk_label_new(_("Find text:")); 
@@ -85,7 +87,7 @@ void search_command(GtkWidget * self, struct Document * document) {
         gtk_entry_set_text(GTK_ENTRY(entry), text);
 
     gtk_box_pack_start(GTK_BOX(box), label, 0, 0, 0);
-    gtk_box_pack_end(GTK_BOX(box), entry, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(box), entry, 0, 0, 0);
 
     struct SearchModel model = {.document = document, .settings = settings, .search_entry = entry};
 
@@ -160,16 +162,18 @@ void replace_command(GtkWidget * self, struct Document * document) {
 
     GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_box_set_spacing(GTK_BOX(content), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(content), 10);
 
     // Search
-    GtkWidget * search_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget * search_label = gtk_label_new(_("Find text:"));
+    gtk_label_set_xalign(GTK_LABEL(search_label), 0.0);
     GtkWidget * search_entry = gtk_entry_new();
     GtkWidget * search_button = gtk_button_new_with_label(_("Find"));
 
     // Replace
-    GtkWidget * replace_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget * replace_label = gtk_label_new(_("Replace text"));
+    gtk_label_set_xalign(GTK_LABEL(replace_label), 0.0);
     GtkWidget * replace_entry = gtk_entry_new();
     GtkWidget * replace_button = gtk_button_new_with_label(_("Replace"));
 
@@ -177,15 +181,20 @@ void replace_command(GtkWidget * self, struct Document * document) {
     if (text)
         gtk_entry_set_text(GTK_ENTRY(search_entry), text);
 
-    gtk_box_pack_start(GTK_BOX(search_box), search_label, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(search_box), search_entry, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(search_box), search_button, 0, 0, 0);
-    gtk_container_add(GTK_CONTAINER(content), search_box);
+    // Grid
+    GtkGrid * grid = GTK_GRID(gtk_grid_new());
+    gtk_grid_set_row_spacing(grid, 10);
+    gtk_grid_set_column_spacing(grid, 10);
 
-    gtk_box_pack_start(GTK_BOX(replace_box), replace_label, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(replace_box), replace_entry, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(replace_box), replace_button, 0, 0, 0);
-    gtk_container_add(GTK_CONTAINER(content), replace_box);
+    gtk_grid_attach(grid, search_label, 0, 0, 1, 1);
+    gtk_grid_attach(grid, search_entry, 1, 0, 1, 1);
+    gtk_grid_attach(grid, search_button, 2, 0, 1, 1);
+
+    gtk_grid_attach(grid, replace_label, 0, 1, 1, 1);
+    gtk_grid_attach(grid, replace_entry, 1, 1, 1, 1);
+    gtk_grid_attach(grid, replace_button, 2, 1, 1, 1);
+
+    gtk_container_add(GTK_CONTAINER(content), GTK_WIDGET(grid));
 
     struct SearchModel model = {.document = document, .settings = settings, .search_entry = search_entry, .replace_entry = replace_entry};
 

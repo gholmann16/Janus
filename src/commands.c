@@ -339,6 +339,8 @@ void exit_command(GtkWidget * self, struct Document * document) {
 
     GtkWidget * close = gtk_dialog_new_with_buttons("Janus", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
+    gtk_box_set_spacing(GTK_BOX(content), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(content), 10);
     GtkWidget * message = gtk_label_new(_("Would you like to save?"));
 
     gtk_container_add(GTK_CONTAINER(content), message);
