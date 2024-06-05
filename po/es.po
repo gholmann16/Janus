@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 01:44-0400\n"
+"POT-Creation-Date: 2024-05-30 23:33-0400\n"
 "PO-Revision-Date: 2024-05-05 01:49-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: Spanish <es@tp.org.es>\n"
@@ -43,14 +43,20 @@ msgstr "No se pudo imprimir la página."
 msgid "Failed to preview page."
 msgstr "No se pudo visualizar la página."
 
+msgid "No"
+msgstr "No"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Yes"
+msgstr "Sí"
+
 msgid "Would you like to save?"
 msgstr "¿Te gustaría guardar?"
 
 msgid "Go to"
 msgstr "Ir a"
-
-msgid "Cancel"
-msgstr "Cancelar"
 
 msgid "Line number:"
 msgstr "Número de línea:"

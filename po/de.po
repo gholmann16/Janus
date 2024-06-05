@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 01:44-0400\n"
+"POT-Creation-Date: 2024-05-30 23:33-0400\n"
 "PO-Revision-Date: 2024-05-03 14:04-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -44,14 +44,20 @@ msgstr "Seite konnte nicht gedruckt werden."
 msgid "Failed to preview page."
 msgstr "Seite konnte nicht angezeigt werden."
 
+msgid "No"
+msgstr "Nein"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Yes"
+msgstr "Ja"
+
 msgid "Would you like to save?"
 msgstr "Möchten Sie speichern?"
 
 msgid "Go to"
 msgstr "Gehe zu"
-
-msgid "Cancel"
-msgstr "Abbrechen"
 
 msgid "Line number:"
 msgstr "Zeilennummer:"

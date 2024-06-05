@@ -14,6 +14,10 @@ void search_init(struct Document * document) {
     gtk_source_search_context_set_highlight(context, FALSE);
     gtk_source_search_settings_set_wrap_around(gtk_source_search_context_get_settings(context), TRUE);
     document->context = context;
+
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(document->buffer, &start, &end);
+    gtk_source_region_add_subregion(document->last, &start, &end);
 }
 
 enum SearchPattern {
@@ -32,8 +36,9 @@ struct SearchModel {
 void search(struct Document * document, enum SearchPattern pat) {
 
     GtkTextIter match_start, match_end, last_start, last_end, last_search;
-    gtk_source_region_get_bounds(document->last, &last_start, &last_end);
-
+    
+    if (!gtk_source_region_get_bounds(document->last, &last_start, &last_end))
+        gtk_text_buffer_get_bounds(document->buffer, &last_start, &last_end);
     gboolean (* search_function)(GtkSourceSearchContext *search, const GtkTextIter *iter, GtkTextIter *match_start, GtkTextIter *match_end, gboolean *has_wrapped_around);
 
     if (pat == SEARCH_FORWARD) {
@@ -42,9 +47,8 @@ void search(struct Document * document, enum SearchPattern pat) {
     }
     else {
         search_function = &gtk_source_search_context_backward;
-        last_search = last_end;
+        last_search = last_start;
     }
-
     if ((*search_function)(document->context, &last_search, &match_start, &match_end, NULL)) {
         gtk_text_buffer_select_range(document->buffer, &match_start, &match_end);
 
@@ -131,13 +135,13 @@ void replace(struct SearchModel * model, enum SearchPattern direction) {
         return;
     }
 
-    gchar * text = gtk_source_region_to_string(model->document->last);
-    if (text || strcmp(text, search_text)) {
+    GtkTextIter start, end;
+    if(gtk_source_region_get_bounds(model->document->last, &start, &end) == FALSE)
+        return;
+
+    gchar * text = gtk_text_buffer_get_text(model->document->buffer, &start, &end, FALSE);
+    if (text && strcmp(text, search_text) == 0) {
         g_free(text);
-        search(model->document, direction);
-        
-        GtkTextIter start, end;
-        gtk_source_region_get_bounds(model->document->last, &start, &end);
         gtk_source_search_context_replace(model->document->context, &start, &end, replace_text, strlen(replace_text), NULL);
     }
 
@@ -160,7 +164,7 @@ void replace_command(GtkWidget * self, struct Document * document) {
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
-    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
@@ -206,9 +210,11 @@ void replace_command(GtkWidget * self, struct Document * document) {
     GtkWidget * match_case_button = gtk_check_button_new_with_label(_("Match case"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(match_case_button), gtk_source_search_settings_get_case_sensitive(settings));
     GtkWidget * replace_all_button = gtk_check_button_new_with_label(_("Replace all"));
+    GtkWidget * cancel = gtk_button_new_with_label(_("Cancel"));
 
-    gtk_container_add(GTK_CONTAINER(content), match_case_button);
-    gtk_container_add(GTK_CONTAINER(content), replace_all_button);
+    gtk_grid_attach(grid, match_case_button, 0, 2, 1, 1);
+    gtk_grid_attach(grid, replace_all_button, 0, 3, 1, 1);
+    gtk_grid_attach(grid, cancel, 2, 3, 1, 1);
 
     g_signal_connect(match_case_button, "toggled", G_CALLBACK(match_case), &model);
     g_signal_connect(replace_all_button, "toggled", G_CALLBACK(replace_all), &model);
@@ -218,6 +224,10 @@ void replace_command(GtkWidget * self, struct Document * document) {
 
     gtk_source_search_context_set_highlight(document->context, TRUE);
     gtk_widget_show_all(content);
+
+    if(gtk_source_region_get_bounds(document->last, NULL, NULL) == FALSE)
+        search(document, SEARCH_FORWARD);
+
     gtk_dialog_run (GTK_DIALOG (dialog));
 
     gtk_widget_destroy (dialog);

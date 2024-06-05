@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 01:44-0400\n"
+"POT-Creation-Date: 2024-05-30 23:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,13 +40,19 @@ msgstr ""
 msgid "Failed to preview page."
 msgstr ""
 
+msgid "No"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
 msgid "Would you like to save?"
 msgstr ""
 
 msgid "Go to"
-msgstr ""
-
-msgid "Cancel"
 msgstr ""
 
 msgid "Line number:"

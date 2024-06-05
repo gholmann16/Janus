@@ -337,7 +337,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    GtkWidget * close = gtk_dialog_new_with_buttons("Janus", document->window, GTK_DIALOG_MODAL, "No", 0, "Cancel", 1, "Yes", 2, NULL);
+    GtkWidget * close = gtk_dialog_new_with_buttons("Janus", document->window, GTK_DIALOG_MODAL, _("No"), 0, _("Cancel"), 1, _("Yes"), 2, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
@@ -389,7 +389,7 @@ void paste_command(GtkWidget * self, struct Document * document) {
 }
 
 void delete_command(GtkWidget * self, struct Document * document) {
-    gtk_text_buffer_delete_selection(document->buffer, TRUE, TRUE);
+    g_signal_emit_by_name(document->view, "delete-from-cursor", GTK_DELETE_CHARS, 1);
 }
 
 void select_all_command(GtkWidget * self, struct Document * document) {
@@ -417,14 +417,19 @@ int lines_in_buffer(GtkTextBuffer * buffer) {
 void go_to_command(GtkWidget * self, struct Document * document) {
     GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_box_set_spacing(GTK_BOX(content), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(content), 10);
 
     GtkWidget * line = gtk_label_new(_("Line number:"));
     int l = lines_in_buffer(document->buffer);
 
     GtkWidget * spin = gtk_spin_button_new_with_range(1, l, 1);
     
-    gtk_container_add(GTK_CONTAINER(content), line);
-    gtk_container_add(GTK_CONTAINER(content), spin);
+    GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+    gtk_container_add(GTK_CONTAINER(box), line);
+    gtk_container_add(GTK_CONTAINER(box), spin);
+
+    gtk_container_add(GTK_CONTAINER(content), box);
     gtk_widget_show_all(content);
 
     int res = gtk_dialog_run(GTK_DIALOG(dialog));
