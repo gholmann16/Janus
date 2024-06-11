@@ -3,21 +3,28 @@
 #include "config.h"
 #include "version.h"
 
-void filename_to_title(struct Document * document) {
+void set_title(struct Document * document) {
     char * append = " - Janus";
-    char * p = document->path;
-    if (strrchr(document->path, '/') != NULL) {
-        p = strrchr(document->path, '/') + 1;
+    GError * error = NULL;
+    GFileInfo * info = g_file_query_info(document->file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
+
+    if (error != NULL) {
+        g_error_free(error);
+        return;
     }
-    char * title = malloc(strlen(append) + strlen(p) + 1);
-    strcpy(title, p);
+
+    const char * name = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+
+    char * title = malloc(strlen(append) + strlen(name) + 1);
+    strcpy(title, name);
     strcat(title, append);
+
     gtk_window_set_title(GTK_WINDOW(document->window), title);
+    g_object_unref(info);
     free(title);
 }
 
 void change_indicator(GtkWidget * self, struct Document * document) {
-    //Assumes it's the current tab
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
         const char * current = gtk_window_get_title(document->window);
         char * prepend = "* ";
@@ -40,28 +47,21 @@ void warning_popup(struct Document * document, char * text) {
     gtk_widget_destroy (dialog);
 }
 
-void open_file(char * filename, struct Document * document) {
-
-    char * path;
-    path = realpath(filename, NULL);
-    if (path == NULL) {
-        warning_popup(document, _("Could not resolve path."));
-        return;
-    }
+void open_file(struct Document * document, GFile * file) {
 
     char * contents;
     gsize len;
     GError * error = NULL;
-    g_file_get_contents(path, &contents, &len, NULL);
+    g_file_load_contents(file, NULL, &contents, &len, NULL, &error);
     if (error) {
         warning_popup(document, _("Could not open file."));
         g_error_free(error);
-        free(path);
         return;
     }
 
-    free(document->path);
-    document->path = path;
+    if (document->file)
+        g_object_unref(document->file);
+    document->file = file;
 
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
@@ -108,43 +108,42 @@ void open_file(char * filename, struct Document * document) {
     else {
         document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
-        
-        GtkTextIter start, end;
-        gtk_text_buffer_get_start_iter(document->buffer, &start);
-        gtk_text_buffer_get_end_iter(document->buffer, &end);
-        char * content = gtk_text_buffer_get_text(document->buffer, &start, &end, FALSE);
-        char * content_type = g_content_type_guess(document->path, (const guchar *)content, strlen(content), NULL);
-        free(content);
+
+        char * path = g_file_get_path(file);
+        char * content_type = g_content_type_guess(path, (const guchar *)contents, strlen(contents), NULL);
 
         GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
         GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
         gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
-        free(content_type);
+
+        g_free(content_type);
+        g_free(path);
+
         gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);
     }
+
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
     gtk_source_buffer_end_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
 
     free(contents);
-    filename_to_title(document);
+    set_title(document);
 }
 
 void open_command(GtkWidget * self, struct Document * document) {
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Open File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Open"), GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget *dialog = gtk_file_chooser_dialog_new(_("Open File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Open"), GTK_RESPONSE_ACCEPT, NULL);
 
-    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
+    gint res = gtk_dialog_run(GTK_DIALOG(dialog));
     if (res == GTK_RESPONSE_ACCEPT)
     {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        char * filename = gtk_file_chooser_get_filename (chooser);
-        open_file(filename, document);
-        free(filename);
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
+        GFile * file = gtk_file_chooser_get_file(chooser);
+        open_file(document, file);
     }
 
-    gtk_widget_destroy (dialog);
+    gtk_widget_destroy(dialog);
 }
 
 void new_command(void) {
@@ -166,12 +165,12 @@ void save(struct Document * document) {
     gtk_text_buffer_get_start_iter(document->buffer, &start);
     gtk_text_buffer_get_end_iter(document->buffer, &end);
 
-    unsigned char * text = (unsigned char *)gtk_text_buffer_get_text(document->buffer, &start, &end, 0);
-    size_t len = -1;
+    unsigned char * text = (unsigned char *)gtk_text_buffer_get_text(document->buffer, &start, &end, TRUE);
+    size_t len;
 
     if (document->binary) {
         size_t iter = 0;
-        len++;
+        len = 0;
         while(text[iter]) {
             if (text[iter] > 127) {
                 switch (text[iter]) {
@@ -202,9 +201,11 @@ void save(struct Document * document) {
         }
         text[len] = 0;
     }
+    else
+        len = strlen((char *)text);
 
     GError * error = NULL;
-    g_file_set_contents(document->path, (char *)text, len, &error);
+    g_file_replace_contents(document->file, (char *)text, len, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
     if (error) {
         warning_popup(document, error->message);
         g_error_free(error);
@@ -224,12 +225,11 @@ void save_as_command(GtkWidget * self, struct Document * document) {
     if (res == GTK_RESPONSE_ACCEPT)
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        char * filename = gtk_file_chooser_get_filename (chooser);
-        free(document->path);
-        document->path = g_strdup(filename);
-        free(filename);
+        GFile * file = gtk_file_chooser_get_file(chooser);
+        free(document->file);
+        document->file = file;
         save(document);
-        filename_to_title(document);
+        set_title(document);
     }
 
     gtk_widget_destroy (dialog);
@@ -241,7 +241,7 @@ void save_command(GtkWidget * self, struct Document * document) {
     if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
         return;
 
-    if (document->path == NULL) {
+    if (document->file == NULL) {
         save_as_command(self, document);
         return;
     }

@@ -1,6 +1,6 @@
 void change_indicator(GtkWidget * self, struct Document * editor);
 
-void open_file(char * filename, struct Document * document);
+void open_file(struct Document * document, GFile * file);
 
 void open_command(GtkWidget * self, struct Document * document);
 

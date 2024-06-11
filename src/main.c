@@ -36,8 +36,8 @@ int main(int argc, char * argv[]) {
     g_signal_connect(buffer, "modified-changed", G_CALLBACK(change_indicator), &document);
 
     // Open file
-    if (argc > 1) 
-        open_file(argv[1], &document);
+    if (argc > 1)
+        open_file(&document, g_file_new_for_commandline_arg(argv[1]));
 
     // Preferences setup
     char path[PATH_MAX] = "";
@@ -103,7 +103,6 @@ int main(int argc, char * argv[]) {
     gtk_main();
 
     gtk_source_finalize();
-    free(document.path);
     free(document.font);
 
     return 0;

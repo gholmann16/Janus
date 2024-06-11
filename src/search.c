@@ -139,7 +139,7 @@ void replace(struct SearchModel * model, enum SearchPattern direction) {
     if(gtk_source_region_get_bounds(model->document->last, &start, &end) == FALSE)
         return;
 
-    gchar * text = gtk_text_buffer_get_text(model->document->buffer, &start, &end, FALSE);
+    gchar * text = gtk_text_buffer_get_text(model->document->buffer, &start, &end, TRUE);
     if (text && strcmp(text, search_text) == 0) {
         g_free(text);
         gtk_source_search_context_replace(model->document->context, &start, &end, replace_text, strlen(replace_text), NULL);

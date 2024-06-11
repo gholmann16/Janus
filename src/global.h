@@ -2,7 +2,7 @@
 #define _(STRING) gettext(STRING)
 
 struct Document {
-    char * path;
+    GFile * file;
     char * font;
     GtkTextBuffer * buffer;
     GtkWidget * view;
