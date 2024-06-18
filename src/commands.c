@@ -126,7 +126,7 @@ void open_file(struct Document * document, GFile * file) {
     g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
     gtk_source_buffer_end_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
 
-    free(contents);
+    g_free(contents);
     set_title(document);
 }
 
@@ -306,8 +306,9 @@ void quit(struct Document * document) {
 
     g_key_file_set_string(config, GROUP_KEY, "font", document->font);
 
-    g_key_file_set_boolean(config, GROUP_KEY, "wrap", document->wrap);
-    g_key_file_set_boolean(config, GROUP_KEY, "syntax", document->syntax);
+    g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)));
+    g_key_file_set_boolean(config, GROUP_KEY, "syntax", (gboolean)gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
+    g_key_file_set_boolean(config, GROUP_KEY, "numbered", (gboolean)gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
 
     char path[PATH_MAX];
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
@@ -570,7 +571,7 @@ void font_selected(GtkDialog * dialog, int response_id, struct Document * docume
         return;
     }
     char * selected = gtk_font_chooser_get_font(GTK_FONT_CHOOSER(dialog));
-    free(document->font);
+    g_free(document->font);
     document->font = selected;
     set_font(document);
 }

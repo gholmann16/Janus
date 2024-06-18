@@ -71,11 +71,11 @@ int main(int argc, char * argv[]) {
 
         char * font_desc = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
         if (font_desc) {
-            free(document.font);
+            g_free(document.font);
             document.font = font_desc;
         }
 
-        document.line_numbers = g_key_file_get_boolean(config, GROUP_KEY, "line_numbers", NULL);        
+        document.line_numbers = g_key_file_get_boolean(config, GROUP_KEY, "numbered", NULL);        
         document.wrap = g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL);
         document.syntax = g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL);
     }
@@ -103,7 +103,7 @@ int main(int argc, char * argv[]) {
     gtk_main();
 
     gtk_source_finalize();
-    free(document.font);
+    g_free(document.font);
 
     return 0;
 }
