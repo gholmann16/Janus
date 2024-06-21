@@ -148,10 +148,6 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * wrap = gtk_check_menu_item_new_with_label(_("Wrap line"));
     g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
-    if (document->wrap) {
-        document->wrap = FALSE;
-        gtk_widget_activate(wrap);
-    }
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
 
     GtkWidget * seperate5 = gtk_separator_menu_item_new();
@@ -159,18 +155,10 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
 
     GtkWidget * line_numbers = gtk_check_menu_item_new_with_label(_("Line numbers"));
     g_signal_connect(line_numbers, "activate", G_CALLBACK(line_number_command), document);
-    if (document->line_numbers) {
-        document->line_numbers = FALSE;
-        gtk_widget_activate(line_numbers);
-    }
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), line_numbers);
 
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
-    if (document->syntax) {
-        document->syntax = FALSE;
-        gtk_widget_activate(syntax);
-    }
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), syntax);
 
     GtkWidget * help = gtk_menu_item_new_with_label(_("Help"));

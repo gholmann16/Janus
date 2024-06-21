@@ -119,7 +119,7 @@ void open_file(struct Document * document, GFile * file) {
         g_free(content_type);
         g_free(path);
 
-        gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);
+        gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
     }
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
@@ -306,7 +306,7 @@ void quit(struct Document * document) {
 
     g_key_file_set_string(config, GROUP_KEY, "font", document->font);
 
-    g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)));
+    g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)((gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)) == GTK_WRAP_NONE) ? FALSE : TRUE));
     g_key_file_set_boolean(config, GROUP_KEY, "syntax", (gboolean)gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
     g_key_file_set_boolean(config, GROUP_KEY, "numbered", (gboolean)gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
 
@@ -587,18 +587,15 @@ void font_command(GtkWidget * self, struct Document * document) {
 }
 
 void wrap_command(GtkWidget * self, struct Document * document) {
-    document->wrap = !document->wrap;
-    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), document->wrap ? GTK_WRAP_WORD : GTK_WRAP_NONE);
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(document->view), (gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)) == GTK_WRAP_NONE) ? GTK_WRAP_WORD : GTK_WRAP_NONE);
 }
 
 void line_number_command(GtkWidget * self, struct Document * document) {
-    document->line_numbers = !document->line_numbers;
-    gtk_source_view_set_show_line_numbers(GTK_SOURCE_VIEW(document->view), document->line_numbers);
+    gtk_source_view_set_show_line_numbers(GTK_SOURCE_VIEW(document->view), !gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
 }
 
 void syntax_command(GtkWidget * self, struct Document * document) {
-    document->syntax = !document->syntax;
-    gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), document->syntax);
+    gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), !gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
 }
 
 void about_command(GtkWidget * self, struct Document * document) {

@@ -9,8 +9,5 @@ struct Document {
     GtkWindow * window;
     GtkSourceRegion * last;
     GtkSourceSearchContext * context;
-    _Bool binary;
-    _Bool wrap;
-    _Bool line_numbers;
-    _Bool syntax;
+    gboolean binary;
 };
