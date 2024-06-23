@@ -307,8 +307,8 @@ void quit(struct Document * document) {
     g_key_file_set_string(config, GROUP_KEY, "font", document->font);
 
     g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)((gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)) == GTK_WRAP_NONE) ? FALSE : TRUE));
-    g_key_file_set_boolean(config, GROUP_KEY, "syntax", (gboolean)gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
-    g_key_file_set_boolean(config, GROUP_KEY, "numbered", (gboolean)gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
+    g_key_file_set_boolean(config, GROUP_KEY, "syntax", gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
+    g_key_file_set_boolean(config, GROUP_KEY, "numbered", gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
 
     char path[PATH_MAX];
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
@@ -319,6 +319,7 @@ void quit(struct Document * document) {
     if (error) {
         g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
+        g_key_file_free(config);
         gtk_main_quit();
     }
 
@@ -327,7 +328,7 @@ void quit(struct Document * document) {
         g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
     }
-
+    g_key_file_free(config);
     gtk_main_quit();
 }
 

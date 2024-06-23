@@ -19,6 +19,7 @@ int main(int argc, char * argv[]) {
     GtkWidget * view = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(view), text);
     GtkTextBuffer * buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
+    gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(buffer), FALSE);
 
     struct Document document = {
         .font = g_strdup(DEFAULT_FONT),
@@ -52,12 +53,6 @@ int main(int argc, char * argv[]) {
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
     strcat(path, CONFIG_FILE);
 
-    // Menu setup
-    GtkAccelGroup * accel = gtk_accel_group_new();
-    gtk_window_add_accel_group(GTK_WINDOW(window), accel);
-    GtkWidget * bar = gtk_menu_bar_new();
-    init_menu(bar, accel, &document);
-
     GError * error = NULL;
     GKeyFile * config = g_key_file_new();
     if (access(path, F_OK))
@@ -66,6 +61,7 @@ int main(int argc, char * argv[]) {
         g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
         gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        config = NULL;
     }
     else {
         int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
@@ -77,16 +73,17 @@ int main(int argc, char * argv[]) {
             g_free(document.font);
             document.font = font_desc;
         }
-
-        if(g_key_file_get_boolean(config, GROUP_KEY, "numbered", NULL))
-            line_number_command(NULL, &document);    
-        if(g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL))
-            wrap_command(NULL, &document);
-        if(g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL))
-            syntax_command(NULL, &document);
     }
 
     set_font(&document);
+
+    // Menu setup
+    GtkAccelGroup * accel = gtk_accel_group_new();
+    gtk_window_add_accel_group(GTK_WINDOW(window), accel);
+    GtkWidget * bar = gtk_menu_bar_new();
+    init_menu(bar, accel, &document, config);
+
+    g_key_file_free(config);
 
     // Search setup
     search_init(&document);
