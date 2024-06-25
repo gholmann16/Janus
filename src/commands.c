@@ -41,6 +41,7 @@ void change_indicator(GtkWidget * self, struct Document * document) {
 }
 
 void warning_popup(struct Document * document, char * text) {
+    g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, text);
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
     GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
     gtk_dialog_run (GTK_DIALOG (dialog));
@@ -251,32 +252,46 @@ void save_command(GtkWidget * self, struct Document * document) {
 }
 
 void draw_page (GtkPrintOperation* self, GtkPrintContext* context, gint page_nr, GtkSourcePrintCompositor *compositor) {
-    gtk_source_print_compositor_draw_page (compositor, context, page_nr);
+    gtk_source_print_compositor_draw_page(compositor, context, page_nr);
 }
 
 static gboolean paginate (GtkPrintOperation *operation, GtkPrintContext *context, GtkSourcePrintCompositor *compositor) {
-    if (gtk_source_print_compositor_paginate (compositor, context))
+    if (gtk_source_print_compositor_paginate(compositor, context))
     {
-        gint n_pages;
-
-        n_pages = gtk_source_print_compositor_get_n_pages (compositor);
-        gtk_print_operation_set_n_pages (operation, n_pages);
-
+        gtk_print_operation_set_n_pages(operation, gtk_source_print_compositor_get_n_pages (compositor));
         return TRUE;
     }
-
     return FALSE;
 }
 
 void print_command(GtkWidget * self, struct Document * document) {
+    static GtkPrintSettings * settings = NULL;
     GtkPrintOperation * print = gtk_print_operation_new();
     GtkSourcePrintCompositor * compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
-    
+
+    if (settings != NULL)
+        gtk_print_operation_set_print_settings (print, settings);
+
     g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
     g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
 
-    if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        warning_popup(document, _("Failed to print page."));
+    GError * error = NULL;
+    switch (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL)) {
+        case GTK_PRINT_OPERATION_RESULT_ERROR:
+            warning_popup(document, error->message);
+            g_error_free(error);
+            break;
+        case GTK_PRINT_OPERATION_RESULT_APPLY:
+            if (settings != NULL)
+                g_object_unref(settings);
+            settings = g_object_ref(gtk_print_operation_get_print_settings(print));
+            break;
+        case GTK_PRINT_OPERATION_RESULT_CANCEL:
+            break;
+        case GTK_PRINT_OPERATION_RESULT_IN_PROGRESS:
+            warning_popup(document, _("Something went wrong while printing."));
+            break;
+    }        
 
     g_object_unref(print);
     g_object_unref(compositor);

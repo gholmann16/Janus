@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-30 23:33-0400\n"
+"POT-Creation-Date: 2024-06-24 22:25-0600\n"
 "PO-Revision-Date: 2024-05-05 01:48-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -17,9 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
-
-msgid "Could not resolve path."
-msgstr "Impossible de résoudre le chemin."
 
 msgid "Could not open file."
 msgstr "Impossible d'ouvrir le fichier."
@@ -38,8 +35,8 @@ msgstr ""
 msgid "Save File"
 msgstr "Enregistrer fichier"
 
-msgid "Failed to print page."
-msgstr "Échec de l'impression de page."
+msgid "Something went wrong while printing."
+msgstr "Une erreur est survenue lors de l'impression."
 
 msgid "Failed to preview page."
 msgstr "Échec de l'aperçu de page."
@@ -164,12 +161,3 @@ msgstr "Remplacer le texte"
 
 msgid "Replace all"
 msgstr "Remplacer tout"
-
-#~ msgid "Go To"
-#~ msgstr "Aller à"
-
-#~ msgid "Janus cannot not modify binary files."
-#~ msgstr "Janus ne peut pas modifier les fichiers binaires."
-
-#~ msgid "Search text:"
-#~ msgstr "Texte de recherche:"
