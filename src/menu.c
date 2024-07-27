@@ -150,7 +150,7 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     GtkWidget * wrap = gtk_check_menu_item_new_with_label(_("Wrap line"));
     g_signal_connect(wrap, "activate", G_CALLBACK(wrap_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), wrap);
-    if(config && g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL))
+    if(g_key_file_get_boolean(config, GROUP_KEY, "wrap", NULL))
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wrap), TRUE);
 
     GtkWidget * seperate5 = gtk_separator_menu_item_new();
@@ -159,13 +159,13 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     GtkWidget * line_numbers = gtk_check_menu_item_new_with_label(_("Line numbers"));
     g_signal_connect(line_numbers, "activate", G_CALLBACK(line_number_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), line_numbers);
-    if(config && g_key_file_get_boolean(config, GROUP_KEY, "numbered", NULL))
+    if(g_key_file_get_boolean(config, GROUP_KEY, "numbered", NULL))
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(line_numbers), TRUE);
 
     GtkWidget * syntax = gtk_check_menu_item_new_with_label(_("Syntax highlighting"));
     g_signal_connect(syntax, "activate", G_CALLBACK(syntax_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(optionsmenu), syntax);
-    if(config && g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL))
+    if(g_key_file_get_boolean(config, GROUP_KEY, "syntax", NULL))
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(syntax), TRUE);
 
     GtkWidget * help = gtk_menu_item_new_with_label(_("Help"));

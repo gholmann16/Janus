@@ -43,9 +43,14 @@ void change_indicator(GtkWidget * self, struct Document * document) {
 void warning_popup(struct Document * document, char * text) {
     g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, text);
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget * dialog = gtk_message_dialog_new (document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
+    GtkWidget * dialog = gtk_message_dialog_new(document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
+void hide_info(GtkInfoBar * info) {
+    gtk_info_bar_set_revealed(info, FALSE);
+    gtk_widget_hide(GTK_WIDGET(info));
 }
 
 void open_file(struct Document * document, GFile * file) {
@@ -64,9 +69,37 @@ void open_file(struct Document * document, GFile * file) {
         g_object_unref(document->file);
     document->file = file;
 
+    static GtkInfoBar * info = NULL;
+
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
+
+
+        if (!info)  {
+            info = GTK_INFO_BAR(gtk_info_bar_new());
+            gtk_info_bar_set_revealed(info, FALSE);
+            GtkWidget * box = gtk_widget_get_parent(gtk_widget_get_parent(document->view)); // embedded in scrollbar
+            gtk_box_pack_start(GTK_BOX(box), GTK_WIDGET(info), 0, 0, 0);
+
+            g_signal_connect(info, "close", G_CALLBACK(hide_info), NULL);
+            g_signal_connect(info, "response", G_CALLBACK(hide_info), NULL);
+
+            GtkWidget * content = gtk_info_bar_get_content_area(info);
+            gtk_info_bar_set_show_close_button(info, TRUE);
+
+            GtkWidget * label = gtk_label_new(NULL);
+            gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+            gtk_container_add(GTK_CONTAINER(content), label);
+
+            gtk_info_bar_set_message_type(info, GTK_MESSAGE_QUESTION);
+            gtk_label_set_markup(GTK_LABEL(label), _("This file is not formatted properly, and will be edited using Janus' binary mode. For more information check out <a href=\"https://github.com/gholmann16/janus\">the wiki</a>."));
+            gtk_widget_show_all(GTK_WIDGET(info));
+        }
+
+        gtk_widget_show(GTK_WIDGET(info));
+        gtk_info_bar_set_revealed(info, TRUE);
+
         document->binary = TRUE;
 
         // Convert to utf8, and then transform characters such as null to glib approriate characters
@@ -107,6 +140,8 @@ void open_file(struct Document * document, GFile * file) {
         free(binary_string);
     }
     else {
+        if (info)
+            gtk_info_bar_set_revealed(info, FALSE);
         document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
 
@@ -132,13 +167,11 @@ void open_file(struct Document * document, GFile * file) {
 }
 
 void open_command(GtkWidget * self, struct Document * document) {
-    
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new(_("Open File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Open"), GTK_RESPONSE_ACCEPT, NULL);
+
+    GtkWidget * dialog = gtk_file_chooser_dialog_new(_("Open File"), document->window, GTK_FILE_CHOOSER_ACTION_OPEN, _("Cancel"), GTK_RESPONSE_CANCEL, _("Open"), GTK_RESPONSE_ACCEPT, NULL);
 
     gint res = gtk_dialog_run(GTK_DIALOG(dialog));
-    if (res == GTK_RESPONSE_ACCEPT)
-    {
+    if (res == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
         GFile * file = gtk_file_chooser_get_file(chooser);
         open_file(document, file);
@@ -420,17 +453,6 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }
 
-int lines_in_buffer(GtkTextBuffer * buffer) {
-    int count = 0;
-
-    GtkTextIter end;
-    gtk_text_buffer_get_end_iter(buffer, &end);
-
-    count = gtk_text_iter_get_line(&end) + 1;
-    
-    return count;
-}
-
 void go_to_command(GtkWidget * self, struct Document * document) {
     GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -438,9 +460,11 @@ void go_to_command(GtkWidget * self, struct Document * document) {
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
 
     GtkWidget * line = gtk_label_new(_("Line number:"));
-    int l = lines_in_buffer(document->buffer);
 
-    GtkWidget * spin = gtk_spin_button_new_with_range(1, l, 1);
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(document->buffer, &end);
+
+    GtkWidget * spin = gtk_spin_button_new_with_range(1, gtk_text_iter_get_line(&end) + 1, 1);
     
     GtkWidget * box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     gtk_container_add(GTK_CONTAINER(box), line);

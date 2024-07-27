@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-24 22:25-0600\n"
-"PO-Revision-Date: 2024-05-05 01:48-0400\n"
+"POT-Creation-Date: 2024-07-27 15:22-0400\n"
+"PO-Revision-Date: 2024-07-27 15:29-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
@@ -21,8 +21,23 @@ msgstr ""
 msgid "Could not open file."
 msgstr "Impossible d'ouvrir le fichier."
 
+msgid ""
+"This file is not formatted properly, and will be edited using Janus' binary "
+"mode. For more information check out <a href=\"https://github.com/gholmann16/"
+"janus\">the wiki</a>."
+msgstr ""
+"Ce fichier n'est pas correctement formaté et sera modifié en utilisant le "
+"mode binaire de Janus. Pour plus d'informations, consultez <a href=\"https://"
+"github.com/gholmann16/janus\">le wiki</a>."
+
 msgid "Open File"
 msgstr "Ouvrir fichier"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Open"
+msgstr "Ouvrir"
 
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
@@ -43,9 +58,6 @@ msgstr "Échec de l'aperçu de page."
 
 msgid "No"
 msgstr "Non"
-
-msgid "Cancel"
-msgstr "Annuler"
 
 msgid "Yes"
 msgstr "Oui"
@@ -71,9 +83,6 @@ msgstr "Fichier"
 
 msgid "New"
 msgstr "Nouveau"
-
-msgid "Open"
-msgstr "Ouvrir"
 
 msgid "Save"
 msgstr "Enregistrer"

@@ -33,10 +33,6 @@ int main(int argc, char * argv[]) {
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), &document);
     g_signal_connect(buffer, "modified-changed", G_CALLBACK(change_indicator), &document);
 
-    // Open file
-    if (argc > 1)
-        open_file(&document, g_file_new_for_commandline_arg(argv[1]));
-
     // Preferences setup
     char path[PATH_MAX] = "";
     if (getenv("APPDIR") && strlen(getenv("APPDIR")) < PATH_MAX - strlen("/usr/share/locale/"))
@@ -55,24 +51,20 @@ int main(int argc, char * argv[]) {
 
     GError * error = NULL;
     GKeyFile * config = g_key_file_new();
-    if (access(path, F_OK))
-        gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    else if (!g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) {
+
+    if (!access(path, F_OK) && !g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) { // Only try to load the file if it exists
         g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
         g_error_free(error);
-        gtk_window_set_default_size(GTK_WINDOW(window), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        config = NULL;
     }
-    else {
-        int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
-        int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
-        gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
 
-        char * font_desc = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
-        if (font_desc) {
-            g_free(document.font);
-            document.font = font_desc;
-        }
+    int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
+    int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
+    gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
+
+    char * font_desc = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
+    if (font_desc) {
+        g_free(document.font);
+        document.font = font_desc;
     }
 
     set_font(&document);
@@ -96,6 +88,10 @@ int main(int argc, char * argv[]) {
     // Pack up app and run
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_widget_show_all (window);
+
+    // Open any files
+    if (argc > 1)
+        open_file(&document, g_file_new_for_commandline_arg(argv[1]));
 
     gtk_main();
 

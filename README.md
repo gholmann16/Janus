@@ -32,7 +32,7 @@ Janus depends on the following libraries for both building and running:
 
 ## Binary modification
 
-Unlike most other simple text editors, binary editing is supported directly, rather than dealing with a codepage. When opened, Janus will display nondisplayable bytes as there unicode equivalent: for example 0xe3 will map to U+00e3. To edit binaries, simply open them in Janus, then use Control + Shift + U to enter in new characters (From 0x01 to 0xFF). To enter a null character use U+2400. Once you save the file, Janus will convert these raw characters into hex data.
+Unlike most other simple text editors, binary editing is supported directly, rather than dealing with a codepage. When opened, Janus will display nondisplayable bytes as there unicode equivalent: for example 0xe3 will map to U+e3. To edit binaries, simply open them in Janus, then use Control + Shift + U to enter in new characters (From 0x01 to 0xFF). To enter a null character use U+2400. Once you save the file, Janus will convert these raw characters into hex data.
 
 ## Binary mode demo
 ![Gif showcasing binary editing in Janus](data/demo.gif)
