@@ -53,7 +53,7 @@ int main(int argc, char * argv[]) {
     GKeyFile * config = g_key_file_new();
 
     if (!access(path, F_OK) && !g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) { // Only try to load the file if it exists
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
     }
 

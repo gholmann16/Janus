@@ -41,7 +41,7 @@ void change_indicator(GtkWidget * self, struct Document * document) {
 }
 
 void warning_popup(struct Document * document, char * text) {
-    g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, text);
+    g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", text);
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
     GtkWidget * dialog = gtk_message_dialog_new(document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
     gtk_dialog_run(GTK_DIALOG(dialog));
@@ -185,7 +185,7 @@ void new_command(void) {
     char * argv[] = {"/proc/self/exe", NULL};
     g_spawn_async(NULL, argv, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &error);
     if (error != NULL) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
     }
 }
@@ -365,7 +365,7 @@ void quit(struct Document * document) {
     GError * error = NULL;
     char * data = g_key_file_to_data(config, NULL, &error);
     if (error) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
         g_key_file_free(config);
         gtk_main_quit();
@@ -373,7 +373,7 @@ void quit(struct Document * document) {
 
     g_file_set_contents(path, data, -1, &error);
     if (error) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
     }
     g_key_file_free(config);
@@ -594,7 +594,7 @@ void set_font(struct Document * document) {
     GError * error = NULL;
     gtk_css_provider_load_from_data (cssProvider, css, -1, &error);
     if (error) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, error->message);
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
     }
     else {
