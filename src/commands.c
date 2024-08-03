@@ -453,6 +453,10 @@ void select_all_command(GtkWidget * self, struct Document * document) {
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }
 
+void close_go_to(GtkEntry * self, GtkDialog * dialog) {
+    gtk_dialog_response(dialog, 0);
+}
+
 void go_to_command(GtkWidget * self, struct Document * document) {
     GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -473,13 +477,14 @@ void go_to_command(GtkWidget * self, struct Document * document) {
     gtk_container_add(GTK_CONTAINER(content), box);
     gtk_widget_show_all(content);
 
-    int res = gtk_dialog_run(GTK_DIALOG(dialog));
-    
-    if (res == 0) {
+    g_signal_connect(spin, "activate", G_CALLBACK(close_go_to), dialog);
+
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == 0) {
         GtkTextIter jump;
         int value = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin)) - 1;
         gtk_text_buffer_get_iter_at_line(document->buffer, &jump, value);
         gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(document->view), &jump, 0.0, TRUE, 0.0, 0.15);
+        gtk_text_buffer_place_cursor(document->buffer, &jump);
     }
 
     gtk_widget_destroy(dialog);
