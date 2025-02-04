@@ -2,5 +2,9 @@ janus
 *.o
 *.mo
 build
-version.h
-AppImageBuilder.yml
+deb
+AppDir
+*.AppImage
+*.zsync
+*.deb
+janus-notepad*

@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the janus package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-27 15:22-0400\n"
+"POT-Creation-Date: 2025-01-30 16:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,148 +17,196 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/commands.c:63
 msgid "Could not open file."
 msgstr ""
 
+#: src/commands.c:96
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
 "janus\">the wiki</a>."
 msgstr ""
 
+#: src/commands.c:171
 msgid "Open File"
 msgstr ""
 
+#: src/commands.c:171 src/commands.c:390 src/commands.c:461 src/search.c:80
+#: src/search.c:213
 msgid "Cancel"
 msgstr ""
 
+#: src/commands.c:171 src/menu.c:21
 msgid "Open"
 msgstr ""
 
+#: src/commands.c:226
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
 msgstr ""
 
+#: src/commands.c:256
 msgid "Save File"
 msgstr ""
 
+#: src/commands.c:325
 msgid "Something went wrong while printing."
 msgstr ""
 
+#: src/commands.c:341
 msgid "Failed to preview page."
 msgstr ""
 
+#: src/commands.c:390
 msgid "No"
 msgstr ""
 
+#: src/commands.c:390
 msgid "Yes"
 msgstr ""
 
+#: src/commands.c:394
 msgid "Would you like to save?"
 msgstr ""
 
+#: src/commands.c:461 src/menu.c:135
 msgid "Go to"
 msgstr ""
 
+#: src/commands.c:466
 msgid "Line number:"
 msgstr ""
 
+#: src/commands.c:625
 msgid "Fonts"
 msgstr ""
 
+#: src/commands.c:658
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 
+#: src/menu.c:10
 msgid "File"
 msgstr ""
 
+#: src/menu.c:16
 msgid "New"
 msgstr ""
 
+#: src/menu.c:26
 msgid "Save"
 msgstr ""
 
+#: src/menu.c:31
 msgid "Save as"
 msgstr ""
 
+#: src/menu.c:39
 msgid "Print"
 msgstr ""
 
+#: src/menu.c:44
 msgid "Print Preview"
 msgstr ""
 
+#: src/menu.c:52
 msgid "Exit"
 msgstr ""
 
+#: src/menu.c:59
 msgid "Edit"
 msgstr ""
 
+#: src/menu.c:65
 msgid "Undo"
 msgstr ""
 
+#: src/menu.c:70
 msgid "Redo"
 msgstr ""
 
+#: src/menu.c:78
 msgid "Cut"
 msgstr ""
 
+#: src/menu.c:83
 msgid "Copy"
 msgstr ""
 
+#: src/menu.c:88
 msgid "Paste"
 msgstr ""
 
+#: src/menu.c:93
 msgid "Delete"
 msgstr ""
 
+#: src/menu.c:101
 msgid "Select all"
 msgstr ""
 
+#: src/menu.c:106
 msgid "Search"
 msgstr ""
 
+#: src/menu.c:112 src/search.c:80 src/search.c:176
 msgid "Find"
 msgstr ""
 
+#: src/menu.c:117
 msgid "Find next"
 msgstr ""
 
+#: src/menu.c:122
 msgid "Find previous"
 msgstr ""
 
+#: src/menu.c:127 src/search.c:167 src/search.c:182
 msgid "Replace"
 msgstr ""
 
+#: src/menu.c:140
 msgid "Options"
 msgstr ""
 
+#: src/menu.c:146
 msgid "Font"
 msgstr ""
 
+#: src/menu.c:150
 msgid "Wrap line"
 msgstr ""
 
+#: src/menu.c:159
 msgid "Line numbers"
 msgstr ""
 
+#: src/menu.c:165
 msgid "Syntax highlighting"
 msgstr ""
 
+#: src/menu.c:171
 msgid "Help"
 msgstr ""
 
+#: src/menu.c:177
 msgid "About"
 msgstr ""
 
+#: src/search.c:86 src/search.c:173
 msgid "Find text:"
 msgstr ""
 
+#: src/search.c:101 src/search.c:210
 msgid "Match case"
 msgstr ""
 
+#: src/search.c:179
 msgid "Replace text"
 msgstr ""
 
+#: src/search.c:212
 msgid "Replace all"
 msgstr ""

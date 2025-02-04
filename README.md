@@ -13,8 +13,26 @@ Simple native linux notepad meant for text editing. Supports UTF-8 and binary da
 
 To build and install locally run:
 ```
-make release
-sudo make install
+meson build --buildtype release
+ninja -C build
+meson install -C build
+```
+
+To build as a deb package run:
+```
+meson build --buildtype release --prefix /usr
+ninja -C build
+DESTDIR=../janus-notepad_0.9.6-1 meson install -C build
+install -Dm644 data/control janus-notepad_0.9.6-1/DEBIAN/control
+dpkg-deb --root-owner-group -b janus-notepad_0.9.6-1
+```
+
+To build as AppImage run:
+```
+meson build --buildtype release --prefix /usr
+ninja -C build
+DESTDIR=../AppDir meson install -C build
+appimage-builder --recipe data/AppImageBuilder.yml --appdir AppDir --build-dir /tmp
 ```
 
 Janus depends on the following libraries for both building and running:

@@ -1,0 +1,4 @@
+src/main.c
+src/commands.c
+src/menu.c
+src/search.c

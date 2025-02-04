@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-27 15:22-0400\n"
+"POT-Creation-Date: 2025-01-30 16:55-0500\n"
 "PO-Revision-Date: 2024-07-27 15:26-0400\n"
 "Last-Translator: gholmann@satyrn.net\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -18,9 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
+#: src/commands.c:63
 msgid "Could not open file."
 msgstr "Datei konnte nicht geöffnet werden."
 
+#: src/commands.c:96
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
@@ -30,15 +32,20 @@ msgstr ""
 "bearbeitet. Weitere Informationen finden Sie im <a href=\"https://github.com/"
 "gholmann16/janus\">Wiki</a>."
 
+#: src/commands.c:171
 msgid "Open File"
 msgstr "Datei öffnen"
 
+#: src/commands.c:171 src/commands.c:390 src/commands.c:461 src/search.c:80
+#: src/search.c:213
 msgid "Cancel"
 msgstr "Abbrechen"
 
+#: src/commands.c:171 src/menu.c:21
 msgid "Open"
 msgstr "Öffnen"
 
+#: src/commands.c:226
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -47,126 +54,167 @@ msgstr ""
 "eingefügten Zeichen zwischen U+0000 und U+00FF liegen, mit Ausnahme von "
 "U+2400."
 
+#: src/commands.c:256
 msgid "Save File"
 msgstr "Datei speichern"
 
+#: src/commands.c:325
 msgid "Something went wrong while printing."
 msgstr "Etwas ist beim Drucken schiefgelaufen."
 
+#: src/commands.c:341
 msgid "Failed to preview page."
 msgstr "Seite konnte nicht angezeigt werden."
 
+#: src/commands.c:390
 msgid "No"
 msgstr "Nein"
 
+#: src/commands.c:390
 msgid "Yes"
 msgstr "Ja"
 
+#: src/commands.c:394
 msgid "Would you like to save?"
 msgstr "Möchten Sie speichern?"
 
+#: src/commands.c:461 src/menu.c:135
 msgid "Go to"
 msgstr "Gehe zu"
 
+#: src/commands.c:466
 msgid "Line number:"
 msgstr "Zeilennummer:"
 
+#: src/commands.c:625
 msgid "Fonts"
 msgstr "Schriftarten"
 
+#: src/commands.c:658
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 "Janus ist ein einfacher Linux-Notizblock, der klein und effizient sein soll."
 
+#: src/menu.c:10
 msgid "File"
 msgstr "Datei"
 
+#: src/menu.c:16
 msgid "New"
 msgstr "Neu"
 
+#: src/menu.c:26
 msgid "Save"
 msgstr "Speichern"
 
+#: src/menu.c:31
 msgid "Save as"
 msgstr "Speichern unter"
 
+#: src/menu.c:39
 msgid "Print"
 msgstr "Drucken"
 
+#: src/menu.c:44
 msgid "Print Preview"
 msgstr "Druckvorschau"
 
+#: src/menu.c:52
 msgid "Exit"
 msgstr "Beenden"
 
+#: src/menu.c:59
 msgid "Edit"
 msgstr "Bearbeiten"
 
+#: src/menu.c:65
 msgid "Undo"
 msgstr "Rückgängig"
 
+#: src/menu.c:70
 msgid "Redo"
 msgstr "Wiederholen"
 
+#: src/menu.c:78
 msgid "Cut"
 msgstr "Ausschneiden"
 
+#: src/menu.c:83
 msgid "Copy"
 msgstr "Kopieren"
 
+#: src/menu.c:88
 msgid "Paste"
 msgstr "Einfügen"
 
+#: src/menu.c:93
 msgid "Delete"
 msgstr "Löschen"
 
+#: src/menu.c:101
 msgid "Select all"
 msgstr "Alles auswählen"
 
+#: src/menu.c:106
 msgid "Search"
 msgstr "Suchen"
 
+#: src/menu.c:112 src/search.c:80 src/search.c:176
 msgid "Find"
 msgstr "Finden"
 
+#: src/menu.c:117
 msgid "Find next"
 msgstr "Nächstes finden"
 
+#: src/menu.c:122
 msgid "Find previous"
 msgstr "Vorheriges finden"
 
+#: src/menu.c:127 src/search.c:167 src/search.c:182
 msgid "Replace"
 msgstr "Ersetzen"
 
+#: src/menu.c:140
 msgid "Options"
 msgstr "Optionen"
 
+#: src/menu.c:146
 msgid "Font"
 msgstr "Schriftart"
 
+#: src/menu.c:150
 msgid "Wrap line"
 msgstr "Zeile umbrechen"
 
+#: src/menu.c:159
 msgid "Line numbers"
 msgstr "Zeilennummern"
 
+#: src/menu.c:165
 msgid "Syntax highlighting"
 msgstr "Syntaxhervorhebung"
 
+#: src/menu.c:171
 msgid "Help"
 msgstr "Hilfe"
 
+#: src/menu.c:177
 msgid "About"
 msgstr "Über"
 
+#: src/search.c:86 src/search.c:173
 msgid "Find text:"
 msgstr "Text suchen:"
 
+#: src/search.c:101 src/search.c:210
 msgid "Match case"
 msgstr "Groß-/Kleinschreibung beachten"
 
+#: src/search.c:179
 msgid "Replace text"
 msgstr "Text ersetzen"
 
+#: src/search.c:212
 msgid "Replace all"
 msgstr "Alle ersetzen"

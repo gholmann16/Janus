@@ -1,7 +1,6 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
 #include "config.h"
-#include "version.h"
 
 void set_title(struct Document * document) {
     char * append = " - Janus";

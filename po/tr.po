@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-27 15:22-0400\n"
+"POT-Creation-Date: 2025-01-30 16:55-0500\n"
 "PO-Revision-Date: 2024-07-30 03:04+0300\n"
 "Last-Translator: veyselerden@yahoo.com\n"
 "Language-Team: \n"
@@ -18,9 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
 
+#: src/commands.c:63
 msgid "Could not open file."
 msgstr "Dosya açılamadı."
 
+#: src/commands.c:96
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
@@ -30,15 +32,20 @@ msgstr ""
 "düzenlenecek. Daha fazla bilgi için <a href=\"https://github.com/gholmann16/"
 "janus\">wiki sayfasını ziyaret edin</a>."
 
+#: src/commands.c:171
 msgid "Open File"
 msgstr "Dosya Aç"
 
+#: src/commands.c:171 src/commands.c:390 src/commands.c:461 src/search.c:80
+#: src/search.c:213
 msgid "Cancel"
 msgstr "İptal"
 
+#: src/commands.c:171 src/menu.c:21
 msgid "Open"
 msgstr "Aç"
 
+#: src/commands.c:226
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -47,126 +54,167 @@ msgstr ""
 "karakterlerin U+0000 ve U+00FF arasında olduğundan emin olun. U+2400 buna "
 "bir istisnadır."
 
+#: src/commands.c:256
 msgid "Save File"
 msgstr "Dosyayı Kaydet"
 
+#: src/commands.c:325
 msgid "Something went wrong while printing."
 msgstr "Yazdırılırken bir hata meydana geldi."
 
+#: src/commands.c:341
 msgid "Failed to preview page."
 msgstr "Sayfa önizlenemedi."
 
+#: src/commands.c:390
 msgid "No"
 msgstr "Hayır"
 
+#: src/commands.c:390
 msgid "Yes"
 msgstr "Evet"
 
+#: src/commands.c:394
 msgid "Would you like to save?"
 msgstr "Kaydetmek ister misin?"
 
+#: src/commands.c:461 src/menu.c:135
 msgid "Go to"
 msgstr "Git"
 
+#: src/commands.c:466
 msgid "Line number:"
 msgstr "Satır numarası:"
 
+#: src/commands.c:625
 msgid "Fonts"
 msgstr "Yazıtipleri"
 
+#: src/commands.c:658
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 "Janus küçük ve verimli olması amacıyla yapılmış basit bir not defteridir."
 
+#: src/menu.c:10
 msgid "File"
 msgstr "Dosya"
 
+#: src/menu.c:16
 msgid "New"
 msgstr "Yeni"
 
+#: src/menu.c:26
 msgid "Save"
 msgstr "Kaydet"
 
+#: src/menu.c:31
 msgid "Save as"
 msgstr "Farklı Kaydet"
 
+#: src/menu.c:39
 msgid "Print"
 msgstr "Yazdır"
 
+#: src/menu.c:44
 msgid "Print Preview"
 msgstr "Yazdırma Önizlemesi"
 
+#: src/menu.c:52
 msgid "Exit"
 msgstr "Çık"
 
+#: src/menu.c:59
 msgid "Edit"
 msgstr "Düzenle"
 
+#: src/menu.c:65
 msgid "Undo"
 msgstr "Geri Al"
 
+#: src/menu.c:70
 msgid "Redo"
 msgstr "İleri Al"
 
+#: src/menu.c:78
 msgid "Cut"
 msgstr "Kes"
 
+#: src/menu.c:83
 msgid "Copy"
 msgstr "Kopyala"
 
+#: src/menu.c:88
 msgid "Paste"
 msgstr "Yapıştır"
 
+#: src/menu.c:93
 msgid "Delete"
 msgstr "Sil"
 
+#: src/menu.c:101
 msgid "Select all"
 msgstr "Hepsini seç"
 
+#: src/menu.c:106
 msgid "Search"
 msgstr "Ara"
 
+#: src/menu.c:112 src/search.c:80 src/search.c:176
 msgid "Find"
 msgstr "Bul"
 
+#: src/menu.c:117
 msgid "Find next"
 msgstr "Sonrakini bul"
 
+#: src/menu.c:122
 msgid "Find previous"
 msgstr "Öncekini bul"
 
+#: src/menu.c:127 src/search.c:167 src/search.c:182
 msgid "Replace"
 msgstr "Değiştir"
 
+#: src/menu.c:140
 msgid "Options"
 msgstr "Seçenekler"
 
+#: src/menu.c:146
 msgid "Font"
 msgstr "Yazıtipi"
 
+#: src/menu.c:150
 msgid "Wrap line"
 msgstr "Sözcük kaydırma"
 
+#: src/menu.c:159
 msgid "Line numbers"
 msgstr "Satır numaraları"
 
+#: src/menu.c:165
 msgid "Syntax highlighting"
 msgstr "Sözdizimi vurgulama"
 
+#: src/menu.c:171
 msgid "Help"
 msgstr "Yardım"
 
+#: src/menu.c:177
 msgid "About"
 msgstr "Hakkında"
 
+#: src/search.c:86 src/search.c:173
 msgid "Find text:"
 msgstr "Metin bul:"
 
+#: src/search.c:101 src/search.c:210
 msgid "Match case"
 msgstr "Büyük-küçük harfe duyarlı"
 
+#: src/search.c:179
 msgid "Replace text"
 msgstr "Metni değiştir"
 
+#: src/search.c:212
 msgid "Replace all"
 msgstr "Tümünü değiştir"
