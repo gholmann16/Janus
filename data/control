@@ -5,5 +5,5 @@ Priority: optional
 Architecture: amd64
 Conflicts: janus
 Depends: libgtk-3-0, libgtksourceview-4-0
-Maintainer: Gabriel Holmann <gholmann@satyrn.net>
+Maintainer: Gabriel Holmann <gholmann16@gmail.com>
 Description: Simple linux notepad.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>net.satyrn.janus</id>
+  <id>dev.pantheum.janus</id>
   
   <name>Janus</name>
   <summary>Simple Linux notepad</summary>
