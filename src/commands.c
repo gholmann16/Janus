@@ -360,7 +360,8 @@ void quit(struct Document * document) {
     g_key_file_set_integer(config, GROUP_KEY, "width", width);
     g_key_file_set_integer(config, GROUP_KEY, "height", height);
 
-    g_key_file_set_string(config, GROUP_KEY, "font", document->font);
+    if (document->font)
+        g_key_file_set_string(config, GROUP_KEY, "font", document->font);
 
     g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)((gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)) == GTK_WRAP_NONE) ? FALSE : TRUE));
     g_key_file_set_boolean(config, GROUP_KEY, "syntax", gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
@@ -500,6 +501,9 @@ void go_to_command(GtkWidget * self, struct Document * document) {
 }
 
 void set_font(struct Document * document) {
+    if (document->font == NULL)
+        return;
+
     PangoFontDescription * description = pango_font_description_from_string(document->font);
     if (description == NULL)
         return;
@@ -547,7 +551,6 @@ void set_font(struct Document * document) {
                 strcat(css, "normal");
                 break;
             default:
-                ;
                 char newweight[4] = "000";
                 newweight[0] = pango_font_description_get_weight(description)/100 + 0x30;
                 strcat(css, newweight);
@@ -633,7 +636,8 @@ void font_command(GtkWidget * self, struct Document * document) {
     GtkWidget * dialog = gtk_font_chooser_dialog_new(_("Fonts"), document->window);
     g_signal_connect(dialog, "response", G_CALLBACK(font_selected), document);
 
-    gtk_font_chooser_set_font(GTK_FONT_CHOOSER(dialog), document->font);
+    if (document->font)
+        gtk_font_chooser_set_font(GTK_FONT_CHOOSER(dialog), document->font);
 
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);

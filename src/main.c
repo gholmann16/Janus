@@ -22,7 +22,6 @@ int main(int argc, char * argv[]) {
     gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(buffer), FALSE);
 
     struct Document document = {
-        .font = g_strdup(DEFAULT_FONT),
         .buffer = buffer,
         .view = text,
         .window = GTK_WINDOW(window),
@@ -52,7 +51,8 @@ int main(int argc, char * argv[]) {
     GError * error = NULL;
     GKeyFile * config = g_key_file_new();
 
-    if (!access(path, F_OK) && !g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) { // Only try to load the file if it exists
+    // Only an error if the file exists but could not load a key from it. Also only scans file if it exists because the and skips otherwise.
+    if (!access(path, F_OK) && !g_key_file_load_from_file(config, path, G_KEY_FILE_NONE, &error)) {
         g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
     }
@@ -61,12 +61,7 @@ int main(int argc, char * argv[]) {
     int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
     gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
 
-    char * font_desc = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
-    if (font_desc) {
-        g_free(document.font);
-        document.font = font_desc;
-    }
-
+    document.font = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
     set_font(&document);
 
     // Menu setup
