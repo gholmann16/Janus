@@ -8,6 +8,7 @@ void set_title(struct Document * document) {
     GFileInfo * info = g_file_query_info(document->file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
 
     if (error != NULL) {
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
         g_error_free(error);
         return;
     }
@@ -52,7 +53,7 @@ void hide_info(GtkInfoBar * info) {
     gtk_widget_hide(GTK_WIDGET(info));
 }
 
-void open_file(struct Document * document, GFile * file) {
+void open_file(struct Document * document, GFile * file, gboolean pipe) {
 
     char * contents;
     gsize len;
@@ -64,16 +65,25 @@ void open_file(struct Document * document, GFile * file) {
         return;
     }
 
-    if (document->file)
-        g_object_unref(document->file);
-    document->file = file;
+    /*
+    Rather than checking here if it's stdin, it's passed in as an argument.
+    If user wishes to try to edit stdin by piping in info, then adding it
+    as an argument and therefore opening it, let them
+    */ 
+    if (pipe == false) {
+        if (document->file)
+            g_object_unref(document->file);
+
+        document->file = file;
+        set_title(document);
+    }
 
     static GtkInfoBar * info = NULL;
 
     gtk_source_buffer_begin_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
     g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
+    // Unreadable data
     if (g_utf8_validate(contents, len, NULL) == FALSE) {
-
 
         if (!info)  {
             info = GTK_INFO_BAR(gtk_info_bar_new());
@@ -138,6 +148,7 @@ void open_file(struct Document * document, GFile * file) {
         gtk_text_buffer_set_text(document->buffer, binary_string, -1);
         free(binary_string);
     }
+    // Readable data
     else {
         if (info)
             gtk_info_bar_set_revealed(info, FALSE);
@@ -162,7 +173,6 @@ void open_file(struct Document * document, GFile * file) {
     gtk_source_buffer_end_not_undoable_action(GTK_SOURCE_BUFFER(document->buffer));
 
     g_free(contents);
-    set_title(document);
 }
 
 void open_command(GtkWidget * self, struct Document * document) {
@@ -173,7 +183,7 @@ void open_command(GtkWidget * self, struct Document * document) {
     if (res == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
         GFile * file = gtk_file_chooser_get_file(chooser);
-        open_file(document, file);
+        open_file(document, file, false);
     }
 
     gtk_widget_destroy(dialog);
@@ -270,14 +280,13 @@ void save_as_command(GtkWidget * self, struct Document * document) {
 
 void save_command(GtkWidget * self, struct Document * document) {
 
-    //If I want to save as file whenever someone presses control s, switch these two if statements around
-    if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
-        return;
-
     if (document->file == NULL) {
         save_as_command(self, document);
         return;
     }
+
+    if (gtk_text_buffer_get_modified(document->buffer) == FALSE)
+        return;
 
     save(document);
 
