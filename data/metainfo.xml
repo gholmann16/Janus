@@ -16,7 +16,7 @@
 
   <url type="homepage">https://github.com/gholmann16/janus</url>
 
-  <launchable type="desktop-id">janus.desktop</launchable>
+  <launchable type="desktop-id">dev.pantheum.janus.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <image>https://github.com/gholmann16/Janus/blob/main/data/screenshot.png</image>

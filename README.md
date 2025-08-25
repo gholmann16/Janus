@@ -42,7 +42,7 @@ appimage-builder --recipe data/AppImageBuilder.yml --appdir AppDir --build-dir /
 
 To build as Flatpak run:
 ```
-flatpak-builder --user --install flatpak/ data/dev.pantheum.janus.yml
+flatpak-builder --user --install --force-clean flatpak/ data/dev.pantheum.janus.yml
 ```
 
 Janus depends on the following libraries for both building and running:

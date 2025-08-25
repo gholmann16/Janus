@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     bind_textdomain_codeset("janus", "utf-8");
     textdomain("janus");
 
-    gtk_window_set_icon_name(GTK_WINDOW(window), "janus");
+    gtk_window_set_icon_name(GTK_WINDOW(window), "dev.pantheum.janus");
 
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
     strcat(path, CONFIG_FILE);

@@ -5,7 +5,7 @@ AppDir:
   app_info:
     id: janus
     name: Janus
-    icon: janus
+    icon: dev.pantheum.janus
     version: 0.9.6
     exec: usr/bin/janus
     exec_args: $@
