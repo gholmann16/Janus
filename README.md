@@ -18,6 +18,11 @@ ninja -C build
 meson install -C build
 ```
 
+To uninstall it run: (if ninja has such functionality on your system)
+```
+sudo ninja -C build uninstall
+```
+
 To build as a deb package run:
 ```
 meson build --buildtype release --prefix /usr
@@ -33,6 +38,11 @@ meson build --buildtype release --prefix /usr
 ninja -C build
 DESTDIR=../AppDir meson install -C build
 appimage-builder --recipe data/AppImageBuilder.yml --appdir AppDir --build-dir /tmp
+```
+
+To build as Flatpak run:
+```
+flatpak-builder --user --install flatpak/ data/dev.pantheum.janus.yml
 ```
 
 Janus depends on the following libraries for both building and running:

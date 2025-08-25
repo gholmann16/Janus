@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>dev.pantheum.Janus</id>
+  <id>dev.pantheum.janus</id>
   
   <name>Janus</name>
   <summary>Simple Linux notepad</summary>
@@ -20,6 +20,17 @@
   <screenshots>
     <screenshot type="default">
       <image>https://github.com/gholmann16/Janus/blob/main/data/screenshot.png</image>
+      <caption>Picture of a simple notepad application (janus) reading a c file with syntax highlighting displayed</caption>
     </screenshot>
   </screenshots>
+
+  <content_rating type="oars-1.1" />
+
+  <developer id="dev.pantheum">
+    <name>Gabriel Holmann</name>
+  </developer>
+
+  <releases>
+  <release version="0.9.6" date="2024-06-28"></release>
+  </releases>
 </component>
