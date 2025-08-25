@@ -85,10 +85,12 @@ int main(int argc, char * argv[]) {
     gtk_widget_show_all (window);
 
     // Open any files
-    if (argc > 1)
-        open_file(&document, g_file_new_for_commandline_arg(argv[1]), FALSE);
+    if (argc > 1) {
+        set_file(&document, g_file_new_for_commandline_arg(argv[1]));
+        open_file(&document, document.file);
+    }
     else if (!isatty(STDIN_FILENO)) // In case user tries to pipe text
-        open_file(&document, g_file_new_for_path("/dev/stdin"), TRUE);
+        open_file(&document, g_file_new_for_path("/dev/stdin"));
 
     gtk_main();
 

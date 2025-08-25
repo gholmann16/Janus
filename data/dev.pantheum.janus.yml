@@ -33,4 +33,4 @@ modules:
     sources:
       - type: git
         branch: "working"
-        path: ../
+        url: https://github.com/gholmann16/janus.git

@@ -2,28 +2,6 @@
 #include "global.h"
 #include "config.h"
 
-void set_title(struct Document * document) {
-    char * append = " - Janus";
-    GError * error = NULL;
-    GFileInfo * info = g_file_query_info(document->file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
-
-    if (error != NULL) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
-        g_error_free(error);
-        return;
-    }
-
-    const char * name = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
-
-    char * title = malloc(strlen(append) + strlen(name) + 1);
-    strcpy(title, name);
-    strcat(title, append);
-
-    gtk_window_set_title(GTK_WINDOW(document->window), title);
-    g_object_unref(info);
-    free(title);
-}
-
 void change_indicator(GtkWidget * self, struct Document * document) {
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
         const char * current = gtk_window_get_title(document->window);
@@ -53,7 +31,50 @@ void hide_info(GtkInfoBar * info) {
     gtk_widget_hide(GTK_WIDGET(info));
 }
 
-void open_file(struct Document * document, GFile * file, gboolean pipe) {
+void set_file(struct Document * document, GFile * file) {
+    g_object_unref(document->file);
+    document->file = file;
+    
+    char * append = " - Janus";
+    GError * error = NULL;
+    GFileInfo * info = g_file_query_info(file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
+
+    if (error != NULL) {
+        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
+        g_error_free(error);
+        return;
+    }
+
+    const char * name = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+
+    char * title = malloc(strlen(append) + strlen(name) + 1);
+    strcpy(title, name);
+    strcat(title, append);
+
+    gtk_window_set_title(GTK_WINDOW(document->window), title);
+    g_object_unref(info);
+    free(title);
+}
+
+int select_file(struct Document * document, GtkFileChooserAction action) {
+    static GtkFileChooserNative * dialog = NULL;
+
+    if (dialog == NULL) {
+        dialog = gtk_file_chooser_native_new((action == GTK_FILE_CHOOSER_ACTION_OPEN) ? _("Open File") : _("Save File"), 
+                 document->window, action, (action == GTK_FILE_CHOOSER_ACTION_OPEN) ? _("Open") : _("Save"), _("Cancel"));
+    }
+
+    int res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog));
+    if (res == GTK_RESPONSE_ACCEPT) {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        set_file(document, gtk_file_chooser_get_file(chooser));
+    }
+
+    g_object_unref(dialog);
+    return res;
+}
+
+void open_file(struct Document * document, GFile * file) {
 
     char * contents;
     gsize len;
@@ -63,19 +84,6 @@ void open_file(struct Document * document, GFile * file, gboolean pipe) {
         warning_popup(document, _("Could not open file."));
         g_error_free(error);
         return;
-    }
-
-    /*
-    Rather than checking here if it's stdin, it's passed in as an argument.
-    If user wishes to try to edit stdin by piping in info, then adding it
-    as an argument and therefore opening it, let them
-    */ 
-    if (pipe == FALSE) {
-        if (document->file)
-            g_object_unref(document->file);
-
-        document->file = file;
-        set_title(document);
     }
 
     static GtkInfoBar * info = NULL;
@@ -176,17 +184,8 @@ void open_file(struct Document * document, GFile * file, gboolean pipe) {
 }
 
 void open_command(GtkWidget * self, struct Document * document) {
-
-    GtkWidget * dialog = gtk_file_chooser_dialog_new(_("Open File"), document->window, GTK_FILE_CHOOSER_ACTION_OPEN, _("Cancel"), GTK_RESPONSE_CANCEL, _("Open"), GTK_RESPONSE_ACCEPT, NULL);
-
-    gint res = gtk_dialog_run(GTK_DIALOG(dialog));
-    if (res == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
-        GFile * file = gtk_file_chooser_get_file(chooser);
-        open_file(document, file, FALSE);
-    }
-
-    gtk_widget_destroy(dialog);
+    if(select_file(document, GTK_FILE_CHOOSER_ACTION_OPEN) == GTK_RESPONSE_ACCEPT)
+        open_file(document, document->file);
 }
 
 void new_command(void) {
@@ -260,22 +259,8 @@ void save(struct Document * document) {
 }
 
 void save_as_command(GtkWidget * self, struct Document * document) {
-
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    GtkWidget *dialog = gtk_file_chooser_dialog_new (_("Save File"), document->window, action, ("Cancel"), GTK_RESPONSE_CANCEL, ("Save"), GTK_RESPONSE_ACCEPT, NULL);
-
-    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
-    if (res == GTK_RESPONSE_ACCEPT)
-    {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        GFile * file = gtk_file_chooser_get_file(chooser);
-        free(document->file);
-        document->file = file;
+    if(select_file(document, GTK_FILE_CHOOSER_ACTION_SAVE) == GTK_RESPONSE_ACCEPT)
         save(document);
-        set_title(document);
-    }
-
-    gtk_widget_destroy (dialog);
 }
 
 void save_command(GtkWidget * self, struct Document * document) {
@@ -660,7 +645,7 @@ void about_command(GtkWidget * self, struct Document * document) {
     GtkAboutDialog * about = GTK_ABOUT_DIALOG(about_dialog);
 
     gtk_about_dialog_set_program_name(about, "Janus");
-    gtk_about_dialog_set_logo_icon_name(about, "janus");
+    gtk_about_dialog_set_logo_icon_name(about, "dev.pantheum.janus");
 
     const char * authors[] = {"Gabriel Holmann <gholmann16@gmail.com>", NULL};
     gtk_about_dialog_set_authors(about, authors);
