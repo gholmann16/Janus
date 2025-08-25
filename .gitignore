@@ -3,6 +3,8 @@ janus
 *.mo
 build
 deb
+flatpak
+.flatpak-builder
 AppDir
 *.AppImage
 *.zsync

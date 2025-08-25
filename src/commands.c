@@ -70,7 +70,7 @@ void open_file(struct Document * document, GFile * file, gboolean pipe) {
     If user wishes to try to edit stdin by piping in info, then adding it
     as an argument and therefore opening it, let them
     */ 
-    if (pipe == false) {
+    if (pipe == FALSE) {
         if (document->file)
             g_object_unref(document->file);
 
@@ -183,7 +183,7 @@ void open_command(GtkWidget * self, struct Document * document) {
     if (res == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
         GFile * file = gtk_file_chooser_get_file(chooser);
-        open_file(document, file, false);
+        open_file(document, file, FALSE);
     }
 
     gtk_widget_destroy(dialog);
