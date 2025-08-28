@@ -31,29 +31,46 @@ void hide_info(GtkInfoBar * info) {
     gtk_widget_hide(GTK_WIDGET(info));
 }
 
-void set_file(struct Document * document, GFile * file) {
-    g_object_unref(document->file);
-    document->file = file;
-    
-    char * append = " - Janus";
+void set_file(struct Document * document, GFile * file) {    
+    GFileInfo * info = NULL;
     GError * error = NULL;
-    GFileInfo * info = g_file_query_info(file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
 
-    if (error != NULL) {
-        g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
-        g_error_free(error);
-        return;
+    if (g_file_query_exists(file, NULL)) {
+        info = g_file_query_info(file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &error);
+
+        if (error != NULL) {
+            g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", error->message);
+            g_error_free(error);
+            return;
+        }
+
+        gtk_window_set_title(GTK_WINDOW(document->window), g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
+        g_object_unref(info);
+    }
+    else {
+        char * name = g_file_get_basename(file);
+
+        if (name == NULL) {
+            warning_popup(document, _("Could not open file."));
+            return;
+        }
+
+        gtk_window_set_title(document->window, name);
+        free(name);
     }
 
-    const char * name = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+    const char * old = gtk_window_get_title(document->window);
+    char * append = " - Janus";
+    char * title = malloc(strlen(append) + strlen(old) + 1);
 
-    char * title = malloc(strlen(append) + strlen(name) + 1);
-    strcpy(title, name);
+    strcpy(title, old);
     strcat(title, append);
-
-    gtk_window_set_title(GTK_WINDOW(document->window), title);
-    g_object_unref(info);
+    gtk_window_set_title(document->window, title);
     free(title);
+
+    if (document->file)
+        g_object_unref(document->file);
+    document->file = file;
 }
 
 int select_file(struct Document * document, GtkFileChooserAction action) {
@@ -75,6 +92,9 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
 }
 
 void open_file(struct Document * document, GFile * file) {
+
+    if (g_file_query_exists(file, NULL) == false)
+        return;
 
     char * contents;
     gsize len;
