@@ -87,7 +87,6 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
         set_file(document, gtk_file_chooser_get_file(chooser));
     }
 
-    g_object_unref(dialog);
     return res;
 }
 
@@ -421,6 +420,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
             return;
         case 2:
             save_command(GTK_WIDGET(self), document);
+            quit(document);
             break;
     }
 }
