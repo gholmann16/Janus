@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-01 22:34-0400\n"
+"POT-Creation-Date: 2025-09-02 15:42-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,82 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/commands.c:54 src/commands.c:103
-msgid "Could not open file."
-msgstr ""
-
-#: src/commands.c:80
-msgid "Open File"
-msgstr ""
-
-#: src/commands.c:80
-msgid "Save File"
-msgstr ""
-
-#: src/commands.c:81 src/menu.c:21
-msgid "Open"
-msgstr ""
-
-#: src/commands.c:81 src/menu.c:26
-msgid "Save"
-msgstr ""
-
-#: src/commands.c:81 src/commands.c:395 src/commands.c:467 src/search.c:80
-#: src/search.c:213
-msgid "Cancel"
-msgstr ""
-
-#: src/commands.c:132
-msgid ""
-"This file is not formatted properly, and will be edited using Janus' binary "
-"mode. For more information check out <a href=\"https://github.com/gholmann16/"
-"janus\">the wiki</a>."
-msgstr ""
-
-#: src/commands.c:253
-msgid ""
-"File contains non binary characters. Make sure all inserted characters are "
-"between U+0000 and U+00FF with exception U+2400."
-msgstr ""
-
-#: src/commands.c:314
-msgid "Something went wrong while printing."
-msgstr ""
-
-#: src/commands.c:395
-msgid "No"
-msgstr ""
-
-#: src/commands.c:395
-msgid "Yes"
-msgstr ""
-
-#: src/commands.c:399
-msgid "Would you like to save?"
-msgstr ""
-
-#: src/commands.c:467 src/menu.c:130
-msgid "Go to"
-msgstr ""
-
-#: src/commands.c:472
-msgid "Line number:"
-msgstr ""
-
-#: src/commands.c:634
-msgid "Fonts"
-msgstr ""
-
-#: src/commands.c:668
-msgid "Janus is a simple Linux notepad intended to be small and efficient."
-msgstr ""
-
 #: src/menu.c:10
 msgid "File"
 msgstr ""
 
 #: src/menu.c:16
 msgid "New"
+msgstr ""
+
+#: src/menu.c:21 src/file.c:81
+msgid "Open"
+msgstr ""
+
+#: src/menu.c:26 src/file.c:81
+msgid "Save"
 msgstr ""
 
 #: src/menu.c:31
@@ -159,6 +97,10 @@ msgstr ""
 msgid "Replace"
 msgstr ""
 
+#: src/menu.c:130 src/search.c:242
+msgid "Go to"
+msgstr ""
+
 #: src/menu.c:135
 msgid "Options"
 msgstr ""
@@ -187,6 +129,52 @@ msgstr ""
 msgid "About"
 msgstr ""
 
+#: src/file.c:54 src/file.c:103
+msgid "Could not open file."
+msgstr ""
+
+#: src/file.c:80
+msgid "Open File"
+msgstr ""
+
+#: src/file.c:80
+msgid "Save File"
+msgstr ""
+
+#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
+#: src/search.c:242
+msgid "Cancel"
+msgstr ""
+
+#: src/file.c:132
+msgid ""
+"This file is not formatted properly, and will be edited using Janus' binary "
+"mode. For more information check out <a href=\"https://github.com/gholmann16/"
+"janus\">the wiki</a>."
+msgstr ""
+
+#: src/file.c:253
+msgid ""
+"File contains non binary characters. Make sure all inserted characters are "
+"between U+0000 and U+00FF with exception U+2400."
+msgstr ""
+
+#: src/file.c:317
+msgid "Something went wrong while printing."
+msgstr ""
+
+#: src/file.c:398
+msgid "No"
+msgstr ""
+
+#: src/file.c:398
+msgid "Yes"
+msgstr ""
+
+#: src/file.c:402
+msgid "Would you like to save?"
+msgstr ""
+
 #: src/search.c:86 src/search.c:173
 msgid "Find text:"
 msgstr ""
@@ -201,4 +189,16 @@ msgstr ""
 
 #: src/search.c:212
 msgid "Replace all"
+msgstr ""
+
+#: src/search.c:247
+msgid "Line number:"
+msgstr ""
+
+#: src/options.c:138
+msgid "Fonts"
+msgstr ""
+
+#: src/about.c:16
+msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""

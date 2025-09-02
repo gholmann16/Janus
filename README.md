@@ -27,9 +27,9 @@ To build as a deb package run:
 ```
 meson build --buildtype release --prefix /usr
 ninja -C build
-DESTDIR=../janus-notepad_0.9.6-1 meson install -C build
-install -Dm644 data/control janus-notepad_0.9.6-1/DEBIAN/control
-dpkg-deb --root-owner-group -b janus-notepad_0.9.6-1
+DESTDIR=../janus-notepad_0.9.7-1 meson install -C build
+install -Dm644 data/control janus-notepad_0.9.7-1/DEBIAN/control
+dpkg-deb --root-owner-group -b janus-notepad_0.9.7-1
 ```
 
 To build as AppImage run:

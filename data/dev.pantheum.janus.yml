@@ -32,5 +32,4 @@ modules:
       - --buildtype=release
     sources:
       - type: git
-        branch: "working"
         url: https://github.com/gholmann16/janus.git

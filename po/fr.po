@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-01 22:34-0400\n"
+"POT-Creation-Date: 2025-09-02 15:42-0400\n"
 "PO-Revision-Date: 2024-07-27 15:29-0400\n"
 "Last-Translator: gholmann16@gmail.com\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -18,83 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: src/commands.c:54 src/commands.c:103
-msgid "Could not open file."
-msgstr "Impossible d'ouvrir le fichier."
-
-#: src/commands.c:80
-msgid "Open File"
-msgstr "Ouvrir fichier"
-
-#: src/commands.c:80
-msgid "Save File"
-msgstr "Enregistrer fichier"
-
-#: src/commands.c:81 src/menu.c:21
-msgid "Open"
-msgstr "Ouvrir"
-
-#: src/commands.c:81 src/menu.c:26
-msgid "Save"
-msgstr "Enregistrer"
-
-#: src/commands.c:81 src/commands.c:395 src/commands.c:467 src/search.c:80
-#: src/search.c:213
-msgid "Cancel"
-msgstr "Annuler"
-
-#: src/commands.c:132
-msgid ""
-"This file is not formatted properly, and will be edited using Janus' binary "
-"mode. For more information check out <a href=\"https://github.com/gholmann16/"
-"janus\">the wiki</a>."
-msgstr ""
-"Ce fichier n'est pas correctement formaté et sera modifié en utilisant le "
-"mode binaire de Janus. Pour plus d'informations, consultez <a href=\"https://"
-"github.com/gholmann16/janus\">le wiki</a>."
-
-#: src/commands.c:253
-msgid ""
-"File contains non binary characters. Make sure all inserted characters are "
-"between U+0000 and U+00FF with exception U+2400."
-msgstr ""
-"Le fichier contient des caractères non binaires. Assurez-vous que tous les "
-"caractères insérés se trouvent entre U+0000 et U+00FF, à l'exception de "
-"U+2400."
-
-#: src/commands.c:314
-msgid "Something went wrong while printing."
-msgstr "Une erreur est survenue lors de l'impression."
-
-#: src/commands.c:395
-msgid "No"
-msgstr "Non"
-
-#: src/commands.c:395
-msgid "Yes"
-msgstr "Oui"
-
-#: src/commands.c:399
-msgid "Would you like to save?"
-msgstr "Souhaitez-vous enregistrer?"
-
-#: src/commands.c:467 src/menu.c:130
-msgid "Go to"
-msgstr "Aller à"
-
-#: src/commands.c:472
-msgid "Line number:"
-msgstr "Numéro de ligne:"
-
-#: src/commands.c:634
-msgid "Fonts"
-msgstr "Polices de caractères"
-
-#: src/commands.c:668
-msgid "Janus is a simple Linux notepad intended to be small and efficient."
-msgstr ""
-"Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
-
 #: src/menu.c:10
 msgid "File"
 msgstr "Fichier"
@@ -102,6 +25,14 @@ msgstr "Fichier"
 #: src/menu.c:16
 msgid "New"
 msgstr "Nouveau"
+
+#: src/menu.c:21 src/file.c:81
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/menu.c:26 src/file.c:81
+msgid "Save"
+msgstr "Enregistrer"
 
 #: src/menu.c:31
 msgid "Save as"
@@ -167,6 +98,10 @@ msgstr "Rechercher précédent"
 msgid "Replace"
 msgstr "Remplacer"
 
+#: src/menu.c:130 src/search.c:242
+msgid "Go to"
+msgstr "Aller à"
+
 #: src/menu.c:135
 msgid "Options"
 msgstr "Options"
@@ -195,6 +130,58 @@ msgstr "Aider"
 msgid "About"
 msgstr "À propos"
 
+#: src/file.c:54 src/file.c:103
+msgid "Could not open file."
+msgstr "Impossible d'ouvrir le fichier."
+
+#: src/file.c:80
+msgid "Open File"
+msgstr "Ouvrir fichier"
+
+#: src/file.c:80
+msgid "Save File"
+msgstr "Enregistrer fichier"
+
+#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
+#: src/search.c:242
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/file.c:132
+msgid ""
+"This file is not formatted properly, and will be edited using Janus' binary "
+"mode. For more information check out <a href=\"https://github.com/gholmann16/"
+"janus\">the wiki</a>."
+msgstr ""
+"Ce fichier n'est pas correctement formaté et sera modifié en utilisant le "
+"mode binaire de Janus. Pour plus d'informations, consultez <a href=\"https://"
+"github.com/gholmann16/janus\">le wiki</a>."
+
+#: src/file.c:253
+msgid ""
+"File contains non binary characters. Make sure all inserted characters are "
+"between U+0000 and U+00FF with exception U+2400."
+msgstr ""
+"Le fichier contient des caractères non binaires. Assurez-vous que tous les "
+"caractères insérés se trouvent entre U+0000 et U+00FF, à l'exception de "
+"U+2400."
+
+#: src/file.c:317
+msgid "Something went wrong while printing."
+msgstr "Une erreur est survenue lors de l'impression."
+
+#: src/file.c:398
+msgid "No"
+msgstr "Non"
+
+#: src/file.c:398
+msgid "Yes"
+msgstr "Oui"
+
+#: src/file.c:402
+msgid "Would you like to save?"
+msgstr "Souhaitez-vous enregistrer?"
+
 #: src/search.c:86 src/search.c:173
 msgid "Find text:"
 msgstr "Rechercher le texte:"
@@ -210,6 +197,19 @@ msgstr "Remplacer le texte"
 #: src/search.c:212
 msgid "Replace all"
 msgstr "Remplacer tout"
+
+#: src/search.c:247
+msgid "Line number:"
+msgstr "Numéro de ligne:"
+
+#: src/options.c:138
+msgid "Fonts"
+msgstr "Polices de caractères"
+
+#: src/about.c:16
+msgid "Janus is a simple Linux notepad intended to be small and efficient."
+msgstr ""
+"Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
 
 #~ msgid "Failed to preview page."
 #~ msgstr "Échec de l'aperçu de page."
