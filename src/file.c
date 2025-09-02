@@ -278,8 +278,11 @@ void save(struct Document * document) {
 }
 
 void save_as_command(GtkWidget * self, struct Document * document) {
-    if(select_file(document, GTK_FILE_CHOOSER_ACTION_SAVE) == GTK_RESPONSE_ACCEPT)
+    if(select_file(document, GTK_FILE_CHOOSER_ACTION_SAVE) == GTK_RESPONSE_ACCEPT) {
+        g_signal_handlers_block_by_func(document->buffer, change_indicator, document);
         save(document);
+        g_signal_handlers_unblock_by_func(document->buffer, change_indicator, document);
+    }
 }
 
 void save_command(GtkWidget * self, struct Document * document) {
