@@ -2,8 +2,9 @@
 Type=Application
 Name=Janus
 Comment=Simple Linux notepad
-Comment[fr]=Bloc-notes Linux simple
 Comment[es]=Bloc de notas Linux sencillo
+Comment[fr]=Bloc-notes Linux simple
+Comment[tr]=Basit Linux not defteri
 Exec=janus %f
 Icon=dev.pantheum.janus
 Terminal=false

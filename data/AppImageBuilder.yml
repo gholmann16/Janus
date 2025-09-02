@@ -37,7 +37,7 @@ AppDir:
   runtime:
     env:
       # Required to always read usr share, because if unset apprun ignores it completely
-      XDG_DATA_DIRS: $APPDIR/usr/share:$XDG_DATA_DIRS:/usr/share:/usr/local/share
+      XDG_DATA_DIRS: $APPDIR/usr/share:$XDG_DATA_DIRS:/usr/local/share:/usr/share
 AppImage:
   arch: x86_64
   update-information: gh-releases-zsync|gholmann16|janus|latest|Janus-*x86_64.AppImage.zsync
