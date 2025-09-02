@@ -92,7 +92,7 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
 
 void open_file(struct Document * document, GFile * file) {
 
-    if (g_file_query_exists(file, NULL) == false)
+    if (g_file_query_exists(file, NULL) == FALSE)
         return;
 
     char * contents;
@@ -556,6 +556,7 @@ void set_font(struct Document * document) {
                 strcat(css, "normal");
                 break;
             default:
+                ; // Required for older c compilers
                 char newweight[4] = "000";
                 newweight[0] = pango_font_description_get_weight(description)/100 + 0x30;
                 strcat(css, newweight);
