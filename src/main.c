@@ -6,13 +6,15 @@
 #include <locale.h>
 #include "config.h"
 
+GtkWindow * window;
+
 int main(int argc, char * argv[]) {
 
     gtk_init(NULL, NULL);
     gtk_source_init();
 
-    GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Janus");
+    window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+    gtk_window_set_title(window, "Janus");
 
     // Create main text buffer
     GtkWidget * text = gtk_source_view_new();
@@ -24,7 +26,6 @@ int main(int argc, char * argv[]) {
     struct Document document = {
         .buffer = buffer,
         .view = text,
-        .window = GTK_WINDOW(window),
         .last = gtk_source_region_new(buffer),
     };
 
@@ -43,7 +44,7 @@ int main(int argc, char * argv[]) {
     bind_textdomain_codeset("janus", "utf-8");
     textdomain("janus");
 
-    gtk_window_set_icon_name(GTK_WINDOW(window), "dev.pantheum.janus");
+    gtk_window_set_icon_name(window, "dev.pantheum.janus");
 
     strcpy(path, (strlen(g_get_user_config_dir()) < PATH_MAX - strlen(CONFIG_FILE)) ? g_get_user_config_dir() : "~/.config");
     strcat(path, CONFIG_FILE);
@@ -59,14 +60,14 @@ int main(int argc, char * argv[]) {
 
     int height = g_key_file_get_integer(config, GROUP_KEY, "height", NULL);
     int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
-    gtk_window_set_default_size(GTK_WINDOW(window), width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
+    gtk_window_set_default_size(window, width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
 
     document.font = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
     set_font(&document);
 
     // Menu setup
     GtkAccelGroup * accel = gtk_accel_group_new();
-    gtk_window_add_accel_group(GTK_WINDOW(window), accel);
+    gtk_window_add_accel_group(window, accel);
     GtkWidget * bar = gtk_menu_bar_new();
     init_menu(bar, accel, &document, config);
 
@@ -82,7 +83,7 @@ int main(int argc, char * argv[]) {
 
     // Pack up app and run
     gtk_container_add(GTK_CONTAINER(window), box);
-    gtk_widget_show_all (window);
+    gtk_widget_show_all(GTK_WIDGET(window));
 
     // Open any files
     if (argc > 1) {

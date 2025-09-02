@@ -4,24 +4,24 @@
 
 void change_indicator(GtkWidget * self, struct Document * document) {
     if (gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(self))) {
-        const char * current = gtk_window_get_title(document->window);
+        const char * current = gtk_window_get_title(window);
         char * prepend = "* ";
         char * title = malloc(strlen(current) + strlen(prepend) + 1);
         strcpy(title, prepend);
         strcat(title, current);
-        gtk_window_set_title(document->window, title);
+        gtk_window_set_title(window, title);
         free(title);
     }
     else {
-        const char * current = gtk_window_get_title(document->window);
-        gtk_window_set_title(document->window, current + 2);
+        const char * current = gtk_window_get_title(window);
+        gtk_window_set_title(window, current + 2);
     }
 }
 
-void warning_popup(struct Document * document, char * text) {
+void warning_popup(char * text) {
     g_log(G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "%s", text);
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget * dialog = gtk_message_dialog_new(document->window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
+    GtkWidget * dialog = gtk_message_dialog_new(window, flags, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, text, NULL);
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 }
@@ -44,28 +44,28 @@ void set_file(struct Document * document, GFile * file) {
             return;
         }
 
-        gtk_window_set_title(GTK_WINDOW(document->window), g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
+        gtk_window_set_title(window, g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
         g_object_unref(info);
     }
     else {
         char * name = g_file_get_basename(file);
 
         if (name == NULL) {
-            warning_popup(document, _("Could not open file."));
+            warning_popup(_("Could not open file."));
             return;
         }
 
-        gtk_window_set_title(document->window, name);
+        gtk_window_set_title(window, name);
         free(name);
     }
 
-    const char * old = gtk_window_get_title(document->window);
+    const char * old = gtk_window_get_title(window);
     char * append = " - Janus";
     char * title = malloc(strlen(append) + strlen(old) + 1);
 
     strcpy(title, old);
     strcat(title, append);
-    gtk_window_set_title(document->window, title);
+    gtk_window_set_title(window, title);
     free(title);
 
     if (document->file)
@@ -78,7 +78,7 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
 
     if (dialog == NULL) {
         dialog = gtk_file_chooser_native_new((action == GTK_FILE_CHOOSER_ACTION_OPEN) ? _("Open File") : _("Save File"), 
-                 document->window, action, (action == GTK_FILE_CHOOSER_ACTION_OPEN) ? _("Open") : _("Save"), _("Cancel"));
+                 window, action, (action == GTK_FILE_CHOOSER_ACTION_OPEN) ? _("Open") : _("Save"), _("Cancel"));
     }
 
     int res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog));
@@ -100,7 +100,7 @@ void open_file(struct Document * document, GFile * file) {
     GError * error = NULL;
     g_file_load_contents(file, NULL, &contents, &len, NULL, &error);
     if (error) {
-        warning_popup(document, _("Could not open file."));
+        warning_popup(_("Could not open file."));
         g_error_free(error);
         return;
     }
@@ -250,7 +250,7 @@ void save(struct Document * document) {
                             break;
                         }
                     default:
-                        warning_popup(document, _("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with exception U+2400."));
+                        warning_popup(_("File contains non binary characters. Make sure all inserted characters are between U+0000 and U+00FF with exception U+2400."));
                         free(text);
                         return;
                 }
@@ -268,7 +268,7 @@ void save(struct Document * document) {
     GError * error = NULL;
     g_file_replace_contents(document->file, (char *)text, len, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
     if (error) {
-        warning_popup(document, error->message);
+        warning_popup(error->message);
         g_error_free(error);
         return;
     }
@@ -301,66 +301,58 @@ void draw_page (GtkPrintOperation* self, GtkPrintContext* context, gint page_nr,
 }
 
 static gboolean paginate (GtkPrintOperation *operation, GtkPrintContext *context, GtkSourcePrintCompositor *compositor) {
-    if (gtk_source_print_compositor_paginate(compositor, context))
-    {
+    if (gtk_source_print_compositor_paginate(compositor, context)) {
         gtk_print_operation_set_n_pages(operation, gtk_source_print_compositor_get_n_pages (compositor));
         return TRUE;
     }
     return FALSE;
 }
 
-void print_command(GtkWidget * self, struct Document * document) {
-    static GtkPrintSettings * settings = NULL;
-    GtkPrintOperation * print = gtk_print_operation_new();
-    GtkSourcePrintCompositor * compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
-
-    if (settings != NULL)
-        gtk_print_operation_set_print_settings (print, settings);
-
-    g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
-    g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
-
-    GError * error = NULL;
-    switch (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, GTK_WINDOW (document->window), NULL)) {
+void done(GtkPrintOperation * self, GtkPrintOperationResult result, GtkPrintSettings **settings) {
+    switch (result) {
         case GTK_PRINT_OPERATION_RESULT_ERROR:
-            warning_popup(document, error->message);
-            g_error_free(error);
+            warning_popup(_("Something went wrong while printing."));
             break;
         case GTK_PRINT_OPERATION_RESULT_APPLY:
-            if (settings != NULL)
-                g_object_unref(settings);
-            settings = g_object_ref(gtk_print_operation_get_print_settings(print));
+            if (*settings != NULL)
+                g_object_unref(*settings);
+            *settings = g_object_ref(gtk_print_operation_get_print_settings(self));
             break;
         case GTK_PRINT_OPERATION_RESULT_CANCEL:
             break;
         case GTK_PRINT_OPERATION_RESULT_IN_PROGRESS:
-            warning_popup(document, _("Something went wrong while printing."));
             break;
-    }        
+    }
 
-    g_object_unref(print);
-    g_object_unref(compositor);
+    g_object_unref(self);
 }
 
-void print_preview_command(GtkWidget * self, struct Document * document) {
+void print_command(GtkWidget * self, struct Document * document) {
+    static GtkPrintSettings * settings = NULL;
+    static GtkSourcePrintCompositor * compositor = NULL;
+
     GtkPrintOperation * print = gtk_print_operation_new();
-    GtkSourcePrintCompositor * compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
+    gtk_print_operation_set_allow_async(print, TRUE);
+
+    if (compositor == NULL)
+        compositor = gtk_source_print_compositor_new(GTK_SOURCE_BUFFER(document->buffer));
     
-    g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), compositor);
-    g_signal_connect (print, "paginate", G_CALLBACK (paginate), compositor);
+    if (settings != NULL)
+        gtk_print_operation_set_print_settings (print, settings);
 
-    if (gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PREVIEW, GTK_WINDOW (document->window), NULL) == GTK_PRINT_OPERATION_RESULT_ERROR)
-        warning_popup(document, _("Failed to preview page."));
+    gtk_source_print_compositor_set_print_line_numbers(compositor, gtk_source_view_get_show_line_numbers(GTK_SOURCE_VIEW(document->view)));
+    g_signal_connect(print, "draw-page", G_CALLBACK (draw_page), compositor);
+    g_signal_connect(print, "paginate", G_CALLBACK (paginate), compositor);
+    g_signal_connect(print, "done", G_CALLBACK(done), &settings);
 
-    g_object_unref(print);
-    g_object_unref(compositor);
+    gtk_print_operation_run(print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, window, NULL);
 }
 
 void quit(struct Document * document) {
     GKeyFile * config = g_key_file_new();
 
     int width, height;
-    gtk_window_get_size(document->window, &width, &height);
+    gtk_window_get_size(window, &width, &height);
     g_key_file_set_integer(config, GROUP_KEY, "width", width);
     g_key_file_set_integer(config, GROUP_KEY, "height", height);
 
@@ -400,7 +392,7 @@ void exit_command(GtkWidget * self, struct Document * document) {
         return;
     }
 
-    GtkWidget * close = gtk_dialog_new_with_buttons("Janus", document->window, GTK_DIALOG_MODAL, _("No"), 0, _("Cancel"), 1, _("Yes"), 2, NULL);
+    GtkWidget * close = gtk_dialog_new_with_buttons("Janus", window, GTK_DIALOG_MODAL, _("No"), 0, _("Cancel"), 1, _("Yes"), 2, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(close));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
@@ -472,7 +464,7 @@ void close_go_to(GtkEntry * self, GtkDialog * dialog) {
 }
 
 void go_to_command(GtkWidget * self, struct Document * document) {
-    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Go to"), window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Go to"), 0, _("Cancel"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
@@ -639,7 +631,7 @@ void font_selected(GtkDialog * dialog, int response_id, struct Document * docume
 }
 
 void font_command(GtkWidget * self, struct Document * document) {
-    GtkWidget * dialog = gtk_font_chooser_dialog_new(_("Fonts"), document->window);
+    GtkWidget * dialog = gtk_font_chooser_dialog_new(_("Fonts"), window);
     g_signal_connect(dialog, "response", G_CALLBACK(font_selected), document);
 
     if (document->font)

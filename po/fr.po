@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-30 16:55-0500\n"
+"POT-Creation-Date: 2025-09-01 22:34-0400\n"
 "PO-Revision-Date: 2024-07-27 15:29-0400\n"
 "Last-Translator: gholmann16@gmail.com\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -18,11 +18,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: src/commands.c:63
+#: src/commands.c:54 src/commands.c:103
 msgid "Could not open file."
 msgstr "Impossible d'ouvrir le fichier."
 
-#: src/commands.c:96
+#: src/commands.c:80
+msgid "Open File"
+msgstr "Ouvrir fichier"
+
+#: src/commands.c:80
+msgid "Save File"
+msgstr "Enregistrer fichier"
+
+#: src/commands.c:81 src/menu.c:21
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/commands.c:81 src/menu.c:26
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/commands.c:81 src/commands.c:395 src/commands.c:467 src/search.c:80
+#: src/search.c:213
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/commands.c:132
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
@@ -32,20 +53,7 @@ msgstr ""
 "mode binaire de Janus. Pour plus d'informations, consultez <a href=\"https://"
 "github.com/gholmann16/janus\">le wiki</a>."
 
-#: src/commands.c:171
-msgid "Open File"
-msgstr "Ouvrir fichier"
-
-#: src/commands.c:171 src/commands.c:390 src/commands.c:461 src/search.c:80
-#: src/search.c:213
-msgid "Cancel"
-msgstr "Annuler"
-
-#: src/commands.c:171 src/menu.c:21
-msgid "Open"
-msgstr "Ouvrir"
-
-#: src/commands.c:226
+#: src/commands.c:253
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -54,43 +62,35 @@ msgstr ""
 "caractères insérés se trouvent entre U+0000 et U+00FF, à l'exception de "
 "U+2400."
 
-#: src/commands.c:256
-msgid "Save File"
-msgstr "Enregistrer fichier"
-
-#: src/commands.c:325
+#: src/commands.c:314
 msgid "Something went wrong while printing."
 msgstr "Une erreur est survenue lors de l'impression."
 
-#: src/commands.c:341
-msgid "Failed to preview page."
-msgstr "Échec de l'aperçu de page."
-
-#: src/commands.c:390
+#: src/commands.c:395
 msgid "No"
 msgstr "Non"
 
-#: src/commands.c:390
+#: src/commands.c:395
 msgid "Yes"
 msgstr "Oui"
 
-#: src/commands.c:394
+#: src/commands.c:399
 msgid "Would you like to save?"
 msgstr "Souhaitez-vous enregistrer?"
 
-#: src/commands.c:461 src/menu.c:135
+#: src/commands.c:467 src/menu.c:130
 msgid "Go to"
 msgstr "Aller à"
 
-#: src/commands.c:466
+#: src/commands.c:472
 msgid "Line number:"
 msgstr "Numéro de ligne:"
 
-#: src/commands.c:625
+#: src/commands.c:634
 msgid "Fonts"
 msgstr "Polices de caractères"
 
-#: src/commands.c:658
+#: src/commands.c:668
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 "Janus est un bloc-notes Linux simple conçu pour être petit et efficace."
@@ -103,10 +103,6 @@ msgstr "Fichier"
 msgid "New"
 msgstr "Nouveau"
 
-#: src/menu.c:26
-msgid "Save"
-msgstr "Enregistrer"
-
 #: src/menu.c:31
 msgid "Save as"
 msgstr "Enregistrer sous"
@@ -115,91 +111,87 @@ msgstr "Enregistrer sous"
 msgid "Print"
 msgstr "Imprimer"
 
-#: src/menu.c:44
-msgid "Print Preview"
-msgstr "Aperçu avant impression"
-
-#: src/menu.c:52
+#: src/menu.c:47
 msgid "Exit"
 msgstr "Quitter"
 
-#: src/menu.c:59
+#: src/menu.c:54
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/menu.c:65
+#: src/menu.c:60
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/menu.c:70
+#: src/menu.c:65
 msgid "Redo"
 msgstr "Refaire"
 
-#: src/menu.c:78
+#: src/menu.c:73
 msgid "Cut"
 msgstr "Couper"
 
-#: src/menu.c:83
+#: src/menu.c:78
 msgid "Copy"
 msgstr "Copie"
 
-#: src/menu.c:88
+#: src/menu.c:83
 msgid "Paste"
 msgstr "Coller"
 
-#: src/menu.c:93
+#: src/menu.c:88
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/menu.c:101
+#: src/menu.c:96
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: src/menu.c:106
+#: src/menu.c:101
 msgid "Search"
 msgstr "Rechercher"
 
-#: src/menu.c:112 src/search.c:80 src/search.c:176
+#: src/menu.c:107 src/search.c:80 src/search.c:176
 msgid "Find"
 msgstr "Trouver"
 
-#: src/menu.c:117
+#: src/menu.c:112
 msgid "Find next"
 msgstr "Rechercher suivant"
 
-#: src/menu.c:122
+#: src/menu.c:117
 msgid "Find previous"
 msgstr "Rechercher précédent"
 
-#: src/menu.c:127 src/search.c:167 src/search.c:182
+#: src/menu.c:122 src/search.c:167 src/search.c:182
 msgid "Replace"
 msgstr "Remplacer"
 
-#: src/menu.c:140
+#: src/menu.c:135
 msgid "Options"
 msgstr "Options"
 
-#: src/menu.c:146
+#: src/menu.c:141
 msgid "Font"
 msgstr "Police de caractères"
 
-#: src/menu.c:150
+#: src/menu.c:145
 msgid "Wrap line"
 msgstr "Renvoi à la ligne"
 
-#: src/menu.c:159
+#: src/menu.c:154
 msgid "Line numbers"
 msgstr "Numéros de ligne"
 
-#: src/menu.c:165
+#: src/menu.c:160
 msgid "Syntax highlighting"
 msgstr "Surligner syntaxe"
 
-#: src/menu.c:171
+#: src/menu.c:166
 msgid "Help"
 msgstr "Aider"
 
-#: src/menu.c:177
+#: src/menu.c:172
 msgid "About"
 msgstr "À propos"
 
@@ -218,3 +210,9 @@ msgstr "Remplacer le texte"
 #: src/search.c:212
 msgid "Replace all"
 msgstr "Remplacer tout"
+
+#~ msgid "Failed to preview page."
+#~ msgstr "Échec de l'aperçu de page."
+
+#~ msgid "Print Preview"
+#~ msgstr "Aperçu avant impression"

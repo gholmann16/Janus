@@ -41,11 +41,6 @@ void init_menu(GtkWidget * bar, GtkAccelGroup * accel, struct Document * documen
     g_signal_connect(print, "activate", G_CALLBACK(print_command), document);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), print);
 
-    GtkWidget * preview = gtk_menu_item_new_with_label(_("Print Preview"));
-    gtk_widget_add_accelerator(preview, "activate", accel, GDK_KEY_P, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
-    g_signal_connect(preview, "activate", G_CALLBACK(print_preview_command), document);
-    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), preview);
-
     GtkWidget * seperate1 = gtk_separator_menu_item_new();
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), seperate1);
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-30 16:55-0500\n"
+"POT-Creation-Date: 2025-09-01 22:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,73 +17,73 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/commands.c:63
+#: src/commands.c:54 src/commands.c:103
 msgid "Could not open file."
 msgstr ""
 
-#: src/commands.c:96
+#: src/commands.c:80
+msgid "Open File"
+msgstr ""
+
+#: src/commands.c:80
+msgid "Save File"
+msgstr ""
+
+#: src/commands.c:81 src/menu.c:21
+msgid "Open"
+msgstr ""
+
+#: src/commands.c:81 src/menu.c:26
+msgid "Save"
+msgstr ""
+
+#: src/commands.c:81 src/commands.c:395 src/commands.c:467 src/search.c:80
+#: src/search.c:213
+msgid "Cancel"
+msgstr ""
+
+#: src/commands.c:132
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
 "janus\">the wiki</a>."
 msgstr ""
 
-#: src/commands.c:171
-msgid "Open File"
-msgstr ""
-
-#: src/commands.c:171 src/commands.c:390 src/commands.c:461 src/search.c:80
-#: src/search.c:213
-msgid "Cancel"
-msgstr ""
-
-#: src/commands.c:171 src/menu.c:21
-msgid "Open"
-msgstr ""
-
-#: src/commands.c:226
+#: src/commands.c:253
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
 msgstr ""
 
-#: src/commands.c:256
-msgid "Save File"
-msgstr ""
-
-#: src/commands.c:325
+#: src/commands.c:314
 msgid "Something went wrong while printing."
 msgstr ""
 
-#: src/commands.c:341
-msgid "Failed to preview page."
-msgstr ""
-
-#: src/commands.c:390
+#: src/commands.c:395
 msgid "No"
 msgstr ""
 
-#: src/commands.c:390
+#: src/commands.c:395
 msgid "Yes"
 msgstr ""
 
-#: src/commands.c:394
+#: src/commands.c:399
 msgid "Would you like to save?"
 msgstr ""
 
-#: src/commands.c:461 src/menu.c:135
+#: src/commands.c:467 src/menu.c:130
 msgid "Go to"
 msgstr ""
 
-#: src/commands.c:466
+#: src/commands.c:472
 msgid "Line number:"
 msgstr ""
 
-#: src/commands.c:625
+#: src/commands.c:634
 msgid "Fonts"
 msgstr ""
 
-#: src/commands.c:658
+#: src/commands.c:668
 msgid "Janus is a simple Linux notepad intended to be small and efficient."
 msgstr ""
 
@@ -95,10 +95,6 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: src/menu.c:26
-msgid "Save"
-msgstr ""
-
 #: src/menu.c:31
 msgid "Save as"
 msgstr ""
@@ -107,91 +103,87 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: src/menu.c:44
-msgid "Print Preview"
-msgstr ""
-
-#: src/menu.c:52
+#: src/menu.c:47
 msgid "Exit"
 msgstr ""
 
-#: src/menu.c:59
+#: src/menu.c:54
 msgid "Edit"
 msgstr ""
 
-#: src/menu.c:65
+#: src/menu.c:60
 msgid "Undo"
 msgstr ""
 
-#: src/menu.c:70
+#: src/menu.c:65
 msgid "Redo"
 msgstr ""
 
-#: src/menu.c:78
+#: src/menu.c:73
 msgid "Cut"
 msgstr ""
 
-#: src/menu.c:83
+#: src/menu.c:78
 msgid "Copy"
 msgstr ""
 
-#: src/menu.c:88
+#: src/menu.c:83
 msgid "Paste"
 msgstr ""
 
-#: src/menu.c:93
+#: src/menu.c:88
 msgid "Delete"
 msgstr ""
 
-#: src/menu.c:101
+#: src/menu.c:96
 msgid "Select all"
 msgstr ""
 
-#: src/menu.c:106
+#: src/menu.c:101
 msgid "Search"
 msgstr ""
 
-#: src/menu.c:112 src/search.c:80 src/search.c:176
+#: src/menu.c:107 src/search.c:80 src/search.c:176
 msgid "Find"
 msgstr ""
 
-#: src/menu.c:117
+#: src/menu.c:112
 msgid "Find next"
 msgstr ""
 
-#: src/menu.c:122
+#: src/menu.c:117
 msgid "Find previous"
 msgstr ""
 
-#: src/menu.c:127 src/search.c:167 src/search.c:182
+#: src/menu.c:122 src/search.c:167 src/search.c:182
 msgid "Replace"
 msgstr ""
 
-#: src/menu.c:140
+#: src/menu.c:135
 msgid "Options"
 msgstr ""
 
-#: src/menu.c:146
+#: src/menu.c:141
 msgid "Font"
 msgstr ""
 
-#: src/menu.c:150
+#: src/menu.c:145
 msgid "Wrap line"
 msgstr ""
 
-#: src/menu.c:159
+#: src/menu.c:154
 msgid "Line numbers"
 msgstr ""
 
-#: src/menu.c:165
+#: src/menu.c:160
 msgid "Syntax highlighting"
 msgstr ""
 
-#: src/menu.c:171
+#: src/menu.c:166
 msgid "Help"
 msgstr ""
 
-#: src/menu.c:177
+#: src/menu.c:172
 msgid "About"
 msgstr ""
 

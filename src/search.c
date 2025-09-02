@@ -77,7 +77,7 @@ void search_command(GtkWidget * self, struct Document * document) {
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
-    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Find"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, _("Find"), 1, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Find"), window, GTK_DIALOG_DESTROY_WITH_PARENT, _("Cancel"), 0, _("Find"), 1, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
@@ -164,7 +164,7 @@ void replace_command(GtkWidget * self, struct Document * document) {
 
     GtkSourceSearchSettings * settings = gtk_source_search_context_get_settings(document->context);
 
-    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), document->window, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons(_("Replace"), window, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL);
     GtkWidget * content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_set_spacing(GTK_BOX(content), 10);
     gtk_container_set_border_width(GTK_CONTAINER(content), 10);
