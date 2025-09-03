@@ -32,7 +32,7 @@ install -Dm644 data/control janus-notepad_0.9.7-1/DEBIAN/control
 dpkg-deb --root-owner-group -b janus-notepad_0.9.7-1
 ```
 
-To build as AppImage run:
+To build as AppImage run: (Requires most recent commit version of appimage-builder for zstd)
 ```
 meson build --buildtype release --prefix /usr
 ninja -C build
@@ -53,7 +53,8 @@ Janus depends on the following libraries for both building and running:
 
 - [Arch Linux](https://aur.archlinux.org/packages/janus)
 - [Debian](https://github.com/gholmann16/Janus/releases/latest)
-- [AppImage](https://github.com/gholmann16/Janus/releases/latest)
+- [AppImage](https://https://appimage.github.io/janus)
+- [Flatpak](https://flathub.org/apps/dev.pantheum.janus)
 
 ## Screenshot
 ![Picture of app](data/screenshot.png)

@@ -42,3 +42,4 @@ AppImage:
   arch: x86_64
   update-information: gh-releases-zsync|gholmann16|janus|latest|Janus-*x86_64.AppImage.zsync
   sign-key: None
+  comp: zstd
