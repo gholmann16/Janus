@@ -1,6 +1,6 @@
 id: dev.pantheum.janus
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 command: janus
 
@@ -33,4 +33,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/gholmann16/janus.git
-        branch: main
+        tag: v0.9.7

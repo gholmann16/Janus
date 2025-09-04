@@ -19,7 +19,7 @@
   <launchable type="desktop-id">dev.pantheum.janus.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/gholmann16/Janus/blob/main/data/screenshot.png</image>
+      <image>https://raw.githubusercontent.com/gholmann16/Janus/main/data/screenshot.png</image>
       <caption>Picture of a simple notepad application (janus) reading a c file with syntax highlighting displayed</caption>
     </screenshot>
   </screenshots>
