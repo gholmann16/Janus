@@ -28,12 +28,7 @@ void delete_command(GtkWidget * self, struct Document * document) {
 }
 
 void select_all_command(GtkWidget * self, struct Document * document) {
-
-    GtkTextIter start;
-    GtkTextIter end;
-
-    gtk_text_buffer_get_start_iter(document->buffer, &start);
-    gtk_text_buffer_get_end_iter(document->buffer, &end);
-
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(document->buffer, &start, &end);
     gtk_text_buffer_select_range(document->buffer, &start, &end);
 }

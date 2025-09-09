@@ -90,6 +90,20 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
     return res;
 }
 
+void syntax_update(struct Document * document, char * contents) {
+    char * path = g_file_get_path(document->file);
+    char * content_type = g_content_type_guess(path, (const unsigned char *)contents, strlen(contents), NULL);
+
+    GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
+    GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
+    gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
+
+    g_free(content_type);
+    g_free(path);
+
+    gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
+}
+
 void open_file(struct Document * document, GFile * file) {
 
     if (g_file_query_exists(file, NULL) == FALSE)
@@ -181,18 +195,7 @@ void open_file(struct Document * document, GFile * file) {
             gtk_info_bar_set_revealed(info, FALSE);
         document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
-
-        char * path = g_file_get_path(file);
-        char * content_type = g_content_type_guess(path, (const guchar *)contents, strlen(contents), NULL);
-
-        GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
-        GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
-        gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
-
-        g_free(content_type);
-        g_free(path);
-
-        gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer), gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));
+        syntax_update(document, contents);
     }
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
@@ -270,11 +273,15 @@ void save(struct Document * document) {
     if (error) {
         warning_popup(error->message);
         g_error_free(error);
+        free(text);
         return;
     }
 
-    gtk_text_buffer_set_modified(document->buffer, FALSE);
+    if (document->binary == FALSE)
+        syntax_update(document, (char *)text);
 
+    gtk_text_buffer_set_modified(document->buffer, FALSE);
+    free(text);
 }
 
 void save_as_command(GtkWidget * self, struct Document * document) {
