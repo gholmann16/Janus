@@ -3,14 +3,14 @@
   <id>dev.pantheum.janus</id>
   
   <name>Janus</name>
-  <summary>Simple Linux notepad</summary>
-  
+  <summary>Simple text editor</summary>
+
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>LGPL-3.0-or-later</project_license>
-  
+  <project_license>GPL-3.0-only</project_license>
+
   <description>
     <p>
-      Simple native Linux notepad meant for text editing. Supports UTF-8 and binary data.
+      Janus is a simple, native linux text editor. Supports UTF-8 and binary data through it's binary editing mode. Spiritual successor to leafpad.
     </p>
   </description>
 

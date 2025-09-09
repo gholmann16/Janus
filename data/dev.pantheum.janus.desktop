@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
 Name=Janus
-Comment=Simple Linux notepad
-Comment[es]=Bloc de notas Linux sencillo
-Comment[fr]=Bloc-notes Linux simple
-Comment[tr]=Basit Linux not defteri
+Comment=Simple text editor
+Comment[es]=Editor de texto simple
+Comment[fr]=Éditeur de texte simple
+Comment[tr]=Basit metin düzenleyici
 Exec=janus %f
 Icon=dev.pantheum.janus
 Terminal=false

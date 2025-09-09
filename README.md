@@ -1,5 +1,5 @@
 # Janus
-Simple native linux notepad meant for text editing. Supports UTF-8 and binary data. 
+Janus is a simple, native linux text editor. Supports UTF-8 and binary data through it's binary editing mode. Spiritual successor to leafpad.
 
 ## Features
 - Undo/redo
@@ -8,6 +8,7 @@ Simple native linux notepad meant for text editing. Supports UTF-8 and binary da
 - Printing capabilities
 - Optional syntax highlighting
 - Binary editing
+- GVFS connectivity
 
 ## Building
 
