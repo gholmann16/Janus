@@ -90,12 +90,12 @@ int select_file(struct Document * document, GtkFileChooserAction action) {
     return res;
 }
 
-void syntax_update(struct Document * document, char * contents) {
-    char * path = g_file_get_path(document->file);
+void syntax_update(struct Document * document, GFile * file, char * contents) {
+    char * path = g_file_get_path(file);
     char * content_type = g_content_type_guess(path, (const unsigned char *)contents, strlen(contents), NULL);
 
     GtkSourceLanguageManager * manager = gtk_source_language_manager_get_default();
-    GtkSourceLanguage * language = gtk_source_language_manager_guess_language (manager, NULL, content_type);
+    GtkSourceLanguage * language = gtk_source_language_manager_guess_language(manager, path, content_type);
     gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(document->buffer), language);
 
     g_free(content_type);
@@ -195,7 +195,7 @@ void open_file(struct Document * document, GFile * file) {
             gtk_info_bar_set_revealed(info, FALSE);
         document->binary = FALSE;
         gtk_text_buffer_set_text(document->buffer, contents, -1);
-        syntax_update(document, contents);
+        syntax_update(document, file, contents);
     }
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
@@ -223,11 +223,8 @@ void new_command(void) {
 void save(struct Document * document) {
 
     // Collect all text
-    GtkTextIter start;
-    GtkTextIter end;
-
-    gtk_text_buffer_get_start_iter(document->buffer, &start);
-    gtk_text_buffer_get_end_iter(document->buffer, &end);
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(document->buffer, &start, &end);
 
     unsigned char * text = (unsigned char *)gtk_text_buffer_get_text(document->buffer, &start, &end, TRUE);
     size_t len;
@@ -278,7 +275,7 @@ void save(struct Document * document) {
     }
 
     if (document->binary == FALSE)
-        syntax_update(document, (char *)text);
+        syntax_update(document, document->file, (char *)text);
 
     gtk_text_buffer_set_modified(document->buffer, FALSE);
     free(text);
