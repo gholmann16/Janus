@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the janus package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: janus\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-02 15:42-0400\n"
+"PO-Revision-Date: 2025-09-10 10:57+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: src/menu.c:10
+msgid "File"
+msgstr "Bestand"
+
+#: src/menu.c:16
+msgid "New"
+msgstr "Nieuw"
+
+#: src/menu.c:21 src/file.c:81
+msgid "Open"
+msgstr "Openen"
+
+#: src/menu.c:26 src/file.c:81
+msgid "Save"
+msgstr "Opslaan"
+
+#: src/menu.c:31
+msgid "Save as"
+msgstr "Opslaan als"
+
+#: src/menu.c:39
+msgid "Print"
+msgstr "Afdrukken"
+
+#: src/menu.c:47
+msgid "Exit"
+msgstr "Afsluiten"
+
+#: src/menu.c:54
+msgid "Edit"
+msgstr "Bewerken"
+
+#: src/menu.c:60
+msgid "Undo"
+msgstr "Ongedaan maken"
+
+#: src/menu.c:65
+msgid "Redo"
+msgstr "Opnieuw uitvoeren"
+
+#: src/menu.c:73
+msgid "Cut"
+msgstr "Knippen"
+
+#: src/menu.c:78
+msgid "Copy"
+msgstr "Kopiëren"
+
+#: src/menu.c:83
+msgid "Paste"
+msgstr "Plakken"
+
+#: src/menu.c:88
+msgid "Delete"
+msgstr "Verwĳderen"
+
+#: src/menu.c:96
+msgid "Select all"
+msgstr "Alles selecteren"
+
+#: src/menu.c:101
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/menu.c:107 src/search.c:80 src/search.c:176
+msgid "Find"
+msgstr "Zoeken"
+
+#: src/menu.c:112
+msgid "Find next"
+msgstr "Volgende zoeken"
+
+#: src/menu.c:117
+msgid "Find previous"
+msgstr "Vorige zoeken"
+
+#: src/menu.c:122 src/search.c:167 src/search.c:182
+msgid "Replace"
+msgstr "Vervangen"
+
+#: src/menu.c:130 src/search.c:242
+msgid "Go to"
+msgstr "Ga naar"
+
+#: src/menu.c:135
+msgid "Options"
+msgstr "Opties"
+
+#: src/menu.c:141
+msgid "Font"
+msgstr "Lettertype"
+
+#: src/menu.c:145
+msgid "Wrap line"
+msgstr "Regelafbreking"
+
+#: src/menu.c:154
+msgid "Line numbers"
+msgstr "Regelnummers"
+
+#: src/menu.c:160
+msgid "Syntax highlighting"
+msgstr "Syntaxismarkering"
+
+#: src/menu.c:166
+msgid "Help"
+msgstr "Hulp"
+
+#: src/menu.c:172
+msgid "About"
+msgstr "Over"
+
+#: src/file.c:54 src/file.c:103
+msgid "Could not open file."
+msgstr "Het bestand kan niet worden geopend."
+
+#: src/file.c:80
+msgid "Open File"
+msgstr "Bestand openen"
+
+#: src/file.c:80
+msgid "Save File"
+msgstr "Bestand opslaan"
+
+#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
+#: src/search.c:242
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/file.c:132
+msgid ""
+"This file is not formatted properly, and will be edited using Janus' binary "
+"mode. For more information check out <a href=\"https://github.com/gholmann16/"
+"janus\">the wiki</a>."
+msgstr ""
+"Dit bestand bevat onjuiste opmaak en zal worden bewerkt met behulp van "
+"Janus' binaire modus. Meer informatie is te vinden op <a href=\"https://"
+"github.com/gholmann16/janus\">de wiki</a> (Engelstalig)."
+
+#: src/file.c:253
+msgid ""
+"File contains non binary characters. Make sure all inserted characters are "
+"between U+0000 and U+00FF with exception U+2400."
+msgstr ""
+"Dit bestand bevat niet-binaire tekens. Zorg dat alle tekens tussen U+0000 en "
+"U+00FF liggen, met uitzondering van U+2400."
+
+#: src/file.c:317
+msgid "Something went wrong while printing."
+msgstr "Er is iets misgegaan tijdens het afdrukken."
+
+#: src/file.c:398
+msgid "No"
+msgstr "Nee"
+
+#: src/file.c:398
+msgid "Yes"
+msgstr "Ja"
+
+#: src/file.c:402
+msgid "Would you like to save?"
+msgstr "Wilt u het bestand opslaan?"
+
+#: src/search.c:86 src/search.c:173
+msgid "Find text:"
+msgstr "Tekst zoeken:"
+
+#: src/search.c:101 src/search.c:210
+msgid "Match case"
+msgstr "Hoofdlettergevoelig"
+
+#: src/search.c:179
+msgid "Replace text"
+msgstr "Tekst vervangen"
+
+#: src/search.c:212
+msgid "Replace all"
+msgstr "Alles vervangen"
+
+#: src/search.c:247
+msgid "Line number:"
+msgstr "Regelnummer:"
+
+#: src/options.c:138
+msgid "Fonts"
+msgstr "Lettertypen"
+
+#: src/about.c:16
+msgid "Janus is a simple Linux notepad intended to be small and efficient."
+msgstr ""
+"Janus is een eenvoudige tekstbewerker voor Linux, met efficiëntie als doel."
