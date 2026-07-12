@@ -61,7 +61,11 @@ int main(int argc, char * argv[]) {
     int width = g_key_file_get_integer(config, GROUP_KEY, "width", NULL);
     gtk_window_set_default_size(window, width ? width : DEFAULT_WIDTH, height ? height : DEFAULT_HEIGHT);
 
-    document.font = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
+    char * font_string = g_key_file_get_string(config, GROUP_KEY, "font", NULL);
+    if (font_string) {
+        document.font = pango_font_description_from_string(font_string);
+        g_free(font_string);
+    }
     set_font(&document);
 
     // Menu setup
@@ -95,7 +99,8 @@ int main(int argc, char * argv[]) {
     gtk_main();
 
     gtk_source_finalize();
-    g_free(document.font);
+    if (document.font)
+        pango_font_description_free(document.font);
 
     return 0;
 }

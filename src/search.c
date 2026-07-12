@@ -33,7 +33,7 @@ struct SearchModel {
     GtkSourceSearchSettings * settings;
     GtkWidget * search_entry;
     GtkWidget * replace_entry;
-    _Bool all;
+    GtkWidget * replace_all_button;
 };
 
 void search(struct Document * document, enum SearchPattern pat) {
@@ -139,7 +139,7 @@ void replace(struct SearchModel * model, enum SearchPattern direction) {
     const char * search_text = gtk_entry_get_text(GTK_ENTRY(model->search_entry));
     gtk_source_search_settings_set_search_text(model->settings, search_text);
     
-    if (model->all) {
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(model->replace_all_button))) {
         gtk_source_search_context_replace_all(context, replace_text, strlen(replace_text), NULL);
         return;
     }
@@ -163,10 +163,6 @@ void replace_entry_forward(GtkWidget * self, struct SearchModel * model) {
 
 void replace_entry_backward(GtkWidget * self, struct SearchModel * model) {
     replace(model, SEARCH_BACKWARD);
-}
-
-void replace_all (GtkWidget * self, struct SearchModel * model) {
-    model->all = !model->all;
 }
 
 void replace_command(GtkWidget * self, struct Document * document) {
@@ -217,15 +213,14 @@ void replace_command(GtkWidget * self, struct Document * document) {
         g_signal_connect(model.replace_entry, "activate-backward", G_CALLBACK(replace_entry_backward), &model);
 
         match_case_button = gtk_check_button_new_with_label(_("Match case"));
-        GtkWidget * replace_all_button = gtk_check_button_new_with_label(_("Replace all"));
+        model.replace_all_button = gtk_check_button_new_with_label(_("Replace all"));
         GtkWidget * cancel = gtk_button_new_with_label(_("Cancel"));
 
         gtk_grid_attach(grid, match_case_button, 0, 2, 1, 1);
-        gtk_grid_attach(grid, replace_all_button, 0, 3, 1, 1);
+        gtk_grid_attach(grid, model.replace_all_button, 0, 3, 1, 1);
         gtk_grid_attach(grid, cancel, 2, 3, 1, 1);
 
         g_signal_connect(match_case_button, "toggled", G_CALLBACK(match_case), &model);
-        g_signal_connect(replace_all_button, "toggled", G_CALLBACK(replace_all), &model);
 
         g_signal_connect(search_button, "clicked", G_CALLBACK(search_entry_forward), &model);
         g_signal_connect(replace_button, "clicked", G_CALLBACK(replace_entry_forward), &model);

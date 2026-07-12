@@ -363,8 +363,11 @@ void quit(struct Document * document) {
     g_key_file_set_integer(config, GROUP_KEY, "width", width);
     g_key_file_set_integer(config, GROUP_KEY, "height", height);
 
-    if (document->font)
-        g_key_file_set_string(config, GROUP_KEY, "font", document->font);
+    if (document->font) {
+        char * font_string = pango_font_description_to_string(document->font);
+        g_key_file_set_string(config, GROUP_KEY, "font", font_string);
+        g_free(font_string);
+    }
 
     g_key_file_set_boolean(config, GROUP_KEY, "wrap", (gboolean)((gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(document->view)) == GTK_WRAP_NONE) ? FALSE : TRUE));
     g_key_file_set_boolean(config, GROUP_KEY, "syntax", gtk_source_buffer_get_highlight_syntax(GTK_SOURCE_BUFFER(document->buffer)));

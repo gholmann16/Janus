@@ -5,17 +5,14 @@ void set_font(struct Document * document) {
     if (document->font == NULL)
         return;
 
-    PangoFontDescription * description = pango_font_description_from_string(document->font);
-    if (description == NULL)
-        return;
-    PangoFontMask mask = pango_font_description_get_set_fields(description);
+    PangoFontMask mask = pango_font_description_get_set_fields(document->font);
 
     char css[1024];
     strcpy(css, "textview {\n");
 
     if (mask & PANGO_FONT_MASK_STYLE) {
         strcat(css, "\tfont-style: ");
-        switch (pango_font_description_get_style(description)) {
+        switch (pango_font_description_get_style(document->font)) {
             case PANGO_STYLE_NORMAL:
                 strcat(css, "normal");
                 break;
@@ -31,7 +28,7 @@ void set_font(struct Document * document) {
     
     // only CSS2 values supported (For GTK3)
     if (mask & PANGO_FONT_MASK_VARIANT) {
-        switch (pango_font_description_get_variant(description)) {
+        switch (pango_font_description_get_variant(document->font)) {
             case PANGO_VARIANT_NORMAL:
                 strcat(css, "\tfont-variant: normal;\n");
                 break;
@@ -45,7 +42,7 @@ void set_font(struct Document * document) {
 
     if (mask & PANGO_FONT_MASK_WEIGHT) {
         strcat(css, "\tfont-weight: ");
-        switch (pango_font_description_get_weight(description)) {
+        switch (pango_font_description_get_weight(document->font)) {
             case PANGO_WEIGHT_SEMILIGHT:
             case PANGO_WEIGHT_BOOK:
             case PANGO_WEIGHT_NORMAL:
@@ -54,7 +51,7 @@ void set_font(struct Document * document) {
             default:
                 ; // Required for older c compilers
                 char newweight[4] = "000";
-                newweight[0] = pango_font_description_get_weight(description)/100 + 0x30;
+                newweight[0] = pango_font_description_get_weight(document->font)/100 + 0x30;
                 strcat(css, newweight);
         }
         strcat(css, ";\n");
@@ -62,7 +59,7 @@ void set_font(struct Document * document) {
 
     if (mask & PANGO_FONT_MASK_STRETCH) {
         strcat(css, "\tfont-stretch: ");
-        switch (pango_font_description_get_stretch(description)) {
+        switch (pango_font_description_get_stretch(document->font)) {
             case PANGO_STRETCH_ULTRA_CONDENSED:
                 strcat(css, "ultra-condensed");
                 break;
@@ -96,13 +93,13 @@ void set_font(struct Document * document) {
 
     if (mask & PANGO_FONT_MASK_SIZE) {
         char size[64];
-        sprintf(size, "\tfont-size: %dpt;\n", pango_font_description_get_size (description) / PANGO_SCALE);
+        sprintf(size, "\tfont-size: %dpt;\n", pango_font_description_get_size (document->font) / PANGO_SCALE);
         strcat(css, size);
     }
 
     if (mask & PANGO_FONT_MASK_FAMILY) {
         strcat(css, "\tfont-family: \"");
-        g_strlcat(css, pango_font_description_get_family(description), sizeof(css));
+        g_strlcat(css, pango_font_description_get_family(document->font), sizeof(css));
         g_strlcat(css, "\";\n", sizeof(css));
     }
 
@@ -121,15 +118,15 @@ void set_font(struct Document * document) {
     }
 
     g_object_unref(cssProvider);
-    pango_font_description_free(description);
 }
 
 void font_selected(GtkDialog * dialog, int response_id, struct Document * document) {
     if (response_id != GTK_RESPONSE_OK) {
         return;
     }
-    char * selected = gtk_font_chooser_get_font(GTK_FONT_CHOOSER(dialog));
-    g_free(document->font);
+    PangoFontDescription * selected = gtk_font_chooser_get_font_desc(GTK_FONT_CHOOSER(dialog));
+    if (document->font)
+        pango_font_description_free(document->font);
     document->font = selected;
     set_font(document);
 }
@@ -139,7 +136,7 @@ void font_command(GtkWidget * self, struct Document * document) {
     g_signal_connect(dialog, "response", G_CALLBACK(font_selected), document);
 
     if (document->font)
-        gtk_font_chooser_set_font(GTK_FONT_CHOOSER(dialog), document->font);
+        gtk_font_chooser_set_font_desc(GTK_FONT_CHOOSER(dialog), document->font);
 
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);

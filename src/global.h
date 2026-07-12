@@ -6,7 +6,7 @@ extern GtkWindow * window;
 
 struct Document {
     GFile * file;
-    char * font;
+    PangoFontDescription * font;
     GtkTextBuffer * buffer;
     GtkWidget * view;
     gboolean binary;
