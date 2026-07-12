@@ -9,7 +9,5 @@ struct Document {
     char * font;
     GtkTextBuffer * buffer;
     GtkWidget * view;
-    GtkSourceRegion * last;
-    GtkSourceSearchContext * context;
     gboolean binary;
 };

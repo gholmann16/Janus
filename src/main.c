@@ -26,7 +26,6 @@ int main(int argc, char * argv[]) {
     struct Document document = {
         .buffer = buffer,
         .view = text,
-        .last = gtk_source_region_new(buffer),
     };
 
     // Connect singals
