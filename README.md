@@ -35,11 +35,11 @@ dpkg-deb --root-owner-group -b janus-notepad_0.9.7-1
 
 To build as an rpm package run:
 ```
-meson build --buildtype release --prefix /usr
-ninja -C build
-DESTDIR=../janus-notepad-0.9.7 meson install -C build
-mkdir -p ../rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-rpmbuild -bb --define "_topdir $(realpath ../rpmbuild)" --buildroot "$(realpath ../janus-notepad-0.9.7)" data/janus.spec
+mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+cp data/janus.spec ~/rpmbuild/SPECS/
+git archive --output="$HOME/rpmbuild/SOURCES/janus-notepad-0.9.7.tar.gz" --prefix=janus-notepad-0.9.7/ HEAD
+rpmbuild -bb ~/rpmbuild/SPECS/janus.spec
 ```
 
 To build as AppImage run: (Requires most recent commit version of appimage-builder for zstd)

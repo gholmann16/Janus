@@ -2,8 +2,15 @@ name: Build packages
 
 on:
   push:
+    branches: [main]
+    paths-ignore: ['**.md']
   pull_request:
+    paths-ignore: ['**.md']
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deb:
@@ -38,27 +45,30 @@ jobs:
     runs-on: ubuntu-latest
     container: rockylinux:8
     steps:
+      # actions/checkout falls back to a git-less REST API download when git
+      # isn't in PATH yet, so it has to be installed before checkout runs.
+      - name: Install git
+        run: dnf install -y git
+
       - uses: actions/checkout@v4
 
       - name: Install build dependencies
         run: |
-          dnf install -y git ca-certificates epel-release dnf-plugins-core
+          dnf install -y ca-certificates epel-release dnf-plugins-core
           dnf config-manager --set-enabled powertools || dnf config-manager --set-enabled crb
-          dnf install -y meson ninja-build gcc gettext-devel gtk3-devel gtksourceview4-devel rpm-build
-
-      - name: Build
-        run: |
-          meson setup build --buildtype release --prefix /usr
-          ninja -C build
+          dnf install -y rpm-build
+          dnf builddep -y data/janus.spec
 
       - name: Package rpm
         run: |
-          rm -rf ../janus-notepad-0.9.7 ../rpmbuild
-          DESTDIR=../janus-notepad-0.9.7 meson install -C build
-          mkdir -p ../rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-          rpmbuild -bb --define "_topdir $(realpath ../rpmbuild)" --buildroot "$(realpath ../janus-notepad-0.9.7)" data/janus.spec
+          git config --global --add safe.directory '*'
+          mkdir -p "$HOME/rpmbuild"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          echo '%_topdir %(echo $HOME)/rpmbuild' > "$HOME/.rpmmacros"
+          cp data/janus.spec "$HOME/rpmbuild/SPECS/"
+          git archive --output="$HOME/rpmbuild/SOURCES/janus-notepad-0.9.7.tar.gz" --prefix=janus-notepad-0.9.7/ HEAD
+          rpmbuild -bb "$HOME/rpmbuild/SPECS/janus.spec"
 
       - uses: actions/upload-artifact@v4
         with:
           name: janus-rpm-el8
-          path: ../rpmbuild/RPMS/**/*.rpm
+          path: /root/rpmbuild/RPMS/**/*.rpm
