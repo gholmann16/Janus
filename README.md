@@ -33,6 +33,15 @@ install -Dm644 data/control janus-notepad_0.9.7-1/DEBIAN/control
 dpkg-deb --root-owner-group -b janus-notepad_0.9.7-1
 ```
 
+To build as an rpm package run:
+```
+meson build --buildtype release --prefix /usr
+ninja -C build
+DESTDIR=../janus-notepad-0.9.7 meson install -C build
+mkdir -p ../rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+rpmbuild -bb --define "_topdir $(realpath ../rpmbuild)" --buildroot "$(realpath ../janus-notepad-0.9.7)" data/janus.spec
+```
+
 To build as AppImage run: (Requires most recent commit version of appimage-builder for zstd)
 ```
 meson build --buildtype release --prefix /usr

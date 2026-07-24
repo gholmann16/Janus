@@ -1,0 +1,54 @@
+name: Build release packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  appimage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev squashfs-tools zsync desktop-file-utils
+          # Released appimage-builder doesn't yet support zstd compression, per README - install from git main.
+          pip install --user git+https://github.com/AppImageCrafters/appimage-builder.git
+
+      - name: Build
+        run: |
+          meson setup build --buildtype release --prefix /usr
+          ninja -C build
+          DESTDIR="$PWD/../AppDir" meson install -C build
+
+      - name: Build AppImage
+        run: |
+          # data/AppImageBuilder.yml has a developer-machine-specific AppDir.path;
+          # override it here rather than editing the tracked recipe.
+          sed "s#^\( *path: \).*#\1$PWD/../AppDir#" data/AppImageBuilder.yml > /tmp/AppImageBuilder.yml
+          export PATH="$HOME/.local/bin:$PATH"
+          appimage-builder --recipe /tmp/AppImageBuilder.yml --appdir "$PWD/../AppDir" --build-dir /tmp/appimage-build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: janus-appimage
+          path: '*.AppImage*'
+
+  flatpak:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Point manifest at the tag that triggered this build
+        run: |
+          sed -i "s/tag: v[0-9.]*/tag: ${GITHUB_REF_NAME}/" data/dev.pantheum.janus.yml
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: janus.flatpak
+          manifest-path: data/dev.pantheum.janus.yml
+          cache: true

@@ -1,0 +1,64 @@
+name: Build packages
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  deb:
+    runs-on: ubuntu-latest
+    container: debian:11
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          apt-get update
+          apt-get install -y git ca-certificates build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev dpkg-dev
+
+      - name: Build
+        run: |
+          meson setup build --buildtype release --prefix /usr
+          ninja -C build
+
+      - name: Package deb
+        run: |
+          rm -rf ../janus-notepad_0.9.7-1
+          DESTDIR=../janus-notepad_0.9.7-1 meson install -C build
+          install -Dm644 data/control ../janus-notepad_0.9.7-1/DEBIAN/control
+          dpkg-deb --root-owner-group -b ../janus-notepad_0.9.7-1 janus-notepad_0.9.7-1.deb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: janus-deb-debian11
+          path: janus-notepad_0.9.7-1.deb
+
+  rpm:
+    runs-on: ubuntu-latest
+    container: rockylinux:8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          dnf install -y git ca-certificates epel-release dnf-plugins-core
+          dnf config-manager --set-enabled powertools || dnf config-manager --set-enabled crb
+          dnf install -y meson ninja-build gcc gettext-devel gtk3-devel gtksourceview4-devel rpm-build
+
+      - name: Build
+        run: |
+          meson setup build --buildtype release --prefix /usr
+          ninja -C build
+
+      - name: Package rpm
+        run: |
+          rm -rf ../janus-notepad-0.9.7 ../rpmbuild
+          DESTDIR=../janus-notepad-0.9.7 meson install -C build
+          mkdir -p ../rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          rpmbuild -bb --define "_topdir $(realpath ../rpmbuild)" --buildroot "$(realpath ../janus-notepad-0.9.7)" data/janus.spec
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: janus-rpm-el8
+          path: ../rpmbuild/RPMS/**/*.rpm
