@@ -12,7 +12,7 @@ Source0: %{name}-%{version}.tar.gz
 # debug info to extract, so skip rpm's automatic debuginfo/debugsource split.
 %global debug_package %{nil}
 
-BuildRequires: meson, ninja-build, gcc, gettext-devel, gtk3-devel, gtksourceview4-devel
+BuildRequires: meson, ninja-build, gcc, gettext-devel, gtk3-devel, gtksourceview4-devel, appstream
 Requires: gtk3, gtksourceview4
 
 %description

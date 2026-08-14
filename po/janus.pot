@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 15:42-0400\n"
+"POT-Creation-Date: 2026-08-13 22:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/menu.c:107 src/search.c:80 src/search.c:176
+#: src/menu.c:107 src/search.c:91 src/search.c:188
 msgid "Find"
 msgstr ""
 
@@ -93,11 +93,11 @@ msgstr ""
 msgid "Find previous"
 msgstr ""
 
-#: src/menu.c:122 src/search.c:167 src/search.c:182
+#: src/menu.c:122 src/search.c:180 src/search.c:193
 msgid "Replace"
 msgstr ""
 
-#: src/menu.c:130 src/search.c:242
+#: src/menu.c:130 src/search.c:252
 msgid "Go to"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/file.c:54 src/file.c:103
+#: src/file.c:54 src/file.c:117
 msgid "Could not open file."
 msgstr ""
 
@@ -141,12 +141,12 @@ msgstr ""
 msgid "Save File"
 msgstr ""
 
-#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
-#: src/search.c:242
+#: src/file.c:81 src/file.c:405 src/search.c:91 src/search.c:217
+#: src/search.c:252
 msgid "Cancel"
 msgstr ""
 
-#: src/file.c:132
+#: src/file.c:146
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
@@ -159,46 +159,66 @@ msgid ""
 "between U+0000 and U+00FF with exception U+2400."
 msgstr ""
 
-#: src/file.c:317
+#: src/file.c:321
 msgid "Something went wrong while printing."
 msgstr ""
 
-#: src/file.c:398
+#: src/file.c:405
 msgid "No"
 msgstr ""
 
-#: src/file.c:398
+#: src/file.c:405
 msgid "Yes"
 msgstr ""
 
-#: src/file.c:402
+#: src/file.c:409
 msgid "Would you like to save?"
 msgstr ""
 
-#: src/search.c:86 src/search.c:173
+#: src/search.c:97 src/search.c:186
 msgid "Find text:"
 msgstr ""
 
-#: src/search.c:101 src/search.c:210
+#: src/search.c:105 src/search.c:215
 msgid "Match case"
 msgstr ""
 
-#: src/search.c:179
+#: src/search.c:191
 msgid "Replace text"
 msgstr ""
 
-#: src/search.c:212
+#: src/search.c:216
 msgid "Replace all"
 msgstr ""
 
-#: src/search.c:247
+#: src/search.c:257
 msgid "Line number:"
 msgstr ""
 
-#: src/options.c:138
+#: src/options.c:135
 msgid "Fonts"
 msgstr ""
 
 #: src/about.c:16
-msgid "Janus is a simple Linux notepad intended to be small and efficient."
+msgid "Janus is a simple, native linux text editor."
+msgstr ""
+
+#: data/dev.pantheum.janus.metainfo.xml.in:5
+msgid "Janus"
+msgstr ""
+
+#: data/dev.pantheum.janus.metainfo.xml.in:6
+msgid "Simple text editor"
+msgstr ""
+
+#: data/dev.pantheum.janus.metainfo.xml.in:25
+msgid ""
+"Janus is a simple, native linux text editor. Supports UTF-8 and binary data "
+"through its fallback binary editing mode. Spiritual successor to leafpad. "
+"Intended to be as small and efficient as possible, trading features for a "
+"smaller impact on cpu."
+msgstr ""
+
+#: data/dev.pantheum.janus.metainfo.xml.in:36
+msgid "Picture of Janus reading a C file with syntax highlighting displayed"
 msgstr ""

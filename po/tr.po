@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 15:42-0400\n"
+"POT-Creation-Date: 2026-08-13 22:00-0400\n"
 "PO-Revision-Date: 2024-07-30 03:04+0300\n"
 "Last-Translator: veyselerden@yahoo.com\n"
 "Language-Team: \n"
@@ -82,7 +82,7 @@ msgstr "Hepsini seç"
 msgid "Search"
 msgstr "Ara"
 
-#: src/menu.c:107 src/search.c:80 src/search.c:176
+#: src/menu.c:107 src/search.c:91 src/search.c:188
 msgid "Find"
 msgstr "Bul"
 
@@ -94,11 +94,11 @@ msgstr "Sonrakini bul"
 msgid "Find previous"
 msgstr "Öncekini bul"
 
-#: src/menu.c:122 src/search.c:167 src/search.c:182
+#: src/menu.c:122 src/search.c:180 src/search.c:193
 msgid "Replace"
 msgstr "Değiştir"
 
-#: src/menu.c:130 src/search.c:242
+#: src/menu.c:130 src/search.c:252
 msgid "Go to"
 msgstr "Git"
 
@@ -130,7 +130,7 @@ msgstr "Yardım"
 msgid "About"
 msgstr "Hakkında"
 
-#: src/file.c:54 src/file.c:103
+#: src/file.c:54 src/file.c:117
 msgid "Could not open file."
 msgstr "Dosya açılamadı."
 
@@ -142,12 +142,12 @@ msgstr "Dosya Aç"
 msgid "Save File"
 msgstr "Dosyayı Kaydet"
 
-#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
-#: src/search.c:242
+#: src/file.c:81 src/file.c:405 src/search.c:91 src/search.c:217
+#: src/search.c:252
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/file.c:132
+#: src/file.c:146
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
 "mode. For more information check out <a href=\"https://github.com/gholmann16/"
@@ -166,50 +166,82 @@ msgstr ""
 "karakterlerin U+0000 ve U+00FF arasında olduğundan emin olun. U+2400 buna "
 "bir istisnadır."
 
-#: src/file.c:317
+#: src/file.c:321
 msgid "Something went wrong while printing."
 msgstr "Yazdırılırken bir hata meydana geldi."
 
-#: src/file.c:398
+#: src/file.c:405
 msgid "No"
 msgstr "Hayır"
 
-#: src/file.c:398
+#: src/file.c:405
 msgid "Yes"
 msgstr "Evet"
 
-#: src/file.c:402
+#: src/file.c:409
 msgid "Would you like to save?"
 msgstr "Kaydetmek ister misin?"
 
-#: src/search.c:86 src/search.c:173
+#: src/search.c:97 src/search.c:186
 msgid "Find text:"
 msgstr "Metin bul:"
 
-#: src/search.c:101 src/search.c:210
+#: src/search.c:105 src/search.c:215
 msgid "Match case"
 msgstr "Büyük-küçük harfe duyarlı"
 
-#: src/search.c:179
+#: src/search.c:191
 msgid "Replace text"
 msgstr "Metni değiştir"
 
-#: src/search.c:212
+#: src/search.c:216
 msgid "Replace all"
 msgstr "Tümünü değiştir"
 
-#: src/search.c:247
+#: src/search.c:257
 msgid "Line number:"
 msgstr "Satır numarası:"
 
-#: src/options.c:138
+#: src/options.c:135
 msgid "Fonts"
 msgstr "Yazıtipleri"
 
 #: src/about.c:16
-msgid "Janus is a simple Linux notepad intended to be small and efficient."
+msgid "Janus is a simple, native linux text editor."
+msgstr "Janus, basit ve yerel bir Linux metin düzenleyicisidir."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:5
+msgid "Janus"
 msgstr ""
-"Janus küçük ve verimli olması amacıyla yapılmış basit bir not defteridir."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:6
+msgid "Simple text editor"
+msgstr "Basit metin düzenleyici"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:25
+msgid ""
+"Janus is a simple, native linux text editor. Supports UTF-8 and binary data "
+"through its fallback binary editing mode. Spiritual successor to leafpad. "
+"Intended to be as small and efficient as possible, trading features for a "
+"smaller impact on cpu."
+msgstr ""
+"Janus, basit ve yerel bir Linux metin düzenleyicisidir. Yedek ikili "
+"düzenleme modu sayesinde UTF-8 ve ikili verileri destekler. leafpad'in "
+"manevi halefidir. Mümkün olduğunca küçük ve verimli olması amaçlanmıştır; "
+"bunun için özelliklerden ödün vererek işlemci üzerindeki etkiyi azaltır."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:36
+msgid "Picture of Janus reading a C file with syntax highlighting displayed"
+msgstr "Janus'ta sözdizimi vurgulamasıyla görüntülenen bir C dosyasının resmi"
+
+#~ msgid "Janus is a simple Linux notepad intended to be small and efficient."
+#~ msgstr ""
+#~ "Janus küçük ve verimli olması amacıyla yapılmış basit bir not defteridir."
+
+#~ msgid "text;editor;plaintext;notepad;leafpad;gedit;mousepad;binary;syntax;highlighting;"
+#~ msgstr ""
+#~ "metin;düzenleyici;düz metin;not "
+#~ "defteri;leafpad;gedit;mousepad;ikili;sözdizimi;vurgulama;"
 
 #~ msgid "Failed to preview page."
 #~ msgstr "Sayfa önizlenemedi."

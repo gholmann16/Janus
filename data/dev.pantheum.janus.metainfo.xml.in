@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>dev.pantheum.janus</id>
+  
+  <name>Janus</name>
+  <summary>Simple text editor</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+
+  <icon type="stock">dev.pantheum.janus</icon>
+
+  <mimetypes>
+    <mimetype>text/plain</mimetype>
+    <mimetype>application/x-zerosize</mimetype>
+  </mimetypes>
+
+  <categories>
+    <category>Utility</category>
+    <category>TextEditor</category>
+    <category>TextTools</category>    
+  </categories>
+
+  <description>
+    <p>
+      Janus is a simple, native linux text editor. Supports UTF-8 and binary data through its fallback binary editing mode. Spiritual successor to leafpad. Intended to be as small and efficient as possible, trading features for a smaller impact on cpu.
+    </p>
+  </description>
+
+  <url type="homepage">https://github.com/gholmann16/janus</url>
+
+  <launchable type="desktop-id">dev.pantheum.janus.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/gholmann16/Janus/main/data/screenshot.png</image>
+      <caption>Picture of Janus reading a C file with syntax highlighting displayed</caption>
+    </screenshot>
+  </screenshots>
+
+  <content_rating type="oars-1.1" />
+
+  <developer id="dev.pantheum">
+    <name>Gabriel Holmann</name>
+  </developer>
+
+  <keywords>
+    <keyword>text editor</keyword>
+    <keyword xml:lang="de">Texteditor</keyword>
+    <keyword xml:lang="es">editor de texto</keyword>
+    <keyword xml:lang="fr">éditeur de texte</keyword>
+    <keyword xml:lang="tr">metin düzenleyici</keyword>
+    <keyword>syntax highlighting</keyword>
+    <keyword xml:lang="de">Syntaxhervorhebung</keyword>
+    <keyword xml:lang="es">resaltado de sintaxis</keyword>
+    <keyword xml:lang="fr">coloration syntaxique</keyword>
+    <keyword xml:lang="tr">sözdizimi vurgulama</keyword>
+    <keyword>fallback binary editing</keyword>
+    <keyword xml:lang="de">Fallback-Binärbearbeitung</keyword>
+    <keyword xml:lang="es">edición binaria de respaldo</keyword>
+    <keyword xml:lang="fr">édition binaire de repli</keyword>
+    <keyword xml:lang="tr">yedek ikili düzenleme</keyword>
+    <keyword>plaintext</keyword>
+    <keyword xml:lang="de">Klartext</keyword>
+    <keyword xml:lang="es">texto plano</keyword>
+    <keyword xml:lang="fr">texte brut</keyword>
+    <keyword xml:lang="tr">düz metin</keyword>
+    <keyword>notepad</keyword>
+    <keyword xml:lang="de">Notizblock</keyword>
+    <keyword xml:lang="es">bloc de notas</keyword>
+    <keyword xml:lang="fr">bloc-notes</keyword>
+    <keyword xml:lang="tr">not defteri</keyword>
+    <keyword>leafpad</keyword>
+    <keyword>gedit</keyword>
+    <keyword>mousepad</keyword>
+  </keywords>
+
+  <releases>
+  <release version="0.9.7" date="2025-09-23"></release>
+  </releases>
+</component>

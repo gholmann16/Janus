@@ -21,7 +21,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev squashfs-tools zsync desktop-file-utils
+          sudo apt-get install -y meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev squashfs-tools zsync desktop-file-utils appstream
           # Released appimage-builder doesn't yet support zstd compression, per README - install from git main.
           pip install --user git+https://github.com/AppImageCrafters/appimage-builder.git
 
@@ -72,7 +72,7 @@ jobs:
       - name: Install build dependencies
         run: |
           apt-get update
-          apt-get install -y git ca-certificates build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev dpkg-dev
+          apt-get install -y git ca-certificates build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev dpkg-dev appstream
 
       - name: Build
         run: |

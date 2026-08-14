@@ -13,7 +13,7 @@ void about_command(GtkWidget * self, struct Document * document) {
 
     gtk_about_dialog_set_license_type(about, GTK_LICENSE_GPL_3_0);
 
-    const char * comments = _("Janus is a simple Linux notepad intended to be small and efficient.");
+    const char * comments = _("Janus is a simple, native linux text editor.");
     gtk_about_dialog_set_comments(about, comments);
 
     gtk_about_dialog_set_version(about, VERSION_NUMBER);
