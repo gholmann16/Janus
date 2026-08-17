@@ -42,12 +42,22 @@ git archive --output="$HOME/rpmbuild/SOURCES/janus-notepad-0.9.7.tar.gz" --prefi
 rpmbuild -bb ~/rpmbuild/SPECS/janus.spec
 ```
 
-To build as AppImage run: (Requires most recent commit version of appimage-builder for zstd)
+To build as AppImage run: (requires [go-appimage](https://github.com/probonopd/go-appimage)'s appimagetool)
 ```
 meson build --buildtype release --prefix /usr
 ninja -C build
 DESTDIR=../AppDir meson install -C build
-appimage-builder --recipe data/AppImageBuilder.yml --appdir AppDir --build-dir /tmp
+appimagetool deploy AppDir/usr/share/applications/*.desktop
+# Keep only GtkSourceView4 bundled - everything else deploy pulled in (GTK
+# core, immodules, print backends, ...) is assumed already on the host.
+GSV_LIB=$(find AppDir -name 'libgtksourceview-4.so*' | head -1)
+LIBDIR=$(dirname "$GSV_LIB")
+find "$LIBDIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
+find "$LIBDIR" -maxdepth 1 -type f ! -name 'libgtksourceview-4.so*' -delete
+install -d AppDir/usr/share/gtksourceview-4
+cp -a /usr/share/gtksourceview-4/language-specs /usr/share/gtksourceview-4/styles AppDir/usr/share/gtksourceview-4/
+ln -sf usr/share/icons/hicolor/256x256/apps/dev.pantheum.janus.png AppDir/dev.pantheum.janus.png
+ARCH=x86_64 VERSION=0.9.7 appimagetool AppDir
 ```
 
 To build as Flatpak run:

@@ -15,15 +15,14 @@ on:
 jobs:
   appimage:
     runs-on: ubuntu-latest
+    container: debian:12
     steps:
       - uses: actions/checkout@v4
 
       - name: Install build dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev squashfs-tools zsync desktop-file-utils appstream
-          # Released appimage-builder doesn't yet support zstd compression, per README - install from git main.
-          pip install --user git+https://github.com/AppImageCrafters/appimage-builder.git
+          apt-get update
+          apt-get install -y ca-certificates curl build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev appstream
 
       - name: Build
         run: |
@@ -31,13 +30,33 @@ jobs:
           ninja -C build
           DESTDIR="$PWD/../AppDir" meson install -C build
 
+      - name: Fetch go-appimage's appimagetool
+        run: |
+          URL=$(curl -s https://api.github.com/repos/probonopd/go-appimage/releases/tags/continuous \
+            | grep -o 'https://[^"]*appimagetool-[^"]*-x86_64\.AppImage' | head -1)
+          curl -sL -o appimagetool "$URL"
+          chmod +x appimagetool
+
+      - name: Bundle GtkSourceView only
+        run: |
+          ./appimagetool deploy "$PWD/../AppDir/usr/share/applications"/*.desktop
+          GSV_LIB=$(find "$PWD/../AppDir" -name 'libgtksourceview-4.so*' | head -1)
+          LIBDIR=$(dirname "$GSV_LIB")
+          find "$LIBDIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
+          find "$LIBDIR" -maxdepth 1 -type f ! -name 'libgtksourceview-4.so*' -delete
+
+      - name: Bundle GtkSourceView language specs, style schemes, and app icon
+        run: |
+          install -d "$PWD/../AppDir/usr/share/gtksourceview-4"
+          cp -a /usr/share/gtksourceview-4/language-specs "$PWD/../AppDir/usr/share/gtksourceview-4/"
+          cp -a /usr/share/gtksourceview-4/styles "$PWD/../AppDir/usr/share/gtksourceview-4/"
+          ln -sf usr/share/icons/hicolor/256x256/apps/dev.pantheum.janus.png "$PWD/../AppDir/dev.pantheum.janus.png"
+
       - name: Build AppImage
         run: |
-          # data/AppImageBuilder.yml has a developer-machine-specific AppDir.path;
-          # override it here rather than editing the tracked recipe.
-          sed "s#^\( *path: \).*#\1$PWD/../AppDir#" data/AppImageBuilder.yml > /tmp/AppImageBuilder.yml
-          export PATH="$HOME/.local/bin:$PATH"
-          appimage-builder --recipe /tmp/AppImageBuilder.yml --appdir "$PWD/../AppDir" --build-dir /tmp/appimage-build
+          VERSION="${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}"
+          VERSION="${VERSION#v}"
+          ARCH=x86_64 VERSION="$VERSION" ./appimagetool "$PWD/../AppDir"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -65,7 +84,7 @@ jobs:
 
   deb:
     runs-on: ubuntu-latest
-    container: debian:11
+    container: debian:12
     steps:
       - uses: actions/checkout@v4
 
@@ -94,7 +113,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: janus-deb-debian11
+          name: janus-deb-debian12
           path: janus-notepad_*.deb
 
   rpm:
