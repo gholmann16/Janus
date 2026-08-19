@@ -45,11 +45,11 @@ jobs:
           find "$LIBDIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
           find "$LIBDIR" -maxdepth 1 -type f ! -name 'libgtksourceview-4.so*' -delete
 
-      - name: Bundle GtkSourceView language specs, style schemes, and app icon
+      - name: Bundle GtkSourceView language specs, classic style scheme, and app icon
         run: |
-          install -d "$PWD/../AppDir/usr/share/gtksourceview-4"
+          install -d "$PWD/../AppDir/usr/share/gtksourceview-4/styles"
           cp -a /usr/share/gtksourceview-4/language-specs "$PWD/../AppDir/usr/share/gtksourceview-4/"
-          cp -a /usr/share/gtksourceview-4/styles "$PWD/../AppDir/usr/share/gtksourceview-4/"
+          cp /usr/share/gtksourceview-4/styles/classic.xml "$PWD/../AppDir/usr/share/gtksourceview-4/styles/"
           ln -sf usr/share/icons/hicolor/256x256/apps/dev.pantheum.janus.png "$PWD/../AppDir/dev.pantheum.janus.png"
 
       - name: Build AppImage
@@ -100,8 +100,6 @@ jobs:
 
       - name: Package deb
         run: |
-          # branch dispatch runs (no tag) have no version to derive, so fall back
-          # to the manually-supplied input instead of stamping the branch name.
           VERSION="${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}"
           VERSION="${VERSION#v}"
           sed -i "s/^Version: .*/Version: $VERSION-1/" data/control
