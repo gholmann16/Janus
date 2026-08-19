@@ -28,17 +28,18 @@ To build as a deb package run:
 ```
 meson build --buildtype release --prefix /usr
 ninja -C build
-DESTDIR=../janus-notepad_0.9.7-1 meson install -C build
-install -Dm644 data/control janus-notepad_0.9.7-1/DEBIAN/control
-dpkg-deb --root-owner-group -b janus-notepad_0.9.7-1
+DESTDIR=../janus-notepad-pkg meson install -C build
+install -d janus-notepad-pkg/DEBIAN
+sed "s/^Architecture: .*/Architecture: $(dpkg --print-architecture)/" data/control > janus-notepad-pkg/DEBIAN/control
+dpkg-deb --root-owner-group -b janus-notepad-pkg janus-notepad.deb
 ```
 
 To build as an rpm package run:
 ```
 mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
-cp data/janus.spec ~/rpmbuild/SPECS/
-git archive --output="$HOME/rpmbuild/SOURCES/janus-notepad-0.9.7.tar.gz" --prefix=janus-notepad-0.9.7/ HEAD
+sed "s/^ExclusiveArch: .*/ExclusiveArch: $(uname -m)/" data/janus.spec > ~/rpmbuild/SPECS/janus.spec
+git archive --output="$HOME/rpmbuild/SOURCES/janus-notepad-0.0.0.tar.gz" --prefix=janus-notepad-0.0.0/ HEAD
 rpmbuild -bb ~/rpmbuild/SPECS/janus.spec
 ```
 
@@ -48,8 +49,6 @@ meson build --buildtype release --prefix /usr
 ninja -C build
 DESTDIR=../AppDir meson install -C build
 appimagetool deploy AppDir/usr/share/applications/*.desktop
-# Keep only GtkSourceView4 bundled - everything else deploy pulled in (GTK
-# core, immodules, print backends, ...) is assumed already on the host.
 GSV_LIB=$(find AppDir -name 'libgtksourceview-4.so*' | head -1)
 LIBDIR=$(dirname "$GSV_LIB")
 find "$LIBDIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
@@ -57,7 +56,7 @@ find "$LIBDIR" -maxdepth 1 -type f ! -name 'libgtksourceview-4.so*' -delete
 install -d AppDir/usr/share/gtksourceview-4
 cp -a /usr/share/gtksourceview-4/language-specs /usr/share/gtksourceview-4/styles AppDir/usr/share/gtksourceview-4/
 ln -sf usr/share/icons/hicolor/256x256/apps/dev.pantheum.janus.png AppDir/dev.pantheum.janus.png
-ARCH=x86_64 VERSION=0.9.7 appimagetool AppDir
+ARCH=$(uname -m) VERSION=0.0.0 appimagetool AppDir
 ```
 
 To build as Flatpak run:

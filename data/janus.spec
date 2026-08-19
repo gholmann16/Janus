@@ -1,22 +1,22 @@
 Name: janus-notepad
-Version: 0.9.7
+Version: 0.0.0
 Release: 1
-Summary: Simple linux notepad.
+Summary: Simple text editor
 License: GPL-3.0-only
 URL: https://github.com/gholmann16/janus
 ExclusiveArch: x86_64
 Conflicts: janus
 Source0: %{name}-%{version}.tar.gz
 
-# Built with --buildtype release + strip=true (see meson.build) - there's no
-# debug info to extract, so skip rpm's automatic debuginfo/debugsource split.
+# Built with --buildtype release + strip=true
+# no debug info to extract, so skip rpm's automatic debuginfo/debugsource split.
 %global debug_package %{nil}
 
 BuildRequires: meson, ninja-build, gcc, gettext-devel, gtk3-devel, gtksourceview4-devel, appstream
 Requires: gtk3, gtksourceview4
 
 %description
-Simple linux notepad.
+Janus is a simple, native linux text editor. Supports UTF-8 and binary data through its fallback binary editing mode. Spiritual successor to leafpad. Intended to be as small and efficient as possible, trading features for a smaller impact on cpu.
 
 %prep
 %setup -q

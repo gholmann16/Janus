@@ -5,17 +5,22 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to stamp on deb/rpm when not building from a tag (0.0.0)'
-        required: false
-        type: string
-        default: '0.0.0'
 
 jobs:
   appimage:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container: debian:12
+    env:
+      # Container jobs have no /dev/fuse, so appimagetool can't mount to run
+      APPIMAGE_EXTRACT_AND_RUN: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -23,6 +28,11 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ca-certificates curl build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev appstream
+
+      - name: Read version
+        run: |
+          VERSION=$(grep -oP "version: '\K[^']+" meson.build)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Build
         run: |
@@ -33,7 +43,7 @@ jobs:
       - name: Fetch go-appimage's appimagetool
         run: |
           URL=$(curl -s https://api.github.com/repos/probonopd/go-appimage/releases/tags/continuous \
-            | grep -o 'https://[^"]*appimagetool-[^"]*-x86_64\.AppImage' | head -1)
+            | grep -o 'https://[^"]*appimagetool-[^"]*-${{ matrix.arch }}\.AppImage' | head -1)
           curl -sL -o appimagetool "$URL"
           chmod +x appimagetool
 
@@ -54,17 +64,23 @@ jobs:
 
       - name: Build AppImage
         run: |
-          VERSION="${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}"
-          VERSION="${VERSION#v}"
-          ARCH=x86_64 VERSION="$VERSION" ./appimagetool "$PWD/../AppDir"
+          ARCH=${{ matrix.arch }} VERSION="$VERSION" ./appimagetool "$PWD/../AppDir"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: janus-appimage
+          name: janus-appimage-${{ matrix.arch }}
           path: '*.AppImage*'
 
   flatpak:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     # The action needs flatpak-builder plus a privileged, effectively-root environment to install runtimes
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
@@ -72,18 +88,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Point manifest at the tag that triggered this build
+      - name: Point manifest at whatever ref triggered this build
         run: |
-          sed -i "s/tag: v[0-9.]*/tag: ${GITHUB_REF_NAME}/" data/dev.pantheum.janus.yml
+          sed -i "s/branch: main/branch: ${GITHUB_REF_NAME}/" data/dev.pantheum.janus.yml
 
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
-          bundle: janus.flatpak
+          bundle: janus-${{ matrix.arch }}.flatpak
           manifest-path: data/dev.pantheum.janus.yml
+          arch: ${{ matrix.arch }}
           cache: true
 
   deb:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            deb_arch: amd64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            deb_arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container: debian:12
     steps:
       - uses: actions/checkout@v4
@@ -93,6 +120,11 @@ jobs:
           apt-get update
           apt-get install -y git ca-certificates build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev dpkg-dev appstream
 
+      - name: Read version
+        run: |
+          VERSION=$(grep -oP "version: '\K[^']+" meson.build)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
       - name: Build
         run: |
           meson setup build --buildtype release --prefix /usr
@@ -100,22 +132,29 @@ jobs:
 
       - name: Package deb
         run: |
-          VERSION="${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}"
-          VERSION="${VERSION#v}"
           sed -i "s/^Version: .*/Version: $VERSION-1/" data/control
-          PKGDIR="$PWD/../janus-notepad_${VERSION}-1"
+          sed -i "s/^Architecture: .*/Architecture: ${{ matrix.deb_arch }}/" data/control
+          PKGDIR="$PWD/../janus-notepad_${VERSION}-1_${{ matrix.deb_arch }}"
           rm -rf "$PKGDIR"
           DESTDIR="$PKGDIR" meson install -C build
           install -Dm644 data/control "$PKGDIR/DEBIAN/control"
-          dpkg-deb --root-owner-group -b "$PKGDIR" "janus-notepad_${VERSION}-1.deb"
+          dpkg-deb --root-owner-group -b "$PKGDIR" "janus-notepad_${VERSION}-1_${{ matrix.deb_arch }}.deb"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: janus-deb-debian12
+          name: janus-deb-debian12-${{ matrix.arch }}
           path: janus-notepad_*.deb
 
   rpm:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container: rockylinux:8
     steps:
       # actions/checkout falls back to a git-less REST API download when git
@@ -132,12 +171,15 @@ jobs:
           dnf install -y rpm-build
           dnf builddep -y data/janus.spec
 
+      - name: Read version
+        run: |
+          VERSION=$(grep -oP "version: '\K[^']+" meson.build)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
       - name: Package rpm
         run: |
-          git config --global --add safe.directory '*'
-          VERSION="${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}"
-          VERSION="${VERSION#v}"
           sed -i "s/^Version: .*/Version: $VERSION/" data/janus.spec
+          sed -i "s/^ExclusiveArch: .*/ExclusiveArch: ${{ matrix.arch }}/" data/janus.spec
           mkdir -p "$HOME/rpmbuild"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
           echo '%_topdir %(echo $HOME)/rpmbuild' > "$HOME/.rpmmacros"
           cp data/janus.spec "$HOME/rpmbuild/SPECS/"
@@ -146,7 +188,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: janus-rpm-el8
+          name: janus-rpm-el8-${{ matrix.arch }}
           # Container jobs get $HOME forced to /github/home by the runner, not /root.
           path: /github/home/rpmbuild/RPMS/**/*.rpm
 

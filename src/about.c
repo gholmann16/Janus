@@ -1,5 +1,6 @@
 #include <gtksourceview/gtksource.h>
 #include "global.h"
+#include "version.h"
 
 void about_command(GtkWidget * self, struct Document * document) {
     GtkWidget * about_dialog = gtk_about_dialog_new();

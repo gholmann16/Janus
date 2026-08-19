@@ -8,13 +8,16 @@ finish-args:
   - --share=ipc
   - --socket=fallback-x11
   - --socket=wayland
-  - --talk-name=org.gtk.vfs.*
-  - --filesystem=xdg-run/gvfsd
 
 modules:
   - name: gtksourceview
     cleanup:
       - /bin
+      - /include
+      - /lib/pkgconfig
+      - /share/gir-1.0
+      - /lib/girepository-1.0
+      - /share/man
     buildsystem: meson
     config-opts:
       - -Dvapi=false
@@ -34,4 +37,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/gholmann16/janus.git
-        tag: v0.9.7
+        branch: main
