@@ -27,7 +27,7 @@ jobs:
       - name: Install build dependencies
         run: |
           apt-get update
-          apt-get install -y ca-certificates curl build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev appstream
+          apt-get install -y ca-certificates curl build-essential meson ninja-build gettext libgtk-3-dev libgtksourceview-4-dev appstream file squashfs-tools
 
       - name: Read version
         run: |
@@ -178,6 +178,7 @@ jobs:
 
       - name: Package rpm
         run: |
+          git config --global --add safe.directory '*'
           sed -i "s/^Version: .*/Version: $VERSION/" data/janus.spec
           sed -i "s/^ExclusiveArch: .*/ExclusiveArch: ${{ matrix.arch }}/" data/janus.spec
           mkdir -p "$HOME/rpmbuild"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
