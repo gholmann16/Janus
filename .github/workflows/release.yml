@@ -62,9 +62,20 @@ jobs:
           cp /usr/share/gtksourceview-4/styles/classic.xml "$PWD/../AppDir/usr/share/gtksourceview-4/styles/"
           ln -sf usr/share/icons/hicolor/256x256/apps/dev.pantheum.janus.png "$PWD/../AppDir/dev.pantheum.janus.png"
 
+      - name: Write signing key
+        env:
+          APPIMAGE_PRIVATE_KEY: ${{ secrets.APPIMAGE_PRIVATE_KEY }}
+        run: |
+          printf '%s\n' "$APPIMAGE_PRIVATE_KEY" > privkey.asc
+          chmod 600 privkey.asc
+
       - name: Build AppImage
         run: |
           ARCH=${{ matrix.arch }} VERSION="$VERSION" ./appimagetool "$PWD/../AppDir"
+
+      - name: Remove signing key
+        if: always()
+        run: rm -f privkey.asc
 
       - uses: actions/upload-artifact@v4
         with:
@@ -95,6 +106,7 @@ jobs:
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: janus-${{ matrix.arch }}.flatpak
+          artifact-name: janus-${{ matrix.arch }}.flatpak
           manifest-path: data/dev.pantheum.janus.yml
           arch: ${{ matrix.arch }}
           cache: true
@@ -213,3 +225,60 @@ jobs:
           files: dist/*
           fail_on_unmatched_files: true
           draft: true
+
+  aur-publish:
+    runs-on: ubuntu-24.04
+    container: archlinux:base
+    # AUR only ever tracks tagged releases
+    if: github.ref_type == 'tag'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install AUR publishing dependencies
+        run: pacman -Syu --noconfirm --needed git openssh pacman-contrib curl
+
+      - name: Bump pkgver to match this release
+        run: |
+          VERSION=$(grep -oP "version: '\K[^']+" meson.build)
+          sed -i "s/^pkgver=.*/pkgver=$VERSION/; s/^pkgrel=.*/pkgrel=1/" data/PKGBUILD
+
+      - name: Create unprivileged build user
+        run: |
+          # makepkg refuses to run as root
+          useradd --create-home builder
+          install -d -m 700 -o builder -g builder /home/builder/.ssh
+          cp data/PKGBUILD /home/builder/PKGBUILD
+          chown builder:builder /home/builder/PKGBUILD
+
+      - name: Write AUR SSH key
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+        run: |
+          ssh-keyscan -t ed25519,rsa aur.archlinux.org >> /home/builder/.ssh/known_hosts
+          printf '%s\n' "$AUR_SSH_PRIVATE_KEY" > /home/builder/.ssh/aur
+          chmod 600 /home/builder/.ssh/aur
+          chown builder:builder /home/builder/.ssh/known_hosts /home/builder/.ssh/aur
+
+      - name: Publish to AUR
+        run: |
+          runuser -u builder -- bash <<'SCRIPT'
+          set -euo pipefail
+          export GIT_SSH_COMMAND="ssh -i /home/builder/.ssh/aur -o UserKnownHostsFile=/home/builder/.ssh/known_hosts"
+          git config --global user.name "Gabriel Holmann"
+          git config --global user.email "gholmann16@gmail.com"
+
+          git clone --depth=1 https://aur.archlinux.org/janus.git /tmp/aur-janus
+          cp /home/builder/PKGBUILD /tmp/aur-janus/PKGBUILD
+          cd /tmp/aur-janus
+          updpkgsums
+          makepkg --printsrcinfo > .SRCINFO
+
+          git add -f PKGBUILD .SRCINFO
+          git diff-index --quiet HEAD || git commit -m "Update to ${{ github.ref_name }}"
+          git remote add aur ssh://aur@aur.archlinux.org/janus.git
+          git push aur master
+          SCRIPT
+
+      - name: Remove AUR SSH key
+        if: always()
+        run: rm -f /home/builder/.ssh/aur
