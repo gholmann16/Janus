@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: janus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 15:42-0400\n"
+"POT-Creation-Date: 2026-08-20 17:04-0400\n"
 "PO-Revision-Date: 2025-09-10 10:57+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -82,7 +82,7 @@ msgstr "Alles selecteren"
 msgid "Search"
 msgstr "Zoeken"
 
-#: src/menu.c:107 src/search.c:80 src/search.c:176
+#: src/menu.c:107 src/search.c:91 src/search.c:188
 msgid "Find"
 msgstr "Zoeken"
 
@@ -94,11 +94,11 @@ msgstr "Volgende zoeken"
 msgid "Find previous"
 msgstr "Vorige zoeken"
 
-#: src/menu.c:122 src/search.c:167 src/search.c:182
+#: src/menu.c:122 src/search.c:180 src/search.c:193
 msgid "Replace"
 msgstr "Vervangen"
 
-#: src/menu.c:130 src/search.c:242
+#: src/menu.c:130 src/search.c:252
 msgid "Go to"
 msgstr "Ga naar"
 
@@ -130,7 +130,7 @@ msgstr "Hulp"
 msgid "About"
 msgstr "Over"
 
-#: src/file.c:54 src/file.c:103
+#: src/file.c:54 src/file.c:117
 msgid "Could not open file."
 msgstr "Het bestand kan niet worden geopend."
 
@@ -142,22 +142,24 @@ msgstr "Bestand openen"
 msgid "Save File"
 msgstr "Bestand opslaan"
 
-#: src/file.c:81 src/file.c:398 src/search.c:80 src/search.c:213
-#: src/search.c:242
+#: src/file.c:81 src/file.c:410 src/search.c:91 src/search.c:217
+#: src/search.c:252
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: src/file.c:132
+#: src/file.c:148
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
-"mode. For more information check out <a href=\"https://github.com/gholmann16/"
-"janus\">the wiki</a>."
+"mode. For more information check out"
 msgstr ""
 "Dit bestand bevat onjuiste opmaak en zal worden bewerkt met behulp van "
-"Janus' binaire modus. Meer informatie is te vinden op <a href=\"https://"
-"github.com/gholmann16/janus\">de wiki</a> (Engelstalig)."
+"Janus' binaire modus. Meer informatie is te vinden op"
 
-#: src/file.c:253
+#: src/file.c:150
+msgid "the wiki"
+msgstr "de wiki (Engelstalig)"
+
+#: src/file.c:258
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -165,47 +167,202 @@ msgstr ""
 "Dit bestand bevat niet-binaire tekens. Zorg dat alle tekens tussen U+0000 en "
 "U+00FF liggen, met uitzondering van U+2400."
 
-#: src/file.c:317
+#: src/file.c:326
 msgid "Something went wrong while printing."
 msgstr "Er is iets misgegaan tijdens het afdrukken."
 
-#: src/file.c:398
+#: src/file.c:410
 msgid "No"
 msgstr "Nee"
 
-#: src/file.c:398
+#: src/file.c:410
 msgid "Yes"
 msgstr "Ja"
 
-#: src/file.c:402
+#: src/file.c:414
 msgid "Would you like to save?"
 msgstr "Wilt u het bestand opslaan?"
 
-#: src/search.c:86 src/search.c:173
+#: src/search.c:97 src/search.c:186
 msgid "Find text:"
 msgstr "Tekst zoeken:"
 
-#: src/search.c:101 src/search.c:210
+#: src/search.c:105 src/search.c:215
 msgid "Match case"
 msgstr "Hoofdlettergevoelig"
 
-#: src/search.c:179
+#: src/search.c:191
 msgid "Replace text"
 msgstr "Tekst vervangen"
 
-#: src/search.c:212
+#: src/search.c:216
 msgid "Replace all"
 msgstr "Alles vervangen"
 
-#: src/search.c:247
+#: src/search.c:257
 msgid "Line number:"
 msgstr "Regelnummer:"
 
-#: src/options.c:138
+#: src/options.c:135
 msgid "Fonts"
 msgstr "Lettertypen"
 
-#: src/about.c:16
-msgid "Janus is a simple Linux notepad intended to be small and efficient."
+#: src/about.c:17
+msgid "Janus is a simple, native linux text editor."
+msgstr "Janus is een eenvoudige, native Linux-teksteditor."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:5
+msgid "Janus"
+msgstr "Janus"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:6
+msgid "Simple text editor"
+msgstr "Eenvoudige teksteditor"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:25
+msgid ""
+"Janus is a simple, native linux text editor. Supports UTF-8 and binary data "
+"through its fallback binary editing mode. Spiritual successor to leafpad. "
+"Intended to be as small and efficient as possible, trading features for a "
+"smaller impact on cpu."
 msgstr ""
-"Janus is een eenvoudige tekstbewerker voor Linux, met efficiëntie als doel."
+"Janus is een eenvoudige, native Linux-teksteditor. Ondersteunt UTF-8 en "
+"binaire gegevens via de binaire-bewerkingsmodus als terugvaloptie. "
+"Spiritueel opvolger van leafpad. Bedoeld om zo klein en efficiënt mogelijk "
+"te zijn, waarbij functies worden opgeofferd voor een kleinere impact op de "
+"cpu."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:28
+msgid "Features include:"
+msgstr "Functies:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:30
+msgid "Undo/redo"
+msgstr "Ongedaan maken/Opnieuw uitvoeren"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:31
+msgid "Similar keybinds to other text editors (e.g. leafpad)"
+msgstr "Vergelijkbare toetsenbindingen als andere teksteditors (bijv. leafpad)"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:32
+msgid "Spanish/French/German Translations"
+msgstr "Spaanse/Franse/Duitse vertalingen"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:33
+msgid "Printing capabilities"
+msgstr "Afdrukmogelijkheden"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:34
+msgid "Optional syntax highlighting"
+msgstr "Optionele syntaxismarkering"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:35
+msgid "Fallback binary editing"
+msgstr "Binaire bewerking als terugvaloptie"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:36
+msgid "GVFS connectivity"
+msgstr "GVFS-connectiviteit"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:46
+msgid "Picture of Janus reading a C file with syntax highlighting displayed"
+msgstr "Schermafbeelding van Janus met een C-bestand met syntaxismarkering"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:90
+#: data/dev.pantheum.janus.metainfo.xml.in:111
+msgid "Major changes:"
+msgstr "Grote wijzigingen:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:92
+msgid "Rpm build added"
+msgstr "Rpm-build toegevoegd"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:93
+msgid "AppImage, rpm, and deb packages now available as arm64"
+msgstr "AppImage-, rpm- en deb-pakketten nu ook beschikbaar als arm64"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:95
+#: data/dev.pantheum.janus.metainfo.xml.in:116
+msgid "Minor changes:"
+msgstr "Kleine wijzigingen:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:97
+msgid "Search settings persistent during a session"
+msgstr "Zoekinstellingen blijven behouden tijdens een sessie"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:98
+msgid "Dutch translations added"
+msgstr "Nederlandse vertalingen toegevoegd"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:99
+msgid "Auditable builds via GitHub Actions"
+msgstr "Controleerbare builds via GitHub Actions"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:100
+msgid "Metainfo translations added"
+msgstr "Metainfo-vertalingen toegevoegd"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:101
+msgid "Listed on appimagehub"
+msgstr "Vermeld op appimagehub"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:102
+msgid "AppImage using fuse 3, signed"
+msgstr "AppImage gebruikt fuse 3 en is ondertekend"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:103
+msgid "AppImage now twice as small 2 MB => 1 MB"
+msgstr "AppImage nu twee keer zo klein: 2 MB => 1 MB"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:104
+msgid "Flatpak over 1 MB smaller as well"
+msgstr "Flatpak ook meer dan 1 MB kleiner"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:105
+msgid ""
+"4 new languages supported by syntax highlighting: Lean, SPICE, STAR, "
+"Terraform"
+msgstr ""
+"4 nieuwe talen ondersteund door syntaxismarkering: Lean, SPICE, STAR, "
+"Terraform"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:113
+msgid "Now available as flatpak"
+msgstr "Nu beschikbaar als flatpak"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:114
+msgid "Soon to be on flathub and appimagehub"
+msgstr "Binnenkort op flathub en appimagehub"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:118
+msgid "Turkish translations added"
+msgstr "Turkse vertalingen toegevoegd"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:119
+msgid "Switched from make to meson"
+msgstr "Overgestapt van make naar meson"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:120
+msgid "Print line numbers"
+msgstr "Regelnummers afdrukken"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:121
+msgid "Can now pipe text into janus"
+msgstr "Tekst kan nu naar janus worden gepiped"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:122
+msgid "Use native file chooser"
+msgstr "Gebruik van de systeemeigen bestandskiezer"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:123
+msgid "New app id, new website pantheum.dev"
+msgstr "Nieuwe app-id, nieuwe website pantheum.dev"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:124
+msgid "Minor bug where line numbers were light on dark mode fixed"
+msgstr ""
+"Kleine bug verholpen waarbij regelnummers te licht waren in donkere modus"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:125
+msgid "No more print preview"
+msgstr "Afdrukvoorbeeld verwijderd"

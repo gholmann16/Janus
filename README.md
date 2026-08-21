@@ -4,7 +4,7 @@ Janus is a simple, native linux text editor. Supports UTF-8 and binary data thro
 ## Features
 - Undo/redo
 - Similar keybinds to other text editors (e.g. leafpad)
-- Spanish/French/German/Turkish/Dutch Translations
+- Spanish/French/German Translations
 - Printing capabilities
 - Optional syntax highlighting
 - Fallback binary editing

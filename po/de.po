@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 22:00-0400\n"
+"POT-Creation-Date: 2026-08-20 17:04-0400\n"
 "PO-Revision-Date: 2024-07-27 15:26-0400\n"
 "Last-Translator: gholmann16@gmail.com\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -142,22 +142,24 @@ msgstr "Datei öffnen"
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/file.c:81 src/file.c:405 src/search.c:91 src/search.c:217
+#: src/file.c:81 src/file.c:410 src/search.c:91 src/search.c:217
 #: src/search.c:252
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/file.c:146
+#: src/file.c:148
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
-"mode. For more information check out <a href=\"https://github.com/gholmann16/"
-"janus\">the wiki</a>."
+"mode. For more information check out"
 msgstr ""
 "Diese Datei ist nicht richtig formatiert und wird im Binärmodus von Janus "
-"bearbeitet. Weitere Informationen finden Sie im <a href=\"https://github.com/"
-"gholmann16/janus\">Wiki</a>."
+"bearbeitet. Weitere Informationen finden Sie im"
 
-#: src/file.c:253
+#: src/file.c:150
+msgid "the wiki"
+msgstr "Wiki"
+
+#: src/file.c:258
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -166,19 +168,19 @@ msgstr ""
 "eingefügten Zeichen zwischen U+0000 und U+00FF liegen, mit Ausnahme von "
 "U+2400."
 
-#: src/file.c:321
+#: src/file.c:326
 msgid "Something went wrong while printing."
 msgstr "Etwas ist beim Drucken schiefgelaufen."
 
-#: src/file.c:405
+#: src/file.c:410
 msgid "No"
 msgstr "Nein"
 
-#: src/file.c:405
+#: src/file.c:410
 msgid "Yes"
 msgstr "Ja"
 
-#: src/file.c:409
+#: src/file.c:414
 msgid "Would you like to save?"
 msgstr "Möchten Sie speichern?"
 
@@ -206,13 +208,13 @@ msgstr "Zeilennummer:"
 msgid "Fonts"
 msgstr "Schriftarten"
 
-#: src/about.c:16
+#: src/about.c:17
 msgid "Janus is a simple, native linux text editor."
 msgstr "Janus ist ein einfacher, nativer Linux-Texteditor."
 
 #: data/dev.pantheum.janus.metainfo.xml.in:5
 msgid "Janus"
-msgstr ""
+msgstr "Janus"
 
 #: data/dev.pantheum.janus.metainfo.xml.in:6
 msgid "Simple text editor"
@@ -230,20 +232,137 @@ msgstr ""
 "Nachfolger von leafpad. Er soll so klein und effizient wie möglich sein und "
 "verzichtet dafür auf Funktionen zugunsten einer geringeren CPU-Auslastung."
 
+#: data/dev.pantheum.janus.metainfo.xml.in:28
+msgid "Features include:"
+msgstr "Funktionen:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:30
+msgid "Undo/redo"
+msgstr "Rückgängig/Wiederholen"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:31
+msgid "Similar keybinds to other text editors (e.g. leafpad)"
+msgstr "Ähnliche Tastenkombinationen wie andere Texteditoren (z. B. leafpad)"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:32
+msgid "Spanish/French/German Translations"
+msgstr "Spanische/Französische/Deutsche Übersetzungen"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:33
+msgid "Printing capabilities"
+msgstr "Druckfunktionen"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:34
+msgid "Optional syntax highlighting"
+msgstr "Optionale Syntaxhervorhebung"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:35
+msgid "Fallback binary editing"
+msgstr "Binärbearbeitung als Rückfalloption"
+
 #: data/dev.pantheum.janus.metainfo.xml.in:36
+msgid "GVFS connectivity"
+msgstr "GVFS-Anbindung"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:46
 msgid "Picture of Janus reading a C file with syntax highlighting displayed"
-msgstr "Bild von Janus beim Lesen einer C-Datei mit Syntaxhervorhebung"
+msgstr "Bildschirmfoto von Janus mit einer C-Datei und Syntaxhervorhebung"
 
-#~ msgid "Janus is a simple Linux notepad intended to be small and efficient."
-#~ msgstr ""
-#~ "Janus ist ein einfacher Linux-Notizblock, der klein und effizient sein "
-#~ "soll."
+#: data/dev.pantheum.janus.metainfo.xml.in:90
+#: data/dev.pantheum.janus.metainfo.xml.in:111
+msgid "Major changes:"
+msgstr "Wichtige Änderungen:"
 
-#~ msgid "text;editor;plaintext;notepad;leafpad;gedit;mousepad;binary;syntax;highlighting;"
-#~ msgstr "Text;Editor;Klartext;Notizblock;leafpad;gedit;mousepad;Binär;Syntax;Hervorhebung;"
+#: data/dev.pantheum.janus.metainfo.xml.in:92
+msgid "Rpm build added"
+msgstr "Rpm-Build hinzugefügt"
 
-#~ msgid "Failed to preview page."
-#~ msgstr "Seite konnte nicht angezeigt werden."
+#: data/dev.pantheum.janus.metainfo.xml.in:93
+msgid "AppImage, rpm, and deb packages now available as arm64"
+msgstr "AppImage-, rpm- und deb-Pakete jetzt auch als arm64 verfügbar"
 
-#~ msgid "Print Preview"
-#~ msgstr "Druckvorschau"
+#: data/dev.pantheum.janus.metainfo.xml.in:95
+#: data/dev.pantheum.janus.metainfo.xml.in:116
+msgid "Minor changes:"
+msgstr "Kleinere Änderungen:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:97
+msgid "Search settings persistent during a session"
+msgstr "Sucheinstellungen bleiben während einer Sitzung erhalten"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:98
+msgid "Dutch translations added"
+msgstr "Niederländische Übersetzungen hinzugefügt"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:99
+msgid "Auditable builds via GitHub Actions"
+msgstr "Nachvollziehbare Builds über GitHub Actions"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:100
+msgid "Metainfo translations added"
+msgstr "Metainfo-Übersetzungen hinzugefügt"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:101
+msgid "Listed on appimagehub"
+msgstr "Auf appimagehub gelistet"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:102
+msgid "AppImage using fuse 3, signed"
+msgstr "AppImage nutzt jetzt fuse 3 und ist signiert"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:103
+msgid "AppImage now twice as small 2 MB => 1 MB"
+msgstr "AppImage jetzt halb so groß: 2 MB => 1 MB"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:104
+msgid "Flatpak over 1 MB smaller as well"
+msgstr "Flatpak ebenfalls über 1 MB kleiner"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:105
+msgid ""
+"4 new languages supported by syntax highlighting: Lean, SPICE, STAR, "
+"Terraform"
+msgstr ""
+"4 neue Sprachen für die Syntaxhervorhebung unterstützt: Lean, SPICE, STAR, "
+"Terraform"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:113
+msgid "Now available as flatpak"
+msgstr "Jetzt als Flatpak verfügbar"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:114
+msgid "Soon to be on flathub and appimagehub"
+msgstr "Bald auf flathub und appimagehub verfügbar"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:118
+msgid "Turkish translations added"
+msgstr "Türkische Übersetzungen hinzugefügt"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:119
+msgid "Switched from make to meson"
+msgstr "Wechsel von make zu meson"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:120
+msgid "Print line numbers"
+msgstr "Zeilennummern drucken"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:121
+msgid "Can now pipe text into janus"
+msgstr "Text kann jetzt per Pipe an janus übergeben werden"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:122
+msgid "Use native file chooser"
+msgstr "Verwendung des nativen Dateiauswahldialogs"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:123
+msgid "New app id, new website pantheum.dev"
+msgstr "Neue App-ID, neue Website pantheum.dev"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:124
+msgid "Minor bug where line numbers were light on dark mode fixed"
+msgstr ""
+"Kleinen Fehler behoben, bei dem Zeilennummern im Dunkelmodus zu hell waren"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:125
+msgid "No more print preview"
+msgstr "Druckvorschau entfernt"

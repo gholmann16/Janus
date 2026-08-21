@@ -25,6 +25,16 @@
     <p>
       Janus is a simple, native linux text editor. Supports UTF-8 and binary data through its fallback binary editing mode. Spiritual successor to leafpad. Intended to be as small and efficient as possible, trading features for a smaller impact on cpu.
     </p>
+    <p>Features include:</p>
+    <ul>
+      <li>Undo/redo</li>
+      <li>Similar keybinds to other text editors (e.g. leafpad)</li>
+      <li>Spanish/French/German Translations</li>
+      <li>Printing capabilities</li>
+      <li>Optional syntax highlighting</li>
+      <li>Fallback binary editing</li>
+      <li>GVFS connectivity</li>
+    </ul>
   </description>
 
   <url type="homepage">https://github.com/gholmann16/janus</url>
@@ -75,6 +85,46 @@
   </keywords>
 
   <releases>
-  <release version="0.9.7" date="2025-09-23"></release>
+  <release version="0.9.8" date="2026-08-21">
+    <description>
+      <p>Major changes:</p>
+      <ul>
+        <li>Rpm build added</li>
+        <li>AppImage, rpm, and deb packages now available as arm64</li>
+      </ul>
+      <p>Minor changes:</p>
+      <ul>
+        <li>Search settings persistent during a session</li>
+        <li>Dutch translations added</li>
+        <li>Auditable builds via GitHub Actions</li>
+        <li>Metainfo translations added</li>
+        <li>Listed on appimagehub</li>
+        <li>AppImage using fuse 3, signed</li>
+        <li>AppImage now twice as small 2 MB =&gt; 1 MB</li>
+        <li>Flatpak over 1 MB smaller as well</li>
+        <li>4 new languages supported by syntax highlighting: Lean, SPICE, STAR, Terraform</li>
+      </ul>
+    </description>
+  </release>
+  <release version="0.9.7" date="2025-09-23">
+    <description>
+      <p>Major changes:</p>
+      <ul>
+        <li>Now available as flatpak</li>
+        <li>Soon to be on flathub and appimagehub</li>
+      </ul>
+      <p>Minor changes:</p>
+      <ul>
+        <li>Turkish translations added</li>
+        <li>Switched from make to meson</li>
+        <li>Print line numbers</li>
+        <li>Can now pipe text into janus</li>
+        <li>Use native file chooser</li>
+        <li>New app id, new website pantheum.dev</li>
+        <li>Minor bug where line numbers were light on dark mode fixed</li>
+        <li>No more print preview</li>
+      </ul>
+    </description>
+  </release>
   </releases>
 </component>

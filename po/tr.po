@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 22:00-0400\n"
+"POT-Creation-Date: 2026-08-20 17:04-0400\n"
 "PO-Revision-Date: 2024-07-30 03:04+0300\n"
 "Last-Translator: veyselerden@yahoo.com\n"
 "Language-Team: \n"
@@ -142,22 +142,24 @@ msgstr "Dosya Aç"
 msgid "Save File"
 msgstr "Dosyayı Kaydet"
 
-#: src/file.c:81 src/file.c:405 src/search.c:91 src/search.c:217
+#: src/file.c:81 src/file.c:410 src/search.c:91 src/search.c:217
 #: src/search.c:252
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/file.c:146
+#: src/file.c:148
 msgid ""
 "This file is not formatted properly, and will be edited using Janus' binary "
-"mode. For more information check out <a href=\"https://github.com/gholmann16/"
-"janus\">the wiki</a>."
+"mode. For more information check out"
 msgstr ""
 "Bu dosya düzgün biçimlendirilmemiş ve Janus'un ikili modu kullanılarak "
-"düzenlenecek. Daha fazla bilgi için <a href=\"https://github.com/gholmann16/"
-"janus\">wiki sayfasını ziyaret edin</a>."
+"düzenlenecek. Daha fazla bilgi için"
 
-#: src/file.c:253
+#: src/file.c:150
+msgid "the wiki"
+msgstr "wiki sayfasını ziyaret edin"
+
+#: src/file.c:258
 msgid ""
 "File contains non binary characters. Make sure all inserted characters are "
 "between U+0000 and U+00FF with exception U+2400."
@@ -166,19 +168,19 @@ msgstr ""
 "karakterlerin U+0000 ve U+00FF arasında olduğundan emin olun. U+2400 buna "
 "bir istisnadır."
 
-#: src/file.c:321
+#: src/file.c:326
 msgid "Something went wrong while printing."
 msgstr "Yazdırılırken bir hata meydana geldi."
 
-#: src/file.c:405
+#: src/file.c:410
 msgid "No"
 msgstr "Hayır"
 
-#: src/file.c:405
+#: src/file.c:410
 msgid "Yes"
 msgstr "Evet"
 
-#: src/file.c:409
+#: src/file.c:414
 msgid "Would you like to save?"
 msgstr "Kaydetmek ister misin?"
 
@@ -206,13 +208,13 @@ msgstr "Satır numarası:"
 msgid "Fonts"
 msgstr "Yazıtipleri"
 
-#: src/about.c:16
+#: src/about.c:17
 msgid "Janus is a simple, native linux text editor."
 msgstr "Janus, basit ve yerel bir Linux metin düzenleyicisidir."
 
 #: data/dev.pantheum.janus.metainfo.xml.in:5
 msgid "Janus"
-msgstr ""
+msgstr "Janus"
 
 #: data/dev.pantheum.janus.metainfo.xml.in:6
 msgid "Simple text editor"
@@ -226,25 +228,143 @@ msgid ""
 "smaller impact on cpu."
 msgstr ""
 "Janus, basit ve yerel bir Linux metin düzenleyicisidir. Yedek ikili "
-"düzenleme modu sayesinde UTF-8 ve ikili verileri destekler. leafpad'in "
-"manevi halefidir. Mümkün olduğunca küçük ve verimli olması amaçlanmıştır; "
-"bunun için özelliklerden ödün vererek işlemci üzerindeki etkiyi azaltır."
+"düzenleme kipi sayesinde UTF-8 ve ikili verileri destekler. leafpad'in "
+"ruhani ardılıdır. İşlemci üzerindeki etkiyi azaltmak için özelliklerden ödün "
+"vererek olabildiğince küçük ve verimli olması amaçlanmıştır."
+
+#: data/dev.pantheum.janus.metainfo.xml.in:28
+msgid "Features include:"
+msgstr "Özellikler:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:30
+msgid "Undo/redo"
+msgstr "Geri al/Yinele"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:31
+msgid "Similar keybinds to other text editors (e.g. leafpad)"
+msgstr "Diğer metin düzenleyicilerine benzer kısayol tuşları (örn. leafpad)"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:32
+msgid "Spanish/French/German Translations"
+msgstr "İspanyolca/Fransızca/Almanca çeviriler"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:33
+msgid "Printing capabilities"
+msgstr "Yazdırma özellikleri"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:34
+msgid "Optional syntax highlighting"
+msgstr "İsteğe bağlı sözdizimi vurgulama"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:35
+msgid "Fallback binary editing"
+msgstr "Yedek ikili düzenleme"
 
 #: data/dev.pantheum.janus.metainfo.xml.in:36
+msgid "GVFS connectivity"
+msgstr "GVFS bağlantısı"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:46
 msgid "Picture of Janus reading a C file with syntax highlighting displayed"
-msgstr "Janus'ta sözdizimi vurgulamasıyla görüntülenen bir C dosyasının resmi"
+msgstr ""
+"Janus'ın sözdizimi vurgulamalı bir C dosyasını gösteren ekran görüntüsü"
 
-#~ msgid "Janus is a simple Linux notepad intended to be small and efficient."
-#~ msgstr ""
-#~ "Janus küçük ve verimli olması amacıyla yapılmış basit bir not defteridir."
+#: data/dev.pantheum.janus.metainfo.xml.in:90
+#: data/dev.pantheum.janus.metainfo.xml.in:111
+msgid "Major changes:"
+msgstr "Önemli değişiklikler:"
 
-#~ msgid "text;editor;plaintext;notepad;leafpad;gedit;mousepad;binary;syntax;highlighting;"
-#~ msgstr ""
-#~ "metin;düzenleyici;düz metin;not "
-#~ "defteri;leafpad;gedit;mousepad;ikili;sözdizimi;vurgulama;"
+#: data/dev.pantheum.janus.metainfo.xml.in:92
+msgid "Rpm build added"
+msgstr "Rpm derlemesi eklendi"
 
-#~ msgid "Failed to preview page."
-#~ msgstr "Sayfa önizlenemedi."
+#: data/dev.pantheum.janus.metainfo.xml.in:93
+msgid "AppImage, rpm, and deb packages now available as arm64"
+msgstr "AppImage, rpm ve deb paketleri artık arm64 olarak da mevcut"
 
-#~ msgid "Print Preview"
-#~ msgstr "Yazdırma Önizlemesi"
+#: data/dev.pantheum.janus.metainfo.xml.in:95
+#: data/dev.pantheum.janus.metainfo.xml.in:116
+msgid "Minor changes:"
+msgstr "Küçük değişiklikler:"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:97
+msgid "Search settings persistent during a session"
+msgstr "Arama ayarları oturum boyunca korunuyor"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:98
+msgid "Dutch translations added"
+msgstr "Hollandaca çeviriler eklendi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:99
+msgid "Auditable builds via GitHub Actions"
+msgstr "GitHub Actions üzerinden denetlenebilir derlemeler"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:100
+msgid "Metainfo translations added"
+msgstr "Metainfo çevirileri eklendi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:101
+msgid "Listed on appimagehub"
+msgstr "appimagehub'da listelendi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:102
+msgid "AppImage using fuse 3, signed"
+msgstr "AppImage artık fuse 3 kullanıyor ve imzalanıyor"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:103
+msgid "AppImage now twice as small 2 MB => 1 MB"
+msgstr "AppImage şimdi yarı yarıya küçüldü: 2 MB => 1 MB"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:104
+msgid "Flatpak over 1 MB smaller as well"
+msgstr "Flatpak da 1 MB'tan fazla küçüldü"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:105
+msgid ""
+"4 new languages supported by syntax highlighting: Lean, SPICE, STAR, "
+"Terraform"
+msgstr ""
+"Sözdizimi vurgulama artık 4 yeni dili destekliyor: Lean, SPICE, STAR, "
+"Terraform"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:113
+msgid "Now available as flatpak"
+msgstr "Artık flatpak olarak mevcut"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:114
+msgid "Soon to be on flathub and appimagehub"
+msgstr "Yakında flathub ve appimagehub'da"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:118
+msgid "Turkish translations added"
+msgstr "Türkçe çeviriler eklendi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:119
+msgid "Switched from make to meson"
+msgstr "Make'ten meson'a geçildi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:120
+msgid "Print line numbers"
+msgstr "Satır numaralarını yazdırma"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:121
+msgid "Can now pipe text into janus"
+msgstr "Artık janus'a metin pipe'lanabiliyor"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:122
+msgid "Use native file chooser"
+msgstr "Yerel dosya seçici kullanımı"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:123
+msgid "New app id, new website pantheum.dev"
+msgstr "Yeni uygulama kimliği, yeni web sitesi pantheum.dev"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:124
+msgid "Minor bug where line numbers were light on dark mode fixed"
+msgstr ""
+"Karanlık modda satır numaralarının çok açık renkte görünmesine neden olan "
+"küçük hata düzeltildi"
+
+#: data/dev.pantheum.janus.metainfo.xml.in:125
+msgid "No more print preview"
+msgstr "Yazdırma önizlemesi kaldırıldı"

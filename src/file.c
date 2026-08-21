@@ -143,7 +143,12 @@ void open_file(struct Document * document, GFile * file) {
             gtk_container_add(GTK_CONTAINER(content), label);
 
             gtk_info_bar_set_message_type(info, GTK_MESSAGE_QUESTION);
-            gtk_label_set_markup(GTK_LABEL(label), _("This file is not formatted properly, and will be edited using Janus' binary mode. For more information check out <a href=\"https://github.com/gholmann16/janus\">the wiki</a>."));
+            char message[512];
+            snprintf(message, sizeof(message), "%s <a href=\"%s\">%s</a>.",
+                     _("This file is not formatted properly, and will be edited using Janus' binary mode. For more information check out"),
+                     "https://github.com/gholmann16/janus/wiki",
+                     _("the wiki"));
+            gtk_label_set_markup(GTK_LABEL(label), message);
             gtk_widget_show_all(GTK_WIDGET(info));
         }
 
