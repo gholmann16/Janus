@@ -10,10 +10,10 @@
 
   <icon type="stock">dev.pantheum.janus</icon>
 
-  <mimetypes>
-    <mimetype>text/plain</mimetype>
-    <mimetype>application/x-zerosize</mimetype>
-  </mimetypes>
+  <provides>
+    <mediatype>text/plain</mediatype>
+    <mediatype>application/x-zerosize</mediatype>
+  </provides>
 
   <categories>
     <category>Utility</category>
